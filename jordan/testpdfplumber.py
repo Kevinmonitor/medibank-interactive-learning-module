@@ -1,6 +1,7 @@
 import re
 
 import pdfplumber
+from tqdm import tqdm
 
 from Pydirext import start
 
@@ -79,15 +80,14 @@ while True:
     r = re.match('^(?P<mode>(tables )?(text )?)(?P<name>.*)', name) # IF USING MODE SPECIFICATION WITH NO FILE SPECIFICATION, TRAILING SPACE IS MANDATORY
     if r is None: continue
     mode = r.group('mode').strip()
-    if mode is None: mode = 'text'
+    if mode is None or mode == '': mode = 'text'
     name = r.group('name')
     if name == '': name = n
     with pdfplumber.open(name) as pdf:
         print(f'Printing {name}')
         o = []
-        for page in pdf.pages:
+        for page in tqdm(pdf.pages,f'Extracting {mode}s from pages...'):
             o.append(str(page))
-            print(f'Extracting {mode}(s) from {page}')
             if 'text' in mode:
                 o.append(page.extract_text() + '\n\n---------------\n\n')
             if 'table' in mode:
