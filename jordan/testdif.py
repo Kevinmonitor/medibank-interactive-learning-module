@@ -1,5 +1,5 @@
 import difflib
-from unidiff import PatchSet
+from unidiff import PatchSet # type: ignore
 from unidiff.patch import Line, Hunk
 
 # https://docs.python.org/3/library/difflib.html
