@@ -76,7 +76,7 @@ def save(text):
 
 while True:
     name = input('>')
-    r = re.match('^(?P<mode>(tables )?(text )?)(?P<name>.*)', name)
+    r = re.match('^(?P<mode>(tables )?(text )?)(?P<name>.*)', name) # IF USING MODE SPECIFICATION WITH NO FILE SPECIFICATION, TRAILING SPACE IS MANDATORY
     if r is None: continue
     mode = r.group('mode').strip()
     if mode is None: mode = 'text'
