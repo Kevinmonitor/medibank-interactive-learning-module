@@ -1,214 +1,90 @@
-ACS Code of Professional Conduct Case Studies
-Australian Computer Society
-April 2014
+ACS Code of Professional Conduct Case Studies Australian Computer Society April 2014
 
 ---------------
 
-Title
-ACS Code of Professional Conduct Case Studies
-Authors
-Committee on Computer Ethics Mike Bowern
-Version History
-Date Document Revision History (reason for change) Author /Reviser
-Version
-July 2012 2.0 ACS Branding Sarah Li
-April 2014 2.1 Updated to refer Code of Professional Graham Low
-Conduct
-Approvals
-Date approved Version Approved By Date in force Date of Next
-Review
+Title ACS Code of Professional Conduct Case Studies Authors Committee on Computer Ethics Mike Bowern Version History Date Document Revision History (reason for change) Author /Reviser Version July 2012 2.0 ACS Branding Sarah Li April 2014 2.1 Updated to refer Code of Professional Graham Low Conduct Approvals Date approved Version Approved By Date in force Date of Next Review
 17 July 2012 2.0 Ruth Graham 17 July 2012 To be confirmed
-4 April 2014 2.1 Michael Johnson 4 April 2014 To be confirmed
-Custodian title & Andrew.johnson@acs.org.au
+4 April 2014 2.1 Michael Johnson 4 April 2014 To be confirmed Custodian title & Andrew.johnson@acs.org.au
 e-mail address:
-Responsible Professional Standards, Learning & Development
-Business Group:
+Responsible Professional Standards, Learning & Development Business Group:
 Distribution: General (no restriction on distribution)
-Content Security: Unclassified
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 2
+Content Security: Unclassified Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 2
 
 ---------------
 
-ACS CODE OF PROFESSIONAL CONDUCT CASE STUDIES
-This document provides a range of case studies1 with references to relevant clauses of the
-ACS Code of Professional Conduct. Section 1.2 describes the Code of Professional Conduct,
-summarised as six values: The Primacy of the Public Interest; The Enhancement of the
-Quality of Life; Honesty; Competence; Professional Development; and Professionalism.
-Sections 1.2.1 through to 1.2.6 provide a series of non-exhaustive requirements explaining
-how the six values relate to a member’s professional work.
-Case No. 1: Jean The Programmer [1]
-Summary of case
-Jean, a statistical database programmer, is trying to write a large statistical program needed by
-her company. Programmers in this company are encouraged to write about their work and to
-publish their algorithms in professional journals. After months of tedious programming, Jean
-has found herself stuck on several parts of the program. Her manager, not recognising the
-complexity of the problem, wants the job completed within the next few days. Not knowing
-how to solve the problems, Jean remembers that a co-worker had given her source listings
-from his current work and from an early version of a commercial software package developed
-at another company. On studying these programs, she sees two areas of code which could be
-directly incorporated into her own program. She uses segments of code from both her co-
-worker and the commercial software, but does not tell anyone or mention it in the
-documentation. She completes the project and turns it in a day ahead of time.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+ACS CODE OF PROFESSIONAL CONDUCT CASE STUDIES This document provides a range of case studies1 with references to relevant clauses of the ACS Code of Professional Conduct. Section 1.2 describes the Code of Professional Conduct, summarised as six values: The Primacy of the Public Interest; The Enhancement of the Quality of Life; Honesty; Competence; Professional Development; and Professionalism. Sections 1.2.1 through to 1.2.6 provide a series of non-exhaustive requirements explaining how the six values relate to a member’s professional work. Case No. 1: Jean The Programmer [1]
+Summary of case Jean, a statistical database programmer, is trying to write a large statistical program needed by her company. Programmers in this company are encouraged to write about their work and to publish their algorithms in professional journals. After months of tedious programming, Jean has found herself stuck on several parts of the program. Her manager, not recognising the complexity of the problem, wants the job completed within the next few days. Not knowing how to solve the problems, Jean remembers that a co-worker had given her source listings from his current work and from an early version of a commercial software package developed at another company. On studying these programs, she sees two areas of code which could be directly incorporated into her own program. She uses segments of code from both her co-
+worker and the commercial software, but does not tell anyone or mention it in the documentation. She completes the project and turns it in a day ahead of time. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
 f) respect the intellectual property of others;
 1.2.4 Competence
 b) not misrepresent your skills or knowledge;
 d) respect and protect your stakeholders' proprietary interests;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence
-1 The cases in the following reference paper also appear in Burmeister (2000), which addresses
-the ACS Code of Ethics (now ACS Code of Professional Conduct).
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 3
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence
+1 The cases in the following reference paper also appear in Burmeister (2000), which addresses the ACS Code of Ethics (now ACS Code of Professional Conduct). Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 3
 
 ---------------
 
 Case No. 2: Diane the Consultant [1]
-Summary of case
-Three years ago Diane started her own consulting business. She has been so successful that she
-now has several people working for her and many clients. Their consulting work included
-advising on how to set up corporate intranets, designing database management systems, and
-advising about security.
-Presently she is designing a database management system for the personnel office of a
-medium-sized company. Diane has involved the client in the design process, informing the CEO,
-the director of computing, and the director of personnel about the progress of the system. It is
-now time to make decisions about the kind and degree of security to build into the system.
-Diane has described several options to the client. Because the system is going to cost more
-than they planned, the client has decided to opt for a less secure system. She believes the
-information they will be storing is extremely sensitive. It will include performance evaluations,
-medical records for filing insurance claims, salaries, and so forth.
-With weak security, employees working on client machines may be able to figure out ways to
-get access to this data, not to mention the possibility of on-line access from hackers. Diane
-feels strongly that the system should be much more secure. She has tried to explain the risks,
-but the CEO, director of computing and director of personnel all agree that less security will do.
-What should she do? Should she refuse to build the system as they request?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Three years ago Diane started her own consulting business. She has been so successful that she now has several people working for her and many clients. Their consulting work included advising on how to set up corporate intranets, designing database management systems, and advising about security. Presently she is designing a database management system for the personnel office of a medium-sized company. Diane has involved the client in the design process, informing the CEO, the director of computing, and the director of personnel about the progress of the system. It is now time to make decisions about the kind and degree of security to build into the system. Diane has described several options to the client. Because the system is going to cost more than they planned, the client has decided to opt for a less secure system. She believes the information they will be storing is extremely sensitive. It will include performance evaluations, medical records for filing insurance claims, salaries, and so forth. With weak security, employees working on client machines may be able to figure out ways to get access to this data, not to mention the possibility of on-line access from hackers. Diane feels strongly that the system should be much more secure. She has tried to explain the risks, but the CEO, director of computing and director of personnel all agree that less security will do. What should she do? Should she refuse to build the system as they request?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 4
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 4
 
 ---------------
 
 Case No. 3: Max in the State Department [1]
-Summary of case
-Max works in a large state department of alcoholism and drug abuse. The agency administers
-programs for individuals with alcohol and drug problems, and maintains a huge database of
-information on the clients who use their services. Some of the data files contain the names
-and current addresses of clients.
-Max has been asked to take a look at the track records of the treatment programs. He is to put
-together a report that contains the number of clients seen in each program each month for the
-past five years, length of each client’s treatment, number of clients who return after
-completion of a program, criminal histories of clients, and so on. In order to put together this
-report, Max has been given access to all files in the agency’s mainframe computer. After
-assembling the data into a file that includes the clients’ names, he downloads it to the
-computer in his office.
-Under pressure to get the report finished by the deadline, Max decides he will have to work at
-home over the weekend in order to finish on time. He burns the information onto a CD and
-takes it home. After finishing the report he leaves the CD at home and forgets about it.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Max works in a large state department of alcoholism and drug abuse. The agency administers programs for individuals with alcohol and drug problems, and maintains a huge database of information on the clients who use their services. Some of the data files contain the names and current addresses of clients. Max has been asked to take a look at the track records of the treatment programs. He is to put together a report that contains the number of clients seen in each program each month for the past five years, length of each client’s treatment, number of clients who return after completion of a program, criminal histories of clients, and so on. In order to put together this report, Max has been given access to all files in the agency’s mainframe computer. After assembling the data into a file that includes the clients’ names, he downloads it to the computer in his office. Under pressure to get the report finished by the deadline, Max decides he will have to work at home over the weekend in order to finish on time. He burns the information onto a CD and takes it home. After finishing the report he leaves the CD at home and forgets about it. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-d) take into consideration the fact that your profession traverses many other professions, and
-has implications for other social systems and organisations;
+d) take into consideration the fact that your profession traverses many other professions, and has implications for other social systems and organisations;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.2 Quality of Life
-a) recognise, in your work, the role that ICT can play to enhance the quality of life of people,
-particularly the disadvantaged or those with disabilities;
+a) recognise, in your work, the role that ICT can play to enhance the quality of life of people, particularly the disadvantaged or those with disabilities;
 1.2.4 Competence
-d) respect and protect your stakeholders' proprietary interests;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 5
+d) respect and protect your stakeholders' proprietary interests; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 5
 
 ---------------
 
 Case No. 4: [1]
-Summary of case
-A computer company is writing the first stage of a more efficient accounting system that will be
-used by the government. This system will save tax payers a considerable amount of money
-every year. A computer professional, who is asked to design the accounting system, assigns
-different parts of the system to her staff. One person is responsible for developing the reports;
-another is responsible for the internal processing; and a third for the user interface. The
-manager is shown the system and agrees that it can do everything in the requirements. The
-system is installed, but the staff finds the interface so difficult to use that their complaints are
-heard by upper level management. Because of these complaints, upper-level management will
-not invest any more money in the development of the new accounting system and they go
-back to their original, more expensive system.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A computer company is writing the first stage of a more efficient accounting system that will be used by the government. This system will save tax payers a considerable amount of money every year. A computer professional, who is asked to design the accounting system, assigns different parts of the system to her staff. One person is responsible for developing the reports; another is responsible for the internal processing; and a third for the user interface. The manager is shown the system and agrees that it can do everything in the requirements. The system is installed, but the staff finds the interface so difficult to use that their complaints are heard by upper level management. Because of these complaints, upper-level management will not invest any more money in the development of the new accounting system and they go back to their original, more expensive system. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
 c) make yourself aware of relevant standards and legislation, and act accordingly;
 f) accept responsibility for your work;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 6
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 6
 
 ---------------
 
 Case No. 5: [1]
-Summary of case
-In determining requirements for an information system to be used in an employment agency,
-the client explains that, when displaying applicants whose qualifications appear to match those
-required for a particular job, the names of white applicants are to be displayed ahead of those
-of non-white applicants, and the names of male applicants are to be displayed ahead of those
-of female applicants.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case In determining requirements for an information system to be used in an employment agency, the client explains that, when displaying applicants whose qualifications appear to match those required for a particular job, the names of white applicants are to be displayed ahead of those of non-white applicants, and the names of male applicants are to be displayed ahead of those of female applicants. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 1.2.4 Competence
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
 1.2.6 Professionalism
-c) confront attempts to limit diversity in the workplace, and ensure that opportunities for
-employment, advancement, remuneration and other working conditions are based on the
-actual skills and performance of employees, free of stereotypes and prejudices;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 7
+c) confront attempts to limit diversity in the workplace, and ensure that opportunities for employment, advancement, remuneration and other working conditions are based on the actual skills and performance of employees, free of stereotypes and prejudices; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 7
 
 ---------------
 
 Case No. 6: [1]
-Summary of case
-A software development company has just produced a new software package that incorporates
-the new tax laws and figures taxes for both individuals and small businesses. The president of
-the company knows that the program has a number of bugs. He also believes the first firm to
-put this kind of software on the market is likely to capture the largest market share. The
-company widely advertises the program. When the company actually ships a CD, it includes a
-disclaimer of responsibility for errors resulting from the use of the program. The company
-expects it will receive a number of complaints, queries, and suggestions for modification. The
-company plans to use these to make changes and eventually issue updated, improved, and
-debugged versions. The president argues that this is general industry policy and that anyone
-who buys version 1.0 of a program knows this and will take proper precautions. Because of
-bugs, a number of users filed incorrect tax returns and were penalised by the ATO.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A software development company has just produced a new software package that incorporates the new tax laws and figures taxes for both individuals and small businesses. The president of the company knows that the program has a number of bugs. He also believes the first firm to put this kind of software on the market is likely to capture the largest market share. The company widely advertises the program. When the company actually ships a CD, it includes a disclaimer of responsibility for errors resulting from the use of the program. The company expects it will receive a number of complaints, queries, and suggestions for modification. The company plans to use these to make changes and eventually issue updated, improved, and debugged versions. The president argues that this is general industry policy and that anyone who buys version 1.0 of a program knows this and will take proper precautions. Because of bugs, a number of users filed incorrect tax returns and were penalised by the ATO. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
-d) take into consideration the fact that your profession traverses many other professions, and
-has implications for other social systems and organisations;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
+d) take into consideration the fact that your profession traverses many other professions, and has implications for other social systems and organisations;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.2 Quality of Life
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
@@ -217,107 +93,49 @@ b) not knowingly mislead a client or potential client as to the suitability of a
 1.2.4 Competence
 f) accept responsibility for your work;
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 8
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 8
 
 ---------------
 
 Case No. 7: [1]
-Summary of case
-A small software company is working on an integrated inventory control system for a very large
-national shoe manufacturer. The system will gather sales information daily from shoe stores
-nationwide. This information will be used by the accounting, shipping, and ordering
-departments to control all of the functions of this large corporation. The inventory functions
-are critical to the smooth operation of the system. Jane, a quality assurance engineer with the
-software company, suspects that the inventory functions of the system are not sufficiently
-tested, although they have passed all their contracted tests. She is pressured by her employers
-to sign off on the software. Legally she is only required to perform those tests which have been
-agreed to in the original contract. However, her considerable experience in software testing
-has led her to be concerned over risks of the system. Her employers say that they will go out of
-business if they do not deliver the software on time. Jane contends if the Inventory sub-system
-fails, it will significantly harm their client and its employees. If the potential failure were to
-threaten lives, it would be clear to Jane that she should refuse to sign off. But since the degree
-of threatened harm is less, Jane is faced with a difficult moral decision.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A small software company is working on an integrated inventory control system for a very large national shoe manufacturer. The system will gather sales information daily from shoe stores nationwide. This information will be used by the accounting, shipping, and ordering departments to control all of the functions of this large corporation. The inventory functions are critical to the smooth operation of the system. Jane, a quality assurance engineer with the software company, suspects that the inventory functions of the system are not sufficiently tested, although they have passed all their contracted tests. She is pressured by her employers to sign off on the software. Legally she is only required to perform those tests which have been agreed to in the original contract. However, her considerable experience in software testing has led her to be concerned over risks of the system. Her employers say that they will go out of business if they do not deliver the software on time. Jane contends if the Inventory sub-system fails, it will significantly harm their client and its employees. If the potential failure were to threaten lives, it would be clear to Jane that she should refuse to sign off. But since the degree of threatened harm is less, Jane is faced with a difficult moral decision. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
 f) accept responsibility for your work;
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 9
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 9
 
 ---------------
 
 Case No. 8: [1]
-Summary of case
-A software consultant is negotiating a contract with a local community to design their traffic
-control system. He recommends they select the TCS system out of several available systems on
-the market. The consultant fails to mention that he is a major stockholder of the company
-producing TCS software.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A software consultant is negotiating a contract with a local community to design their traffic control system. He recommends they select the TCS system out of several available systems on the market. The consultant fails to mention that he is a major stockholder of the company producing TCS software. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Case No. 9: [1]
-Summary of case
-Joe is working on a project for his computer science course. The instructor has allotted a fixed
-amount of computer time for this project. Joe has run out of time, but has not yet finished the
-project. The instructor cannot be reached. Last year Joe worked as a student programmer for
-the campus computer centre and is quite familiar with procedures to increase time allocations
-to accounts. Using what he learned last year, he is able to access the master account. Then he
-gives himself additional time and finishes his project.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Case No. 9: [1]
+Summary of case Joe is working on a project for his computer science course. The instructor has allotted a fixed amount of computer time for this project. Joe has run out of time, but has not yet finished the project. The instructor cannot be reached. Last year Joe worked as a student programmer for the campus computer centre and is quite familiar with procedures to increase time allocations to accounts. Using what he learned last year, he is able to access the master account. Then he gives himself additional time and finishes his project. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
 1.2.4 Competence
 f) accept responsibility for your work;
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 10
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 10
 
 ---------------
 
 Case No. 10: [2]
-Summary of case
-Consider an HCI consultant with extensive experience in evaluating web sites and graphical
-user interfaces (GUI). She has just received an evaluation contract for a new accounting
-product made by Company A due to her prior experience with e-commerce site evaluation.
-The work involves assessing the training requirements and the usability of the system. During
-the initial configuration of her usability laboratory she becomes aware that that software she is
-to evaluate contains a GUI already patented by a rival Company B, which she evaluated several
-weeks before.
-Under her contractual arrangements she is not allowed to discuss the evaluation of a product
-with anyone outside the contract. She therefore has an obligation to Company B not to
-provide information regarding their product to anyone else without their permission. She has
-a similar obligation to Company A. Can she continue with the evaluation? If she cannot
-continue with the evaluation how does she inform Company A of the patent violation? Does
-she have an obligation to let company B know Company A has copied their GUI?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Consider an HCI consultant with extensive experience in evaluating web sites and graphical user interfaces (GUI). She has just received an evaluation contract for a new accounting product made by Company A due to her prior experience with e-commerce site evaluation. The work involves assessing the training requirements and the usability of the system. During the initial configuration of her usability laboratory she becomes aware that that software she is to evaluate contains a GUI already patented by a rival Company B, which she evaluated several weeks before. Under her contractual arrangements she is not allowed to discuss the evaluation of a product with anyone outside the contract. She therefore has an obligation to Company B not to provide information regarding their product to anyone else without their permission. She has a similar obligation to Company A. Can she continue with the evaluation? If she cannot continue with the evaluation how does she inform Company A of the patent violation? Does she have an obligation to let company B know Company A has copied their GUI?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 f) respect the intellectual property of others;
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
@@ -325,148 +143,81 @@ c) understand, and give due regard to, the perceptions of those affected by your
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
 c) make yourself aware of relevant standards and legislation, and act accordingly;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 11
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 11
 
 ---------------
 
 Case No. 11: [2]
-Summary of case
-An internal usability team wanted to perform a usability test on a web site using half internal
-and half external participants. Would the consent form designed for external users also be
-used for the internals? Some members of the usability team argued that the terms of
-employment were sufficient to require internals participate. Others argued that the purpose
-of ‘consent’ was to ensure that participants understood why they had been asked, what was
-going to happen, what data would be collected, how it would be used and that they were free
-to leave any time. Given that the company had paid for usability testing, and given that the
-employees had agreed to work for the company for payment, is the employee free to leave?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case An internal usability team wanted to perform a usability test on a web site using half internal and half external participants. Would the consent form designed for external users also be used for the internals? Some members of the usability team argued that the terms of employment were sufficient to require internals participate. Others argued that the purpose of ‘consent’ was to ensure that participants understood why they had been asked, what was going to happen, what data would be collected, how it would be used and that they were free to leave any time. Given that the company had paid for usability testing, and given that the employees had agreed to work for the company for payment, is the employee free to leave?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
 1.2.2 Quality of Life
-a) recognise, in your work, the role that ICT can play to enhance the quality of life of people,
-particularly the disadvantaged or those with disabilities;
+a) recognise, in your work, the role that ICT can play to enhance the quality of life of people, particularly the disadvantaged or those with disabilities;
 1.2.3 Honesty
 e) qualify professional opinions which you know are based on limited knowledge or experience;
 1.2.4 Competence
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.6 Professionalism
-a) take a calm, objective, informed and knowledgeable stance on your professional work,
-complementing your enthusiasm and engagement in it;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 12
+a) take a calm, objective, informed and knowledgeable stance on your professional work, complementing your enthusiasm and engagement in it; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 12
 
 ---------------
 
 Case No. 12: [2]
-Summary of case
-You have been asked to observe how junior management use new accounting software at a
-leading city accounting firm. As part of informed consent, staff are informed that they will
-remain anonymous. As part of your observations, you notice that many of the junior
-management staff are making a particular data entry error when using this software. These
-errors are causing the accountancy firm to lose profit. Company policy dictates clearly that
-workers’ salaries will be docked for clear mistakes leading to loss of company profit. Do you
-take the edge off the results to protect the people who helped you in the study?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case You have been asked to observe how junior management use new accounting software at a leading city accounting firm. As part of informed consent, staff are informed that they will remain anonymous. As part of your observations, you notice that many of the junior management staff are making a particular data entry error when using this software. These errors are causing the accountancy firm to lose profit. Company policy dictates clearly that workers’ salaries will be docked for clear mistakes leading to loss of company profit. Do you take the edge off the results to protect the people who helped you in the study?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 13
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 13
 
 ---------------
 
 Case No. 13: [2]
-Summary of case
-You are contracted by a Web design consultancy company to interview their staff to ascertain
-their current knowledge. The aim of the study is to inform the company about the type of
-training courses they need to implement. The aim is therefore to highlight areas of overall
-weakness as opposed to individual shortcomings. Despite this, the type of data you collect will
-be able to identify individual’s weaknesses. Informed consent clearly states that comments
-made to you by interviewees are to remain private. Following the study, a senior Vice
-President of the company approaches you, asking you “who did well in the study?” What do
-you say?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case You are contracted by a Web design consultancy company to interview their staff to ascertain their current knowledge. The aim of the study is to inform the company about the type of training courses they need to implement. The aim is therefore to highlight areas of overall weakness as opposed to individual shortcomings. Despite this, the type of data you collect will be able to identify individual’s weaknesses. Informed consent clearly states that comments made to you by interviewees are to remain private. Following the study, a senior Vice President of the company approaches you, asking you “who did well in the study?” What do you say?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.5 Professional Development
-b) increase your awareness of issues affecting the profession and its relationship with the
-public;
+b) increase your awareness of issues affecting the profession and its relationship with the public;
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 14
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 14
 
 ---------------
 
 Case No. 14: [3]
-Summary of case
-A retired nurse applied for a pension from Centrelink, and was informed that she would receive
-a small pension of $8 per fortnight, and a Pension Card. She then received a letter saying that
-her pension would not be paid because she had assets of over $18 million, and an annual
-income of over $770,000. It took this lady several attempts to get Centrelink to examine her
-case. Finally, the cause of the mistake was found to be a “human error” when the lady’s
-investment details were coded into the computer. When the cause of the mistake was
-discovered, she was informed that they “couldn’t remove it from the computer”. Centrelink
-claimed that this was an "isolated incident". However, at the same time, another man was
-discussing with Centrelink their claim that he had an income of $6 million, which was not the
-case.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A retired nurse applied for a pension from Centrelink, and was informed that she would receive a small pension of $8 per fortnight, and a Pension Card. She then received a letter saying that her pension would not be paid because she had assets of over $18 million, and an annual income of over $770,000. It took this lady several attempts to get Centrelink to examine her case. Finally, the cause of the mistake was found to be a “human error” when the lady’s investment details were coded into the computer. When the cause of the mistake was discovered, she was informed that they “couldn’t remove it from the computer”. Centrelink claimed that this was an "isolated incident". However, at the same time, another man was discussing with Centrelink their claim that he had an income of $6 million, which was not the case. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-d) take into consideration the fact that your profession traverses many other professions, and
-has implications for other social systems and organisations;
+d) take into consideration the fact that your profession traverses many other professions, and has implications for other social systems and organisations;
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
 1.2.6 Professionalism
 g) endeavour to extend public knowledge and understanding of ICT;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 15
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 15
 
 ---------------
 
 Case No. 15: [4]
-Summary of case
-The initial estimate, in late 1999, for the re-vamp of the web site of the Dept. of
-Communications, Information Technology and the Arts (DCITA), was $600,000. The final price
-was over $4 million.
-The department provided a number of excuses/reasons for the excessive costs, including
-"over-ambitious expectations"; "a relatively immature understanding of the new content
-management technologies'; changes in the scope of the project; no allowance made for
-support of existing web site during the project; and no allowance for the tendering process. A
-spokesman stated that the department did not have “adequate development skills at the
-outset of the process…”
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case The initial estimate, in late 1999, for the re-vamp of the web site of the Dept. of Communications, Information Technology and the Arts (DCITA), was $600,000. The final price was over $4 million. The department provided a number of excuses/reasons for the excessive costs, including
+"over-ambitious expectations"; "a relatively immature understanding of the new content management technologies'; changes in the scope of the project; no allowance made for support of existing web site during the project; and no allowance for the tendering process. A spokesman stated that the department did not have “adequate development skills at the outset of the process…”
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.3 Honesty
@@ -475,73 +226,39 @@ c) distinguish between your professional and personal opinions and advice;
 d) give realistic estimates for projects under your control;
 e) qualify professional opinions which you know are based on limited knowledge or experience;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
 b) not misrepresent your skills or knowledge;
 f) accept responsibility for your work;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.5 Professional Development
 a) continue to upgrade your knowledge and skills;
-b) increase your awareness of issues affecting the profession and its relationship with the
-public;
-c) encourage your colleagues, staff and students to continue their own professional
-development;
-d) support education, training and professional development in ICT that reflects the diverse
-needs of individual professionals and their various career paths.
+b) increase your awareness of issues affecting the profession and its relationship with the public;
+c) encourage your colleagues, staff and students to continue their own professional development;
+d) support education, training and professional development in ICT that reflects the diverse needs of individual professionals and their various career paths.
 1.2.6 Professionalism
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 16
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 16
 
 ---------------
 
 Case No. 16: [5]
-Summary of case
-In December 1999, IBM-GSA was one of three tenderers for the IT outsourcing contract for the
-Departments of Health, Aged Care and the Health Insurance Commission (the Health Group),
-along with CSC and EDS. During the tender process, IBM-GSA was supplied with computer disks
-containing critical information relating to final pricing of their rival tenderers. IBM-GSA
-subsequently revised its tender after the due deadline and the minister announced they were
-the successful bidder.
-At the time, the Office of Asset Sales and Information Technology Outsourcing (OASITO)
-described giving IBM-GSA details of their rival’s bids as an ‘inadvertent error’. The minister
-dismissed the Opposition's call for an immediate halt to the tender process. Three years later,
-the minister, now retired, admitted that the $350 million tender should have been cancelled.
-He told the Audit Office in September 2002:
-“When the disc containing all three bids was delivered to IBM GSA in error my reaction
-on being informed directly by OASITO was to cancel the tender. I could not see that a
-tender process with integrity could continue. At the conclusion of the tender I was both
-disappointed and annoyed at the limited role of the Probity Auditor and the absence of
-a separate report on the issue.”
-Not only did the tender continue, with IBM-GSA being awarded the contract, but the minister's
-claim that the Probity Auditor’s role was limited was contradicted by evidence provided by
-OASITO to a Senate Estimates hearing on 8 February 2000. OASITO representatives told Senate
-Estimates that the management of the tender:
-“…was conducted in accordance with the advice from both the probity auditor and our
-legal advisers engaged for the initiative. All parties concurred at the time that the
-process could continue unchanged [OASITO] briefed the probity auditor in person
-[who] immediately came back to us with a proposed course of action…We engaged the
-probity auditor to participate in all of our discussions to make sure that he fully
-witnessed the nature of the discussions…and he was happy that we had delivered the
-messages in accordance with his proposed course of action.”
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case In December 1999, IBM-GSA was one of three tenderers for the IT outsourcing contract for the Departments of Health, Aged Care and the Health Insurance Commission (the Health Group), along with CSC and EDS. During the tender process, IBM-GSA was supplied with computer disks containing critical information relating to final pricing of their rival tenderers. IBM-GSA subsequently revised its tender after the due deadline and the minister announced they were the successful bidder. At the time, the Office of Asset Sales and Information Technology Outsourcing (OASITO)
+described giving IBM-GSA details of their rival’s bids as an ‘inadvertent error’. The minister dismissed the Opposition's call for an immediate halt to the tender process. Three years later, the minister, now retired, admitted that the $350 million tender should have been cancelled. He told the Audit Office in September 2002:
+“When the disc containing all three bids was delivered to IBM GSA in error my reaction on being informed directly by OASITO was to cancel the tender. I could not see that a tender process with integrity could continue. At the conclusion of the tender I was both disappointed and annoyed at the limited role of the Probity Auditor and the absence of a separate report on the issue.”
+Not only did the tender continue, with IBM-GSA being awarded the contract, but the minister's claim that the Probity Auditor’s role was limited was contradicted by evidence provided by OASITO to a Senate Estimates hearing on 8 February 2000. OASITO representatives told Senate Estimates that the management of the tender:
+“…was conducted in accordance with the advice from both the probity auditor and our legal advisers engaged for the initiative. All parties concurred at the time that the process could continue unchanged [OASITO] briefed the probity auditor in person
+[who] immediately came back to us with a proposed course of action…We engaged the probity auditor to participate in all of our discussions to make sure that he fully witnessed the nature of the discussions…and he was happy that we had delivered the messages in accordance with his proposed course of action.”
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 f) respect the intellectual property of others;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.2 Quality of Life
 b) protect and promote the health and safety of those affected by your work;
 1.2.3 Honesty
-a) reject, and will not make, any offer of bribery or inducement;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 17
+a) reject, and will not make, any offer of bribery or inducement; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 17
 
 ---------------
 
@@ -550,121 +267,33 @@ c) make yourself aware of relevant standards and legislation, and act accordingl
 d) respect and protect your stakeholders' proprietary interests;
 1.2.6 Professionalism
 b) take appropriate action against members who engage in behaviour contrary to this Code;
-e) neither require, nor attempt to influence, any person to take any action which would involve
-a breach of this Code;
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 18
+e) neither require, nor attempt to influence, any person to take any action which would involve a breach of this Code;
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 18
 
 ---------------
 
 Case No. 17: [6]
-Summary of case
-A consultant was engaged by a large private sector company to help run a tender process for
-some new software. The process was that tenderers would be short-listed on functional
-requirements, there would be a detailed evaluation of the short-listed tenders, and then the
-evaluation panel would look at the prices tendered.
-While preparing the documents for the panel the consultant was required to remove the
-pricing information from the body of some of the documents. As a result he became aware
-that several of the vendors' prices were well above the budget set by the client.
-At the end of short-listing the consultant thought his manager should know about this problem
-so that he could deal with it early, and not waste a lot of time evaluating unaffordable tenders.
-He decided to make sure he was right by checking the prices of all of the tenders. He then told
-his manager that he had looked at the prices and the business could not afford any of the
-short-listed proposals. The consultant did not tell his manager or anyone else what the prices
-were.
-His manager was very angry that he had disobeyed orders and looked at the prices before the
-time agreed, and he terminated the consultant's contract without notice. This upset the
-consultant, because he thought he had done the right thing by his employer. Fortunately
-another area of the company offered him a different contract soon afterwards. He told them
-about the issue with the tenders, and they did not think it was a problem.
-However, two weeks into the new contract his manager went to HR, accused the consultant of
-professional misconduct and had his new contract terminated without notice. The consultant's
-agency will not take this issue up with the company because the manager has threatened the
-agency's other contractors if they did.
-Do you think the company has been fair? What advice would you give to the consultant?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A consultant was engaged by a large private sector company to help run a tender process for some new software. The process was that tenderers would be short-listed on functional requirements, there would be a detailed evaluation of the short-listed tenders, and then the evaluation panel would look at the prices tendered. While preparing the documents for the panel the consultant was required to remove the pricing information from the body of some of the documents. As a result he became aware that several of the vendors' prices were well above the budget set by the client. At the end of short-listing the consultant thought his manager should know about this problem so that he could deal with it early, and not waste a lot of time evaluating unaffordable tenders. He decided to make sure he was right by checking the prices of all of the tenders. He then told his manager that he had looked at the prices and the business could not afford any of the short-listed proposals. The consultant did not tell his manager or anyone else what the prices were. His manager was very angry that he had disobeyed orders and looked at the prices before the time agreed, and he terminated the consultant's contract without notice. This upset the consultant, because he thought he had done the right thing by his employer. Fortunately another area of the company offered him a different contract soon afterwards. He told them about the issue with the tenders, and they did not think it was a problem. However, two weeks into the new contract his manager went to HR, accused the consultant of professional misconduct and had his new contract terminated without notice. The consultant's agency will not take this issue up with the company because the manager has threatened the agency's other contractors if they did. Do you think the company has been fair? What advice would you give to the consultant?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
 f) accept responsibility for your work;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.6 Professionalism
-a) take a calm, objective, informed and knowledgeable stance on your professional work,
-complementing your enthusiasm and engagement in it;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 19
+a) take a calm, objective, informed and knowledgeable stance on your professional work, complementing your enthusiasm and engagement in it; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 19
 
 ---------------
 
 Case No. 18: [6]
-Summary of case
-Jim, a member of the Australian Computer Society, was contracted as a test consultant to a
-client, to provide testing and quality assurance services. Initially there was a testing manager,
-Ken, Jim as team lead, and two test analysts, one of them on loan from the vendor. Ken had
-hired the two test analysts and Jim for the project.
-The system under test had a web browser front end, with an interface for successful customer
-product orders to SAP for order fulfilment and order transfer to 3rd party vendors. The testing
-effort initially seemed manageable, but as the team delved into the task they found the
-complexity increasing substantially.
-Suddenly, and voluntarily, Ken left the project approximately 4 weeks after Jim started, when
-budget issues became apparent. At the time the rest of the team were confused, and questions
-were asked as to who would take over Ken's responsibilities. Jim took it upon himself to
-ensure that a fully tested system was delivered to the business, and thus he gladly accepted
-more responsibility.
-Problems soon arose when Jim realised that the two test analysts hired by Ken were not up to
-the task of performing the testing preparation needed for such a complex system. Al, the
-analyst from the vendor, was initially brought in to handle the SAP functionality testing
-component. Al told Jim that he didn't know anything about SAP, and did not want the
-responsibility of writing the SAP test cases. A few weeks later Jim found out that Ken and Al
-had previously worked on a project together for the client, and that Ken was fostering
-relationships with the vendor by hiring its consultants for testing roles within the client's IT
-projects.
-This was the first time that the other test analyst, Col, had lived and worked overseas, so he
-was finding his feet in a new work and social environment.
-Both test analysts needed considerable more time than usual to write the test cases, as they
-were having difficulty comprehending the requirements and functional specifications, although
-Jim had held workshops to assist in their preparation. When the difficulties in performing basic
-test preparation became apparent, Jim asked both analysts about their previous testing
-experiences. He found that Al had only two years experience, while Col had only one years
-experience in testing, and he had no previous Telecommunications experience.
-Issues came to a head when Al could not meet the deadlines for his test cases, although he had
-been given the easiest cases to write. Jim, and Bob, the project manager, felt that Al was more
-of a hindrance than a help to the team and, noting that he was an expensive vendor resource,
-they made the decision that Al's services were no longer required. Al was not sacked, however
-his Purchase Order would run out soon and it would not be renewed.
-Al was not happy about this and he became very confrontational in two closed meetings with
-Jim, who considered Al's behaviour as unprofessional. These incidents, coupled with Al's poor
-work deliverables, prompted Jim to ask the vendor to be involved in a performance review so
-both the vendor and Al could benefit from objective feedback.
-Ken was no longer on the project, and he had not had any formal or informal business contact
-with Jim for at least 5 weeks. However, Ken, in a closed meeting, asked Jim to retract his
-request for a performance review, as he, Ken, said that he might re-hire Al for future projects.
-He asked Jim to email the vendor saying that he would not require a performance review for
-Al, and that there were no issues with Al's performance. Jim did neither.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 20
+Summary of case Jim, a member of the Australian Computer Society, was contracted as a test consultant to a client, to provide testing and quality assurance services. Initially there was a testing manager, Ken, Jim as team lead, and two test analysts, one of them on loan from the vendor. Ken had hired the two test analysts and Jim for the project. The system under test had a web browser front end, with an interface for successful customer product orders to SAP for order fulfilment and order transfer to 3rd party vendors. The testing effort initially seemed manageable, but as the team delved into the task they found the complexity increasing substantially. Suddenly, and voluntarily, Ken left the project approximately 4 weeks after Jim started, when budget issues became apparent. At the time the rest of the team were confused, and questions were asked as to who would take over Ken's responsibilities. Jim took it upon himself to ensure that a fully tested system was delivered to the business, and thus he gladly accepted more responsibility. Problems soon arose when Jim realised that the two test analysts hired by Ken were not up to the task of performing the testing preparation needed for such a complex system. Al, the analyst from the vendor, was initially brought in to handle the SAP functionality testing component. Al told Jim that he didn't know anything about SAP, and did not want the responsibility of writing the SAP test cases. A few weeks later Jim found out that Ken and Al had previously worked on a project together for the client, and that Ken was fostering relationships with the vendor by hiring its consultants for testing roles within the client's IT projects. This was the first time that the other test analyst, Col, had lived and worked overseas, so he was finding his feet in a new work and social environment. Both test analysts needed considerable more time than usual to write the test cases, as they were having difficulty comprehending the requirements and functional specifications, although Jim had held workshops to assist in their preparation. When the difficulties in performing basic test preparation became apparent, Jim asked both analysts about their previous testing experiences. He found that Al had only two years experience, while Col had only one years experience in testing, and he had no previous Telecommunications experience. Issues came to a head when Al could not meet the deadlines for his test cases, although he had been given the easiest cases to write. Jim, and Bob, the project manager, felt that Al was more of a hindrance than a help to the team and, noting that he was an expensive vendor resource, they made the decision that Al's services were no longer required. Al was not sacked, however his Purchase Order would run out soon and it would not be renewed. Al was not happy about this and he became very confrontational in two closed meetings with Jim, who considered Al's behaviour as unprofessional. These incidents, coupled with Al's poor work deliverables, prompted Jim to ask the vendor to be involved in a performance review so both the vendor and Al could benefit from objective feedback. Ken was no longer on the project, and he had not had any formal or informal business contact with Jim for at least 5 weeks. However, Ken, in a closed meeting, asked Jim to retract his request for a performance review, as he, Ken, said that he might re-hire Al for future projects. He asked Jim to email the vendor saying that he would not require a performance review for Al, and that there were no issues with Al's performance. Jim did neither. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 20
 
 ---------------
 
-Not long after this incident the project was placed on hold by the client. The project scope had
-crept alarmingly to the point where it was considered that delivery was impossible for the
-planned dates, and an internal audit was conducted to investigate the project slippage.
-When the project was halted the test team was immediately released as their services were
-not needed for the time being. Jim was approached by another senior testing manager, Ben,
-to work on a project that would be for approximately 9 months. An interview was arranged
-with Ben, Jim and the client business sponsor. The day before the interview Ben rang Jim to
-say that the interview was cancelled and that Jim would not be considered because Ben had
-received a bad review of Jim. Ben didn't say who had said this, but Jim later found out from a
-reliable source that it was Ken.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Not long after this incident the project was placed on hold by the client. The project scope had crept alarmingly to the point where it was considered that delivery was impossible for the planned dates, and an internal audit was conducted to investigate the project slippage. When the project was halted the test team was immediately released as their services were not needed for the time being. Jim was approached by another senior testing manager, Ben, to work on a project that would be for approximately 9 months. An interview was arranged with Ben, Jim and the client business sponsor. The day before the interview Ben rang Jim to say that the interview was cancelled and that Jim would not be considered because Ben had received a bad review of Jim. Ben didn't say who had said this, but Jim later found out from a reliable source that it was Ken. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.3 Honesty
@@ -673,79 +302,36 @@ d) give realistic estimates for projects under your control;
 e) qualify professional opinions which you know are based on limited knowledge or experience;
 g) not attempt to enhance your own reputation at the expense of another person’s reputation.
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
 b) not misrepresent your skills or knowledge;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
 f) accept responsibility for your work;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.5 Professional Development
-c) encourage your colleagues, staff and students to continue their own professional
-development;
-d) support education, training and professional development in ICT that reflects the diverse
-needs of individual professionals and their various career paths.
+c) encourage your colleagues, staff and students to continue their own professional development;
+d) support education, training and professional development in ICT that reflects the diverse needs of individual professionals and their various career paths.
 1.2.6 Professionalism
-c) confront attempts to limit diversity in the workplace, and ensure that opportunities for
-employment, advancement, remuneration and other working conditions are based on the
-actual skills and performance of employees, free of stereotypes and prejudices;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 21
+c) confront attempts to limit diversity in the workplace, and ensure that opportunities for employment, advancement, remuneration and other working conditions are based on the actual skills and performance of employees, free of stereotypes and prejudices; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 21
 
 ---------------
 
 Case No. 19: [6]
-Summary of case
-The following stories cover the use of unlicenced software, or the contravention of a licencing
-agreement. None of the organisations mentioned are members of the Business Software
-Association of Australia (BSAA), although one is associated with the US parent organisation.
-1. A reseller sells "additional user" software licences to a client for a project, but
-installation will be delayed for some months, so third-party software licences are not
-acquired from the supplier immediately. When the software is eventually "supplied"
+Summary of case The following stories cover the use of unlicenced software, or the contravention of a licencing agreement. None of the organisations mentioned are members of the Business Software Association of Australia (BSAA), although one is associated with the US parent organisation.
+1. A reseller sells "additional user" software licences to a client for a project, but installation will be delayed for some months, so third-party software licences are not acquired from the supplier immediately. When the software is eventually "supplied"
 to the end-user client, no CDs or licence keys are required. At a subsequent date it is
-"rediscovered" that the additional licences were never purchased from the supplier,
-and moves are made to acquire these. The Manager stops the Purchase Order being
-raised, wanting assurances that the licences were not purchased. Documentation is
-produced to show that licences were sold, these licences were never purchased from
-the supplier, and that the client has the additional licences. The Manager claims to
-"want to confirm other paperwork and negotiate a price with the supplier", but there is
-doubt that this is a genuine response. Perhaps there is no intention to purchase the
-licences from the supplier in the hope that the situation is not discovered. After a
-week, the paperwork seems to be back in the file to be forgotten again.
-2. A client acquires "additional user" software licences from a distributor under a special
-licence agreement that varies from the normal end-user licence agreement. This
-variation allows the same licence keys to be reused on multiple installations. The
-Distributor warrants that it is authorised to make these variations to the licence
-agreement. The details of the arrangement with the supplier that authorised this are
-not available, but when it has been discussed, "it's all confidential" is the stock answer.
-The client is invoiced for the additional licences, but in one case a note on the file and
-another verbal advice to staff by the Manager says "do not order on supplier". It is
-possible but unlikely that the arrangement with the supplier allows the distributor to
-make unlimited sales to its clients without further payment to the supplier.
-Subsequent to this, the supplier makes a change to introduce an "unlimited user"
-licence for the latest version that, if purchased, and the client were to upgrade to it,
-would regularise the transaction. Would such a changed event and/or the passage of
-time be sufficient to regularise the transaction?
+"rediscovered" that the additional licences were never purchased from the supplier, and moves are made to acquire these. The Manager stops the Purchase Order being raised, wanting assurances that the licences were not purchased. Documentation is produced to show that licences were sold, these licences were never purchased from the supplier, and that the client has the additional licences. The Manager claims to
+"want to confirm other paperwork and negotiate a price with the supplier", but there is doubt that this is a genuine response. Perhaps there is no intention to purchase the licences from the supplier in the hope that the situation is not discovered. After a week, the paperwork seems to be back in the file to be forgotten again.
+2. A client acquires "additional user" software licences from a distributor under a special licence agreement that varies from the normal end-user licence agreement. This variation allows the same licence keys to be reused on multiple installations. The Distributor warrants that it is authorised to make these variations to the licence agreement. The details of the arrangement with the supplier that authorised this are not available, but when it has been discussed, "it's all confidential" is the stock answer. The client is invoiced for the additional licences, but in one case a note on the file and another verbal advice to staff by the Manager says "do not order on supplier". It is possible but unlikely that the arrangement with the supplier allows the distributor to make unlimited sales to its clients without further payment to the supplier. Subsequent to this, the supplier makes a change to introduce an "unlimited user"
+licence for the latest version that, if purchased, and the client were to upgrade to it, would regularise the transaction. Would such a changed event and/or the passage of time be sufficient to regularise the transaction?
 3. A distributor, that may or may not have a current and valid reseller agreement, uses
 "demo" or "not for resale" software in its day-to-day operations.
-4. An end user, in a system failure and recovery situation, allows the operating system
-and firewall software licensed to another company, to be installed to "get the system
-back up". It is not clear if there is intention to subsequently license the software, or if
-it will become an "administrative oversight". What is a reasonable time to regularise
-such use, and would it then become software piracy after that time?
-5. An end user licenses utility software from a small supplier by internet download, and
-receives a licence key for one user. The licence agreement provides:
-This copy of xxxxxxxx may either be used by a single person who uses the software personally
-on one or more computers, or installed on a single workstation used non-simultaneously by
-multiple people, but not both. This is not a concurrent user licence.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 22
+4. An end user, in a system failure and recovery situation, allows the operating system and firewall software licensed to another company, to be installed to "get the system back up". It is not clear if there is intention to subsequently license the software, or if it will become an "administrative oversight". What is a reasonable time to regularise such use, and would it then become software piracy after that time?
+5. An end user licenses utility software from a small supplier by internet download, and receives a licence key for one user. The licence agreement provides:
+This copy of xxxxxxxx may either be used by a single person who uses the software personally on one or more computers, or installed on a single workstation used non-simultaneously by multiple people, but not both. This is not a concurrent user licence. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 22
 
 ---------------
 
-The use of this software becomes part of the company's standard procedures and all staff need
-a copy on their PCs. The one licence key is published and shared by all employees.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+The use of this software becomes part of the company's standard procedures and all staff need a copy on their PCs. The one licence key is published and shared by all employees. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 f) respect the intellectual property of others;
 1.2.3 Honesty
@@ -753,304 +339,155 @@ b) not knowingly mislead a client or potential client as to the suitability of a
 c) distinguish between your professional and personal opinions and advice;
 e) qualify professional opinions which you know are based on limited knowledge or experience;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.6 Professionalism
 b) take appropriate action against members who engage in behaviour contrary to this Code;
-e) neither require, nor attempt to influence, any person to take any action which would involve
-a breach of this Code;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Case No. 20: [7]
-Summary of case
-A manager gave a contractor permission to work off-site because of family problems. Remote
-on-line access was granted for the contractor, to a large government computing facility. All that
-was needed was the manager’s signature to approve the arrangement. The manager went on
-leave before the papers were returned, and the acting manager cancelled the off-site work at
-the last minute, because departmental policy was not to allow remote access to contractors.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+e) neither require, nor attempt to influence, any person to take any action which would involve a breach of this Code;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Case No. 20: [7]
+Summary of case A manager gave a contractor permission to work off-site because of family problems. Remote on-line access was granted for the contractor, to a large government computing facility. All that was needed was the manager’s signature to approve the arrangement. The manager went on leave before the papers were returned, and the acting manager cancelled the off-site work at the last minute, because departmental policy was not to allow remote access to contractors. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.4 Competence
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 23
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 23
 
 ---------------
 
 Case No. 21: [7]
-Summary of case
-Live data is used in the final testing of a new system, and the system then is formally approved
-by a QA group. The output from this final test has been released to the client as a genuine
-report, before QA approval has been given.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Live data is used in the final testing of a new system, and the system then is formally approved by a QA group. The output from this final test has been released to the client as a genuine report, before QA approval has been given. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
-f) accept responsibility for your work;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 24
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
+f) accept responsibility for your work; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 24
 
 ---------------
 
 Case No. 22: [7]
-Summary of case
-A QA group has decided to sign off a system without doing any testing, because they trust the
-customer and development team to test the system better than they can. (Look at this from
-several points of view: the QA group, an individual in QA, the customer, the development
-team, the team leader (e.g. should s/he tell the customer?)
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case A QA group has decided to sign off a system without doing any testing, because they trust the customer and development team to test the system better than they can. (Look at this from several points of view: the QA group, an individual in QA, the customer, the development team, the team leader (e.g. should s/he tell the customer?)
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
 f) accept responsibility for your work;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.6 Professionalism
-b) take appropriate action against members who engage in behaviour contrary to this Code;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 25
+b) take appropriate action against members who engage in behaviour contrary to this Code; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 25
 
 ---------------
 
 Case No. 23: [7]
-Summary of case
-In a large organisation, all software development and support work has to be carried out
-against budget codes. Maintenance work is a fixed amount on an internal code, and is usually
-insufficient to cover the work to be done. All development work is funded by the customer,
-and paid for by an internal funds transfer. It has become common practice to sneak in
-maintenance work under funded development work, because the customer does not know the
-scope of the development task, and hence how much it should cost.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case In a large organisation, all software development and support work has to be carried out against budget codes. Maintenance work is a fixed amount on an internal code, and is usually insufficient to cover the work to be done. All development work is funded by the customer, and paid for by an internal funds transfer. It has become common practice to sneak in maintenance work under funded development work, because the customer does not know the scope of the development task, and hence how much it should cost. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 d) give realistic estimates for projects under your control;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
 d) respect and protect your stakeholders' proprietary interests;
 1.2.6 Professionalism
 b) take appropriate action against members who engage in behaviour contrary to this Code;
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 26
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 26
 
 ---------------
 
 Case No. 24: [7]
-Summary of case
-Over the years a number of systems have been developed which record coded information
-across a range of factors about disabilities in ethnic communities. A new coding convention
-has been developed to rationalise the inconsistent coding conventions of these legacy systems.
-The new coding convention uses codes which had different meanings in the legacy systems.
-This means that time series analysis gives inconsistent results, particularly showing both under
-and over reporting of numbers of particular disability categories. This is significant when
-making policies for people based on the size of the communities. To fix this would take a lot of
-work and expense, and management has decreed that historical systems will not be fixed, but
-new systems will all adopt the new coding convention.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Over the years a number of systems have been developed which record coded information across a range of factors about disabilities in ethnic communities. A new coding convention has been developed to rationalise the inconsistent coding conventions of these legacy systems. The new coding convention uses codes which had different meanings in the legacy systems. This means that time series analysis gives inconsistent results, particularly showing both under and over reporting of numbers of particular disability categories. This is significant when making policies for people based on the size of the communities. To fix this would take a lot of work and expense, and management has decreed that historical systems will not be fixed, but new systems will all adopt the new coding convention. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-d) take into consideration the fact that your profession traverses many other professions, and
-has implications for other social systems and organisations;
+d) take into consideration the fact that your profession traverses many other professions, and has implications for other social systems and organisations;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 1.2.2 Quality of Life
-a) recognise, in your work, the role that ICT can play to enhance the quality of life of people,
-particularly the disadvantaged or those with disabilities;
+a) recognise, in your work, the role that ICT can play to enhance the quality of life of people, particularly the disadvantaged or those with disabilities;
 b) protect and promote the health and safety of those affected by your work;
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
 1.2.6 Professionalism
-h) co-operate in advancing ICT by communication with other professionals, students and the
-public;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 27
+h) co-operate in advancing ICT by communication with other professionals, students and the public; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 27
 
 ---------------
 
 Case No. 25: [8]
-Summary of case
-When Ilnaz, a 22-year-old female originally from Iran, did well in her job interview, the
-manager of CompuSoft, an Australian company that specialises in the design of CD ROMs,
-offered her the job immediately. Ilnaz, who needed this job, was so happy that she accepted
-the offer straightaway. When she reported to work the beginning of the following week, she
-found that she has to share the office with a male colleague. Apparently her manager placed
-her with Jason because both of them will be doing similar tasks in nature. The manager thought
-that this way they would both help, and learn from, each other. He also thought, that given
-that they also both will be working together in a joint project that the company had just
-acquired, it was important that they both have access to each other during the day. Ilnaz,
-however, was not happy with this arrangement as it was against her religion and culture to be
-in complete isolation with an unrelated man. Her husband was also upset and threatened to
-stop her from going to work when he learned about this arrangement. The following day, Ilnaz
-goes immediately to her manager and asks him what should she do.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case When Ilnaz, a 22-year-old female originally from Iran, did well in her job interview, the manager of CompuSoft, an Australian company that specialises in the design of CD ROMs, offered her the job immediately. Ilnaz, who needed this job, was so happy that she accepted the offer straightaway. When she reported to work the beginning of the following week, she found that she has to share the office with a male colleague. Apparently her manager placed her with Jason because both of them will be doing similar tasks in nature. The manager thought that this way they would both help, and learn from, each other. He also thought, that given that they also both will be working together in a joint project that the company had just acquired, it was important that they both have access to each other during the day. Ilnaz, however, was not happy with this arrangement as it was against her religion and culture to be in complete isolation with an unrelated man. Her husband was also upset and threatened to stop her from going to work when he learned about this arrangement. The following day, Ilnaz goes immediately to her manager and asks him what should she do. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
 1.2.2 Quality of Life
 b) protect and promote the health and safety of those affected by your work;
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.6 Professionalism
-c) confront attempts to limit diversity in the workplace, and ensure that opportunities for
-employment, advancement, remuneration and other working conditions are based on the
-actual skills and performance of employees, free of stereotypes and prejudices;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 28
+c) confront attempts to limit diversity in the workplace, and ensure that opportunities for employment, advancement, remuneration and other working conditions are based on the actual skills and performance of employees, free of stereotypes and prejudices; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 28
 
 ---------------
 
 Case No. 26: [8]
-Summary of case
-Company X has just signed a business agreement with Company Y, which entitles both of them
-to access each other clients’ records. Faisal, a software programmer at Company Z, was
-assigned the task of developing a software program that handles the access and retrieval of
-records from each Company’s database system into the other. A first run of the software on
-real data indicated that the work was well within the state of the art, and no difficulties were
-found or anticipated.
-Several weeks later and during a normal test on the software developed, Faisal discovered a
-serious ‘security hole’ in the database system of Company Y by which hackers can easily obtain
-confidential information about clients. He was convinced that while the software he developed
-could correctly accomplish the task, the code in Company Y’s database system could not be
-trusted as the security hole posed a threat even on Company X’s database system. Faisal told
-his manager about the problem and explained its significance. The manager's response was,
-"That's not our problem; let's just be sure that our software functions properly." Faisal is not
-sure what to do. Refusing to work on the project means disobeying his manager’s orders.
-Continuing to work on the project, means disobeying one of God’s commands, which requires
-him to be truthful and sincere in his dealings.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Company X has just signed a business agreement with Company Y, which entitles both of them to access each other clients’ records. Faisal, a software programmer at Company Z, was assigned the task of developing a software program that handles the access and retrieval of records from each Company’s database system into the other. A first run of the software on real data indicated that the work was well within the state of the art, and no difficulties were found or anticipated. Several weeks later and during a normal test on the software developed, Faisal discovered a serious ‘security hole’ in the database system of Company Y by which hackers can easily obtain confidential information about clients. He was convinced that while the software he developed could correctly accomplish the task, the code in Company Y’s database system could not be trusted as the security hole posed a threat even on Company X’s database system. Faisal told his manager about the problem and explained its significance. The manager's response was,
+"That's not our problem; let's just be sure that our software functions properly." Faisal is not sure what to do. Refusing to work on the project means disobeying his manager’s orders. Continuing to work on the project, means disobeying one of God’s commands, which requires him to be truthful and sincere in his dealings. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
-c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious
-objections that you have;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
+c) advise your stakeholders as soon as possible of any conflicts of interest or conscientious objections that you have;
 e) endeavour to preserve the integrity, security, continuity and utility of ICT;
 g) endeavour to preserve the confidentiality and privacy of the information of others.
 1.2.2 Quality of Life
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 1.2.4 Competence
-e) advise your stakeholders when you believe a proposed project, product or service is not in
-their best interest;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 29
+e) advise your stakeholders when you believe a proposed project, product or service is not in their best interest;
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 29
 
 ---------------
 
 Case No. 27: [8]
-Summary of case
-Nirmal is the IT manager in a government department with more than 500 staff members and
-six branches across Australia. His department has decided to acquire an enterprise resource
-planning (ERP) system. An RFT for the procurement of the software was advertised in a number
-of Australian newspapers. Two local companies responded to the advertisement and sent their
-offers to the department. When Nirmal opened the envelopes and examined the offers he
-found that company A’s offer is slightly better than company B’s offer. To his surprise,
-company B’s offer was made by his best friend Devraj, who is the general manager of company
-B. Company A’s software appeared to be easier to use and easier to modify compared to
-company B’s software. Although the initial cost of company B’ software appeared to be less
-than that of company’s A, the former may require some ‘tools-consultants’ to modify it and
-some ‘business-consultants’ to assist in running it, which might eventually raise the total cost.
-To complicate matters more, Nirmal received a phone call from Devraj, who urged him to
-favour his offer, as he is quite desperate to get this deal. He also reminded him that the ‘tools
-and business consultants’ who might be needed in the project will be recruited from his home
-country which means more jobs for his countrymen and in turn more money sent home.
-Nirmal is indeed in a difficult position.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Nirmal is the IT manager in a government department with more than 500 staff members and six branches across Australia. His department has decided to acquire an enterprise resource planning (ERP) system. An RFT for the procurement of the software was advertised in a number of Australian newspapers. Two local companies responded to the advertisement and sent their offers to the department. When Nirmal opened the envelopes and examined the offers he found that company A’s offer is slightly better than company B’s offer. To his surprise, company B’s offer was made by his best friend Devraj, who is the general manager of company B. Company A’s software appeared to be easier to use and easier to modify compared to company B’s software. Although the initial cost of company B’ software appeared to be less than that of company’s A, the former may require some ‘tools-consultants’ to modify it and some ‘business-consultants’ to assist in running it, which might eventually raise the total cost. To complicate matters more, Nirmal received a phone call from Devraj, who urged him to favour his offer, as he is quite desperate to get this deal. He also reminded him that the ‘tools and business consultants’ who might be needed in the project will be recruited from his home country which means more jobs for his countrymen and in turn more money sent home. Nirmal is indeed in a difficult position. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-b) raise with stakeholders any potential conflicts between your professional activity and legal
-or other accepted public requirements;
+b) raise with stakeholders any potential conflicts between your professional activity and legal or other accepted public requirements;
 1.2.3 Honesty
 b) not knowingly mislead a client or potential client as to the suitability of a product or service;
 c) distinguish between your professional and personal opinions and advice;
 1.2.4 Competence
-a) endeavour to provide products and services which match the operational and financial
-needs of your stakeholders;
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+a) endeavour to provide products and services which match the operational and financial needs of your stakeholders;
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.6 Professionalism
-a) take a calm, objective, informed and knowledgeable stance on your professional work,
-complementing your enthusiasm and engagement in it;
+a) take a calm, objective, informed and knowledgeable stance on your professional work, complementing your enthusiasm and engagement in it;
 b) take appropriate action against members who engage in behaviour contrary to this Code;
-e) neither require, nor attempt to influence, any person to take any action which would involve
-a breach of this Code;
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 30
+e) neither require, nor attempt to influence, any person to take any action which would involve a breach of this Code;
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 30
 
 ---------------
 
 Case No. 28: [9]
-Summary of case
-Katherina, an ACS member, provides extensive, voluntary assistance to a number of disability
-support groups. The support groups now use ICT for the benefit of their clients, and to run the
-organisations more effectively. For this work Katherina is made a Fellow of the ACS.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Katherina, an ACS member, provides extensive, voluntary assistance to a number of disability support groups. The support groups now use ICT for the benefit of their clients, and to run the organisations more effectively. For this work Katherina is made a Fellow of the ACS. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
-d) take into consideration the fact that your profession traverses many other professions, and
-has implications for other social systems and organisations;
+d) take into consideration the fact that your profession traverses many other professions, and has implications for other social systems and organisations;
 1.2.2 Quality of Life
-a) recognise, in your work, the role that ICT can play to enhance the quality of life of people,
-particularly the disadvantaged or those with disabilities;
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+a) recognise, in your work, the role that ICT can play to enhance the quality of life of people, particularly the disadvantaged or those with disabilities;
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.5 Professional Development
-b) increase your awareness of issues affecting the profession and its relationship with the
-public;
+b) increase your awareness of issues affecting the profession and its relationship with the public;
 1.2.6 Professionalism
 g) endeavour to extend public knowledge and understanding of ICT;
-h) co-operate in advancing ICT by communication with other professionals, students and the
-public;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Case No. 29: [10]
-Summary of case
-The ACS Disciplinary Committee has decided to hold its meetings In Camera, and not make
-available the results of their determinations to the complainants, or the general membership.
-This, they say, is to protect the reputation of the members who come before the committee.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+h) co-operate in advancing ICT by communication with other professionals, students and the public;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Case No. 29: [10]
+Summary of case The ACS Disciplinary Committee has decided to hold its meetings In Camera, and not make available the results of their determinations to the complainants, or the general membership. This, they say, is to protect the reputation of the members who come before the committee. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.6 Professionalism
 b) take appropriate action against members who engage in behaviour contrary to this Code;
-d) note that the corporate actions of the ACS are subject to this Code, and you should do
-whatever you can to ensure that the ACS and its officer bearers and staff meet this obligation;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 31
+d) note that the corporate actions of the ACS are subject to this Code, and you should do whatever you can to ensure that the ACS and its officer bearers and staff meet this obligation;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 31
 
 ---------------
 
@@ -1059,88 +496,43 @@ Australian Computer Society | ACS Code of Professional Conduct Case Studies | Ma
 ---------------
 
 Case No. 30: [9]
-Summary of case
-At an ACS Council meeting there was not a clearly defined and documented procedure to elect
-the National Office Bearers.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case At an ACS Council meeting there was not a clearly defined and documented procedure to elect the National Office Bearers. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.6 Professionalism
-d) note that the corporate actions of the ACS are subject to this Code, and you should do
-whatever you can to ensure that the ACS and its officer bearers and staff meet this obligation;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Case No. 31: [8]
-Summary of case
-Peter and Allan, who both share the same office, are systems designers at QBase, an Australian
-company that specialises in the development of computer databases. Peter is a newly
-converted Muslim and is committed to perform his prayers regularly. Unfortunately he is
-having difficulty saying his prayer around 1:00 pm in the afternoon. His prayer takes only 2-3
-minutes and does not require any special rituals or arrangements. He could offer his prayer in
-the office by standing and facing in one direction and mutely reciting a few verses, but he is
-afraid Allan might not feel comfortable about that. He could offer his prayer at his house which
-is close by his office but the return-trip takes usually 20-25 minutes and that time is taken from
-work.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+d) note that the corporate actions of the ACS are subject to this Code, and you should do whatever you can to ensure that the ACS and its officer bearers and staff meet this obligation;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Case No. 31: [8]
+Summary of case Peter and Allan, who both share the same office, are systems designers at QBase, an Australian company that specialises in the development of computer databases. Peter is a newly converted Muslim and is committed to perform his prayers regularly. Unfortunately he is having difficulty saying his prayer around 1:00 pm in the afternoon. His prayer takes only 2-3
+minutes and does not require any special rituals or arrangements. He could offer his prayer in the office by standing and facing in one direction and mutely reciting a few verses, but he is afraid Allan might not feel comfortable about that. He could offer his prayer at his house which is close by his office but the return-trip takes usually 20-25 minutes and that time is taken from work. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.2 Quality of Life
 c) understand, and give due regard to, the perceptions of those affected by your work;
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.4 Competence
-g) respect, and seek when necessary, the professional expertise of colleagues in their areas of
-competence.
+g) respect, and seek when necessary, the professional expertise of colleagues in their areas of competence.
 1.2.6 Professionalism
-c) confront attempts to limit diversity in the workplace, and ensure that opportunities for
-employment, advancement, remuneration and other working conditions are based on the
-actual skills and performance of employees, free of stereotypes and prejudices;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 33
+c) confront attempts to limit diversity in the workplace, and ensure that opportunities for employment, advancement, remuneration and other working conditions are based on the actual skills and performance of employees, free of stereotypes and prejudices; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 33
 
 ---------------
 
 Case No. 32: [9]
-Summary of case
-Anna is a young ambitious programmer working for a small company developing software for
-web based services in the health area, with a focus on support to remote aboriginal
-communities. To further her career Anna undertakes additional tertiary study, with support
-from her manager, Brian. This study includes topics covering computer ethics, and issues
-relating to the impact of ICT on different communities. On her current project, Anna develops a
-new user interface, which has a strong focus on accessibility for remote communities,
-especially considering the type of technology likely to be used. She also pays special attention
-to the use of cultural images in the interface, to avoid those which may be distressing or
-offensive to aboriginal users. The new system is a great success and Anna’s contribution is
-recognised by her company, through an Employee of the Month Award. The company also
-receives a national business award for its contribution to the positive use of ICT in aboriginal
-communities. Brian takes all of the credit for this, and Anna receives no acknowledgement for
-her efforts.
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Anna is a young ambitious programmer working for a small company developing software for web based services in the health area, with a focus on support to remote aboriginal communities. To further her career Anna undertakes additional tertiary study, with support from her manager, Brian. This study includes topics covering computer ethics, and issues relating to the impact of ICT on different communities. On her current project, Anna develops a new user interface, which has a strong focus on accessibility for remote communities, especially considering the type of technology likely to be used. She also pays special attention to the use of cultural images in the interface, to avoid those which may be distressing or offensive to aboriginal users. The new system is a great success and Anna’s contribution is recognised by her company, through an Employee of the Month Award. The company also receives a national business award for its contribution to the positive use of ICT in aboriginal communities. Brian takes all of the credit for this, and Anna receives no acknowledgement for her efforts. ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.1 Public Interest
 a) identify those potentially impacted by your work and explicitly consider their interests;
-d) take into consideration the fact that your profession traverses many other professions, and
-has implications for other social systems and organisations;
+d) take into consideration the fact that your profession traverses many other professions, and has implications for other social systems and organisations;
 f) respect the intellectual property of others;
 1.2.2 Quality of Life
-a) recognise, in your work, the role that ICT can play to enhance the quality of life of people,
-particularly the disadvantaged or those with disabilities;
+a) recognise, in your work, the role that ICT can play to enhance the quality of life of people, particularly the disadvantaged or those with disabilities;
 c) understand, and give due regard to, the perceptions of those affected by your work;
-d) attempt to increase the feelings of personal satisfaction, competence, and control of those
-affected by your work.
+d) attempt to increase the feelings of personal satisfaction, competence, and control of those affected by your work.
 1.2.3 Honesty
 f) give credit for work done by others where credit is due;
 g) not attempt to enhance your own reputation at the expense of another person’s reputation.
 1.2.5 Professional Development
 a) continue to upgrade your knowledge and skills;
-b) increase your awareness of issues affecting the profession and its relationship with the
-public;
+b) increase your awareness of issues affecting the profession and its relationship with the public;
 1.2.6 Professionalism
-a) take a calm, objective, informed and knowledgeable stance on your professional work,
-complementing your enthusiasm and engagement in it;
+a) take a calm, objective, informed and knowledgeable stance on your professional work, complementing your enthusiasm and engagement in it;
 g) endeavour to extend public knowledge and understanding of ICT;
-h) co-operate in advancing ICT by communication with other professionals, students and the
-public;
-i) have pride in your profession, and protect and promote professionalism and trustworthiness
-in ICT.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 34
+h) co-operate in advancing ICT by communication with other professionals, students and the public;
+i) have pride in your profession, and protect and promote professionalism and trustworthiness in ICT. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 34
 
 ---------------
 
@@ -1149,137 +541,57 @@ Australian Computer Society | ACS Code of Professional Conduct Case Studies | Ma
 ---------------
 
 Case No. 33: [9]
-Summary of case
-Carol is a popular person who has worked hard in the ICT industry. She is currently a team
-leader of a group of software developers in a large company providing outsourced services to
-the Federal government. She is a Member of the ACS and decides to contribute to her
-profession by playing an active role in the local branch of the Society, and is elected Treasurer.
-Carol has some financial problems, and forges signatures on cheques to embezzle $5,000 from
-the branch’s reserves to pay for medical treatment for her child. When she is inevitably found
-out she returns the money, and her membership of the ACS is terminated, but she continues in
-her job. Several members of her team are also ACS members. How should they treat their
-team leader?
-ACS Code of Professional Conduct values and relevant clauses of the Code of Professional
-Conduct
+Summary of case Carol is a popular person who has worked hard in the ICT industry. She is currently a team leader of a group of software developers in a large company providing outsourced services to the Federal government. She is a Member of the ACS and decides to contribute to her profession by playing an active role in the local branch of the Society, and is elected Treasurer. Carol has some financial problems, and forges signatures on cheques to embezzle $5,000 from the branch’s reserves to pay for medical treatment for her child. When she is inevitably found out she returns the money, and her membership of the ACS is terminated, but she continues in her job. Several members of her team are also ACS members. How should they treat their team leader?
+ACS Code of Professional Conduct values and relevant clauses of the Code of Professional Conduct
 1.2.6 Professionalism
 b) take appropriate action against members who engage in behaviour contrary to this Code;
-f) refrain from any conduct or action in your professional role which may tarnish the image of
-the profession or detract from the good name of the ACS;
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 36
+f) refrain from any conduct or action in your professional role which may tarnish the image of the profession or detract from the good name of the ACS; Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 36
 
 ---------------
 
 THE ACS CODE OF PROFESSIONAL CONDUCT - 2012
-1.1 Preamble
-An essential characteristic of a profession is the need for its members to abide by a code of
-ethics. For the ACS, this code is established as the Code of Professional Conduct and is part of
-the Society's Regulations. These Regulations apply to any ACS member who works in the field
-of information and communications technology (ICT).
-This Code of Professional Conduct (the Code) identifies six core ethical values and the
-associated requirements for professional conduct. The Society requires its members to abide
-by these values, and act with responsibility and integrity in all of their professional dealings.
-Relevance To Law
-The Code of Professional Conduct has relevance to professional standards legislation. Failure
-to abide by the Code could be used as grounds for a claim of professional negligence. The Code
-may be quoted by an expert witness giving an assessment of professional conduct. Failure to
-observe the Code could also lead to disciplinary action by the ACS.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 37
+1.1 Preamble An essential characteristic of a profession is the need for its members to abide by a code of ethics. For the ACS, this code is established as the Code of Professional Conduct and is part of the Society's Regulations. These Regulations apply to any ACS member who works in the field of information and communications technology (ICT). This Code of Professional Conduct (the Code) identifies six core ethical values and the associated requirements for professional conduct. The Society requires its members to abide by these values, and act with responsibility and integrity in all of their professional dealings. Relevance To Law The Code of Professional Conduct has relevance to professional standards legislation. Failure to abide by the Code could be used as grounds for a claim of professional negligence. The Code may be quoted by an expert witness giving an assessment of professional conduct. Failure to observe the Code could also lead to disciplinary action by the ACS. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 37
 
 ---------------
 
-1.2 The Code of Professional Conduct- ACS values - part of the ACS National Regulations
-As an ACS member you must uphold and advance the honour, dignity and effectiveness of being a
-professional. This entails, in addition to being a good citizen and acting within the law, your adherence
-to the following ACS values:
-1. The Primacy of the Public Interest
-You will place the interests of the public above those of personal, business or sectional
-interests.
-2. The Enhancement of Quality of Life
-You will strive to enhance the quality of life of those affected by your work.
-3. Honesty
-You will be honest in your representation of skills, knowledge, services and products.
-4. Competence
-You will work competently and diligently for your stakeholders.
-5. Professional Development
-You will enhance your own professional development, and that of your colleagues and staff.
-6. Professionalism
-You will enhance the integrity of the ACS and the respect of its members for each other.
-In a situation of conflict between the values, The Primacy of the Public Interest takes precedence over
-the other values.
-This Code of Professional Conduct is aimed specifically at you as an individual practitioner, and is
-intended as a guideline for your acceptable professional conduct. It is applicable to all ACS members
-regardless of their role or specific area of expertise in the ICT industry.
-The following list of requirements (Sections 1.2.1 to 1.2.6) is not exhaustive and should not be read as
-a complete definition of acceptable professional conduct in all practical situations. The intention of the
-Code is to illustrate what constitutes professional behaviour. You are expected to take into account
-the spirit of this Code in order to resolve ambiguous or contentious issues concerning professional
-conduct. The ACS can help you resolve ethical dilemmas.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 38
+1.2 The Code of Professional Conduct- ACS values - part of the ACS National Regulations As an ACS member you must uphold and advance the honour, dignity and effectiveness of being a professional. This entails, in addition to being a good citizen and acting within the law, your adherence to the following ACS values:
+1. The Primacy of the Public Interest You will place the interests of the public above those of personal, business or sectional interests.
+2. The Enhancement of Quality of Life You will strive to enhance the quality of life of those affected by your work.
+3. Honesty You will be honest in your representation of skills, knowledge, services and products.
+4. Competence You will work competently and diligently for your stakeholders.
+5. Professional Development You will enhance your own professional development, and that of your colleagues and staff.
+6. Professionalism You will enhance the integrity of the ACS and the respect of its members for each other. In a situation of conflict between the values, The Primacy of the Public Interest takes precedence over the other values. This Code of Professional Conduct is aimed specifically at you as an individual practitioner, and is intended as a guideline for your acceptable professional conduct. It is applicable to all ACS members regardless of their role or specific area of expertise in the ICT industry. The following list of requirements (Sections 1.2.1 to 1.2.6) is not exhaustive and should not be read as a complete definition of acceptable professional conduct in all practical situations. The intention of the Code is to illustrate what constitutes professional behaviour. You are expected to take into account the spirit of this Code in order to resolve ambiguous or contentious issues concerning professional conduct. The ACS can help you resolve ethical dilemmas. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 38
 
 ---------------
 
-1.2.1 The Primacy of the Public Interest Reference to Case
-In the context of this Code, the public interest takes precedence
-over personal, private and sectional interests, and any conflicts
-should be resolved in favour of the public interest. In your work, you
-should safeguard the interests of your immediate stakeholders,
-provided that these interests do not conflict with the duty and
-loyalty you owe to the public. The public interest is taken to include
-matters of public health, safety and the environment.
-In accordance with this value you will:
-a) identify those potentially impacted by your work and explicitly 1, 5, 6, 7, 9, 10, 11, 12, 13, 14,
-consider their interests; 24, 25, 32
+1.2.1 The Primacy of the Public Interest Reference to Case In the context of this Code, the public interest takes precedence over personal, private and sectional interests, and any conflicts should be resolved in favour of the public interest. In your work, you should safeguard the interests of your immediate stakeholders, provided that these interests do not conflict with the duty and loyalty you owe to the public. The public interest is taken to include matters of public health, safety and the environment. In accordance with this value you will:
+a) identify those potentially impacted by your work and explicitly 1, 5, 6, 7, 9, 10, 11, 12, 13, 14, consider their interests; 24, 25, 32
 b) raise with stakeholders any potential conflicts between your 2, 5, 6, 10, 16, 26, 27
-professional activity and legal or other accepted public
-requirements;
-c) advise your stakeholders as soon as possible of any conflicts of 5, 6, 7, 8, 10, 12, 13, 16, 21, 22,
-interest or conscientious objections that you have; 23, 26
+professional activity and legal or other accepted public requirements;
+c) advise your stakeholders as soon as possible of any conflicts of 5, 6, 7, 8, 10, 12, 13, 16, 21, 22, interest or conscientious objections that you have; 23, 26
 d) take into consideration the fact that your profession traverses 3, 6, 14, 24, 28, 32
-many other professions, and has implications for other social
-systems and organisations;
-e) endeavour to preserve the integrity, security, continuity and 2, 3, 6, 15, 16, 18, 20, 21, 22, 23,
-utility of ICT; 24, 26
+many other professions, and has implications for other social systems and organisations;
+e) endeavour to preserve the integrity, security, continuity and 2, 3, 6, 15, 16, 18, 20, 21, 22, 23, utility of ICT; 24, 26
 f) respect the intellectual property of others; and 1, 10, 16, 19, 32
 g) endeavour to preserve the confidentiality and privacy of the 2, 3, 12, 13, 16, 21
-information of others.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 39
+information of others. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 39
 
 ---------------
 
-1.2.2 The Enhancement of Quality of Life Reference to Case
-The development of ICT has had a significant impact on society and
-our way of life. Whilst this impact has been beneficial to a very
-great extent, like all technologies, ICT has also had some negative
-effects, and will continue to do so. An ethical approach to your
-work will help to recognise and minimise these adverse effects. You
-should promote equal access to the benefits of ICT by all members
-of society.
-In accordance with this value you will:
+1.2.2 The Enhancement of Quality of Life Reference to Case The development of ICT has had a significant impact on society and our way of life. Whilst this impact has been beneficial to a very great extent, like all technologies, ICT has also had some negative effects, and will continue to do so. An ethical approach to your work will help to recognise and minimise these adverse effects. You should promote equal access to the benefits of ICT by all members of society. In accordance with this value you will:
 a) recognise, in your work, the role that ICT can play to enhance 3, 11, 24, 28, 32
-the quality of life of people, particularly the disadvantaged or
-those with disabilities;
+the quality of life of people, particularly the disadvantaged or those with disabilities;
 b) protect and promote the health and safety of those affected by 25, 25
 your work;
 c) understand, and give due regard to, the perceptions of those 2, 4, 10, 12, 14, 22, 31, 32
 affected by your work; and
-d) attempt to increase the feelings of personal satisfaction, 6, 14, 16, 24, 25, 26, 28, 31, 32,
-competence, and control of those affected by your work.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 40
+d) attempt to increase the feelings of personal satisfaction, 6, 14, 16, 24, 25, 26, 28, 31, 32, competence, and control of those affected by your work. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 40
 
 ---------------
 
-1.2.3 Honesty Reference to Case
-Do not breach public trust in the profession or the specific trust of
-your stakeholders. Observance of utmost honesty and integrity
-must underlie all your professional decisions and actions.
-Circumstances will undoubtedly arise during the course of your
-professional career where it may appear to be beneficial for you to
-be deceptive in some way. This type of behaviour is not acceptable
-professional conduct.
-In accordance with this value you will:
+1.2.3 Honesty Reference to Case Do not breach public trust in the profession or the specific trust of your stakeholders. Observance of utmost honesty and integrity must underlie all your professional decisions and actions. Circumstances will undoubtedly arise during the course of your professional career where it may appear to be beneficial for you to be deceptive in some way. This type of behaviour is not acceptable professional conduct. In accordance with this value you will:
 a) reject, and will not make, any offer of bribery or inducement; 16
-b) not knowingly mislead a client or potential client as to the 6, 8, 10, 12, 14, 15, 17, 18,19,
-suitability of a product or service; 21, 22, 23, 26, 27
+b) not knowingly mislead a client or potential client as to the 6, 8, 10, 12, 14, 15, 17, 18,19, suitability of a product or service; 21, 22, 23, 26, 27
 c) distinguish between your professional and personal opinions 11, 15, 19, 27
 and advice;
 d) give realistic estimates for projects under your control; 15, 18, 23
@@ -1287,123 +599,68 @@ e) qualify professional opinions which you know are based on 15, 18, 19
 limited knowledge or experience;
 f) give credit for work done by others where credit is due; and 1, 32
 g) not attempt to enhance your own reputation at the expense of 18, 32
-another person’s reputation.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 41
+another person’s reputation. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 41
 
 ---------------
 
-1.2.4 Competence Reference to Case
-Accept only such work as you believe you are competent to perform,
-and do not hesitate to obtain additional expertise from appropriately
-qualified individuals where advisable. You should always be aware of
-your own limitations and not knowingly imply that you have
-competence you do not possess. This is distinct from accepting a
-task of which the successful completion requires expertise additional
-to your own. You cannot possibly be knowledgeable on all facets of
-ICT but you should be able to recognise when you need additional
-expertise and information.
-In accordance with this value you will:
-a) endeavour to provide products and services which match the 2, 4, 7, 12, 14, 15, 17, 18, 19,
-operational and financial needs of your stakeholders; 22, 23, 24, 27
+1.2.4 Competence Reference to Case Accept only such work as you believe you are competent to perform, and do not hesitate to obtain additional expertise from appropriately qualified individuals where advisable. You should always be aware of your own limitations and not knowingly imply that you have competence you do not possess. This is distinct from accepting a task of which the successful completion requires expertise additional to your own. You cannot possibly be knowledgeable on all facets of ICT but you should be able to recognise when you need additional expertise and information. In accordance with this value you will:
+a) endeavour to provide products and services which match the 2, 4, 7, 12, 14, 15, 17, 18, 19, operational and financial needs of your stakeholders; 22, 23, 24, 27
 b) not misrepresent your skills or knowledge; 1, 15
 c) make yourself aware of relevant standards and legislation, and 4, 10, 16, 24
 act accordingly;
 d) respect and protect your stakeholders' proprietary interests; 1, 3, 16, 23
-e) advise your stakeholders when you believe a proposed project, 2, 5, 7, 10, 17, 18, 21, 22, 24,
-product or service is not in their best interest; 26
+e) advise your stakeholders when you believe a proposed project, 2, 5, 7, 10, 17, 18, 21, 22, 24, product or service is not in their best interest; 26
 f) accept responsibility for your work; and 4, 6, 7, 9, 15, 17, 18, 21, 22
-g) respect, and seek when necessary, the professional expertise of 1, 4, 11, 15, 17, 18, 19, 20, 22,
-colleagues in their areas of competence. 26, 27, 31
+g) respect, and seek when necessary, the professional expertise of 1, 4, 11, 15, 17, 18, 19, 20, 22, colleagues in their areas of competence. 26, 27, 31
 Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 42
 
 ---------------
 
-1.2.5 Professional Development Reference to Case
-Keep yourself informed of such new technologies, practices and
-standards as are relevant to your work. Others will expect you to
-provide special skills and advice; and in order to do so, you must
-keep your knowledge up-to-date. You should encourage your
-colleagues and staff to do the same. Take action to ensure that your
-hard-won knowledge and experience are passed on in such a way
-that the recipients not only improve their own effectiveness in their
-present work but also become keen to advance their capabilities and
-take on additional responsibilities.
-In accordance with this value you will:
+1.2.5 Professional Development Reference to Case Keep yourself informed of such new technologies, practices and standards as are relevant to your work. Others will expect you to provide special skills and advice; and in order to do so, you must keep your knowledge up-to-date. You should encourage your colleagues and staff to do the same. Take action to ensure that your hard-won knowledge and experience are passed on in such a way that the recipients not only improve their own effectiveness in their present work but also become keen to advance their capabilities and take on additional responsibilities. In accordance with this value you will:
 a) continue to upgrade your knowledge and skills; 15, 32
 b) increase your awareness of issues affecting the profession and 13, 15, 28, 32
 its relationship with the public;
 c) encourage your colleagues, staff and students to continue their 15, 18
 own professional development; and
 d) support education, training and professional development in ICT 15, 18
-that reflects the diverse needs of individual professionals and
-their various career paths.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 43
+that reflects the diverse needs of individual professionals and their various career paths. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 43
 
 ---------------
 
-1.2.6 Professionaliam Reference to Case
-The ICT industry is relatively new and characterised by rapid change.
-It has not had the opportunity to evolve over many decades and
-acquire its own standards and legislation. The ACS is endeavouring
-to improve public confidence in the ICT industry. It is imperative
-that professional grade members of the ACS maintain professional
-standards that improve and enhance the industry's image, especially
-in the workplace.
-All people have a right to be treated with dignity and respect.
-Discrimination is unprofessional behaviour, as is any form of
-harassment. Members should be aware that the ACS can help them
-resolve ethical dilemmas. It can also provide support for taking
-appropriate action, including whistle-blowing, if you discover an ACS
-member or employer engaging in unethical behaviour.
-In accordance with this value you will:
+1.2.6 Professionaliam Reference to Case The ICT industry is relatively new and characterised by rapid change. It has not had the opportunity to evolve over many decades and acquire its own standards and legislation. The ACS is endeavouring to improve public confidence in the ICT industry. It is imperative that professional grade members of the ACS maintain professional standards that improve and enhance the industry's image, especially in the workplace. All people have a right to be treated with dignity and respect. Discrimination is unprofessional behaviour, as is any form of harassment. Members should be aware that the ACS can help them resolve ethical dilemmas. It can also provide support for taking appropriate action, including whistle-blowing, if you discover an ACS member or employer engaging in unethical behaviour. In accordance with this value you will:
 a) take a calm, objective, informed and knowledgeable stance on 10, 11, 17, 27, 32
-your professional work, complementing your enthusiasm and
-engagement in it;
+your professional work, complementing your enthusiasm and engagement in it;
 b) take appropriate action against members who engage in 16, 19, 22, 23, 27, 29, 33
 behaviour contrary to this Code;
 c) confront attempts to limit diversity in the workplace, and ensure 5, 18, 25, 31
-that opportunities for employment, advancement, remuneration
-and other working conditions are based on the actual skills and
-performance of employees, free of stereotypes and prejudices;
+that opportunities for employment, advancement, remuneration and other working conditions are based on the actual skills and performance of employees, free of stereotypes and prejudices;
 d) note that the corporate actions of the ACS are subject to this 29, 30
-Code, and you should do whatever you can to ensure that the
-ACS and its officer bearers and staff meet this obligation;
+Code, and you should do whatever you can to ensure that the ACS and its officer bearers and staff meet this obligation;
 e) neither require, nor attempt to influence, any person to take any 16, 19, 27
 action which would involve a breach of this Code;
-f) refrain from any conduct or action in your professional role 6, 7, 8, 9, 10, 12, 13, 15, 16, 23,
-which may tarnish the image of the profession or detract from 27, 33
+f) refrain from any conduct or action in your professional role 6, 7, 8, 9, 10, 12, 13, 15, 16, 23, which may tarnish the image of the profession or detract from 27, 33
 the good name of the ACS;
 g) endeavour to extend public knowledge and understanding of 14, 28, 32
 ICT;
 h) co-operate in advancing ICT by communication with other 24, 28, 32
 professionals, students and the public; and
-i) have pride in your profession, and protect and promote 13, 14, 15, 16, 19, 28, 29, 30,
-professionalism and trustworthiness in ICT. 32
+i) have pride in your profession, and protect and promote 13, 14, 15, 16, 19, 28, 29, 30, professionalism and trustworthiness in ICT. 32
 Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 44
 
 ---------------
 
 REFERENCES:
-[1] Burmeister, O.K, (2000), Applying the ACS Code of Ethics, Journal of Research and Practice
-in Information Technology, Vol. 32, No. 2, May.
-[2] Burmeister, O.K., and Weckert, J., (2003), Applying the new software engineering code of
-ethics to usability engineering: A study of four cases, Info, Comm & Ethics in Society,
-Troubadour Publishing Ltd.
+[1] Burmeister, O.K, (2000), Applying the ACS Code of Ethics, Journal of Research and Practice in Information Technology, Vol. 32, No. 2, May.
+[2] Burmeister, O.K., and Weckert, J., (2003), Applying the new software engineering code of ethics to usability engineering: A study of four cases, Info, Comm & Ethics in Society, Troubadour Publishing Ltd.
 [3] Canberra Times, (11 July 2003), “Centrelink letter one in a million”, page 1.
 [4] Canberra Times, (7 April 2003), “Costly upgrade: sprinting for cover”, page 15.
-[5] Senator Kate Lundy (5 November 2002) “Fahey finally tells the truth: tendering process for
-Health’s IT Outsourcing Program was without integrity”, Media release.
+[5] Senator Kate Lundy (5 November 2002) “Fahey finally tells the truth: tendering process for Health’s IT Outsourcing Program was without integrity”, Media release.
 [6] From Barry de Ferranti (ACS) - These are real situations, modified to remove names.
 [7] From Richard Lucas (CSU), based on actual events
-[8] From Yeslam Al-Saggaf (CSU) These cases relate to issues of different customs and cultures
-in the workplace.
-[9] From Mike Bowern. (Case 30 is to generate discussion on the idea that the ACS should be
-run in an ethical, business-like manner)
-[10] From Richard Lucas (This case has been added to generate discussion on the role of the
-Disciplinary Committee)
-[11] Anderson, R.E., Johnson, D.G., Gotterbarn, D., Perrolle, J., (1993), Communications of the
-ACM, February, Vol. 36, No. 2.
-Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 45
+[8] From Yeslam Al-Saggaf (CSU) These cases relate to issues of different customs and cultures in the workplace.
+[9] From Mike Bowern. (Case 30 is to generate discussion on the idea that the ACS should be run in an ethical, business-like manner)
+[10] From Richard Lucas (This case has been added to generate discussion on the role of the Disciplinary Committee)
+[11] Anderson, R.E., Johnson, D.G., Gotterbarn, D., Perrolle, J., (1993), Communications of the ACM, February, Vol. 36, No. 2. Australian Computer Society | ACS Code of Professional Conduct Case Studies | March 2014 Page 45
 
 ---------------
 
