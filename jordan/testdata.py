@@ -8,7 +8,7 @@ rows = 10
 
 # header
 o = "Account ID,Initial Cover,Health,Homesickness,VISITING A DOCTOR,VISITING A HOSPITAL,CALLING AN EMERGENCY,PAYING HOSPITAL BILLS\n"
-# for eac row
+# for each row
 for i in range(0,rows):
     # randomise ID and ratings
     id = str(random.randint(11111111,20000000))
