@@ -30,8 +30,7 @@ for i in range(0,rows):
                    (1 if 0 in choices else 0,
                    1 if 1 in choices else 0,
                    1 if 2 in choices else 0,
-                   1 if 3 in choices else 0,
-                   1 if 4 in choices else 0)]
+                   1 if 3 in choices else 0)]
     # post the row!
     line = f"{id},{cover},{health},{homesick},{','.join(answers)}\n"
     print(line)
