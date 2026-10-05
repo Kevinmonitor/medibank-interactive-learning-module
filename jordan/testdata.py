@@ -16,21 +16,21 @@ for i in range(0,rows):
     health = random.choice(ratings)
     homesick = random.choice(ratings)
     choices = []
-    answers = ()
+    answers = []
     # while answers are blank
-    while sum(choices) == 0:
+    while sum(int(i) for i in answers) == 0:
         # randomly generate indices
         for i in range(0,3):
-            choices.append(random.randint(-4,random.choice(ratings)))
+            choices.append(random.randint(-5,random.choice(ratings)))
         # trim the out of range answers
         choices = [(-1 if i > 3 or i < 0 else i) for i in choices]
-        print(choices)
         # generate the answers using the random indices
         answers = [str(i) for i in
                    (1 if 0 in choices else 0,
                    1 if 1 in choices else 0,
                    1 if 2 in choices else 0,
                    1 if 3 in choices else 0)]
+        print(answers)
     # post the row!
     line = f"{id},{cover},{health},{homesick},{','.join(answers)}\n"
     print(line)
