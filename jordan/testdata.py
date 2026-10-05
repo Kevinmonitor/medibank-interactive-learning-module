@@ -23,7 +23,7 @@ for i in range(0,rows):
         for i in range(0,3):
             choices.append(random.randint(-4,random.choice(ratings)))
         # trim the out of range answers
-        choices = [(-1 if i > 4 or i < 0 else i) for i in choices]
+        choices = [(-1 if i > 3 or i < 0 else i) for i in choices]
         print(choices)
         # generate the answers using the random indices
         answers = [str(i) for i in
