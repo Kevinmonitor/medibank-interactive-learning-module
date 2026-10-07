@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!-- Homesickness guide (OSHC Compass): a wheel turns, and each Next brings one suggestion to the top. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homesickness Guide</title>
+<style>
+  /* Colours used everywhere (change them here) */
+  :root {
+    --red: #C8322E;        /* main brand colour */
+    --red-soft: #FCEDEC;   /* light red background */
+    --navy: #1F3A5F;       /* signs and headings */
+    --ink: #1D2A3A;        /* main text */
+    --muted: #5E6B7A;      /* small grey text */
+    --line: #E3E6EA;       /* borders */
+    --wall: #F6F4F1;       /* hallway wall */
+    --floor: #E9E4DC;      /* hallway floor */
+    --route: #E07A1F;      /* orange highlight */
+    --teal: #2A8C82;       /* staff uniforms */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* Emergency banner at the top */
+  .alert {
+    display: flex; gap: 10px; align-items: center;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 10px; padding: 8px 14px; margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .alert b { font-size: 1.3rem; }
+
+  /* Hallway box (scrolls sideways on small screens) */
+  .scene  { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scroll { overflow-x: auto; scroll-behavior: smooth; }
+  svg     { display: block; width: 100%; min-width: 880px; height: auto; }
+
+  /* Each station: door + sign */
+  .station .door      { fill: #fff; stroke: #CBC4B8; stroke-width: 2; }
+  .station .sign      { fill: var(--navy); }
+  .station .sign-text { font: 700 13px system-ui, sans-serif; fill: #fff; }
+  .station .num       { fill: #fff; }
+  .station .num-text  { font: 800 12px system-ui, sans-serif; fill: var(--navy); }
+
+  /* Station states: already visited / current */
+  .station.done .sign     { fill: #5D7A73; }
+  .station.here .sign     { fill: var(--red); }
+  .station.here .num-text { fill: var(--red); }
+  .station.here .door     { stroke: var(--route); stroke-width: 3; }
+
+  /* Progress dots on the floor */
+  .dot    { fill: #CFC7BA; }
+  .dot.on { fill: var(--route); }
+
+  /* Walking animation: arms and legs swing */
+  .leg, .arm { transform-box: fill-box; transform-origin: top center; }
+  .walking .leg, .walking .arm { animation: swing 0.42s ease-in-out infinite alternate; }
+  .walking .leg2, .walking .arm2 { animation-direction: alternate-reverse; }
+  @keyframes swing {
+    from { transform: rotate(-26deg); }
+    to   { transform: rotate(26deg); }
+  }
+
+  /* Speech bubble above the current station */
+  #bubble       { transition: opacity 0.25s; }
+  .bubble-label { font: 700 10px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; fill: var(--red); }
+  .bubble-text  { font: 700 14px system-ui, sans-serif; fill: var(--ink); }
+
+  /* Buttons under the hallway */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-top: 1px solid var(--line);
+  }
+  .controls .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-name { font-weight: 700; color: var(--navy); }
+
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 8px 14px; border-radius: 9px;
+    border: 1.5px solid var(--line); background: #fff; color: var(--ink);
+  }
+  button.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  button:focus-visible { outline: 3px solid var(--route); outline-offset: 2px; }
+
+  /* Step heading + language buttons */
+  .head {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: baseline; justify-content: space-between;
+    margin: 16px 0 10px;
+  }
+  .eyebrow {
+    margin: 0; color: var(--red);
+    font: 700 11px ui-monospace, Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  h2 { margin: 2px 0 0; font-size: 1.4rem; line-height: 1.2; color: var(--navy); }
+
+  .lang { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lang button { padding: 4px 10px; border-radius: 99px; font-weight: 600; }
+  .lang button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* Four info boxes in a row (stack on small screens) */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
+
+  .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .box h3 {
+    margin: 0 0 6px; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .box p, .box ul { margin: 0; }
+  .box ul { padding-left: 18px; }
+  .box.do  { background: #F1F4F8; border-color: #F1F4F8; }
+  .box.say { background: var(--red-soft); border-color: var(--red-soft); }
+  .say-en  { font-weight: 700; }
+  .say-tr  { margin-top: 6px; font-size: 1.05rem; }
+
+  .small { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); }
+
+  /* Turn off animation for people who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    .walking .leg, .walking .arm { animation: none; }
+  }
+
+  [hidden] { display: none !important; }
+  .urlbar { display:flex; align-items:center; gap:8px; margin:8px 10px; padding:6px 14px; background:#EEF1F4;
+            border-radius:99px; font:600 13px system-ui, sans-serif; color:#3c4a59; }
+  .stage { position:relative; width:100%; aspect-ratio:2880/1105; overflow:hidden; background:#fff; --fs:12px; }
+  .shot  { position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity .35s; }
+  .shot.on { opacity:1; }
+  .fieldtext { position:absolute; display:flex; align-items:center; background:#fff; color:#1d2a3a;
+               font:400 var(--fs)/1 Arial, Helvetica, sans-serif; padding-left:.9%; white-space:nowrap; overflow:hidden; }
+  .fieldtext::after { content:""; width:1px; height:1.2em; background:#1d2a3a; margin-left:2px; animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .hl { position:absolute; border:3px solid var(--route); border-radius:8px; pointer-events:none;
+        box-shadow:0 0 0 2000px rgba(20,30,40,.28); transition:all .55s ease; }
+  .cursor { position:absolute; width:calc(var(--fs)*2.2); min-width:0; height:auto; z-index:5; pointer-events:none;
+            transition:left .9s ease, top .9s ease; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35)); }
+  .ripple { position:absolute; width:calc(var(--fs)*3); height:calc(var(--fs)*3); margin:calc(var(--fs)*-1.5) 0 0 calc(var(--fs)*-1.5);
+            border:3px solid var(--route); border-radius:50%; opacity:0; z-index:4; pointer-events:none; }
+  .ripple.go { animation:ripple .5s ease-out; }
+  @keyframes ripple { from { opacity:1; transform:scale(.3); } to { opacity:0; transform:scale(1.4); } }
+  .bubble { position:absolute; z-index:6; max-width:26%; background:#fff; border:2px solid var(--route); border-radius:12px;
+            padding:.55em .8em; font:700 calc(var(--fs)*1.2)/1.25 system-ui, sans-serif; color:var(--ink);
+            opacity:0; transition:opacity .25s; box-shadow:0 4px 14px rgba(0,0,0,.18); transform:translateY(-50%); }
+  .bubble small { display:block; font:700 calc(var(--fs)*.75) ui-monospace, Menlo, monospace; letter-spacing:.08em; color:var(--red); }
+  .bring { position:absolute; z-index:6; left:58%; top:43%; display:flex; gap:3%; font:700 calc(var(--fs)*1.1) system-ui, sans-serif; }
+  .bring div { width:12vw; max-width:190px; aspect-ratio:1.6; background:#fff; border-radius:10px; padding:.7em .9em;
+               display:flex; align-items:flex-end; box-shadow:0 6px 18px rgba(0,0,0,.3); border-top:.9em solid var(--red); }
+  .bring div + div { border-top-color:var(--navy); }
+  .src { display:inline-block; margin-left:6px; padding:0 6px; border-radius:99px; font:700 .68rem/1.6 system-ui, sans-serif;
+         white-space:nowrap; vertical-align:middle; }
+  .src.pdf  { background:#E8F3EF; color:#1F6B5F; }
+  .src.ours { background:#EEF1F4; color:#5E6B7A; }
+  .progress { display:flex; gap:6px; align-items:center; }
+  .progress i { width:10px; height:10px; border-radius:50%; background:#D5DBE1; }
+  .progress i.on { background:var(--route); }
+
+  [hidden]{display:none!important}
+  .wheelstage{--R:clamp(105px,19vw,165px);--n:calc(var(--R)*.44);position:relative;display:grid;place-items:center;
+              height:calc(var(--R)*2.95);background:radial-gradient(circle at 50% 50%,#FBF8F4 0,#F5F3EF 70%);overflow:hidden}
+  .wheel{position:relative;z-index:2;width:calc(var(--R)*2);height:calc(var(--R)*2);transform:rotate(var(--rot,0deg));
+         transition:transform .9s cubic-bezier(.45,.05,.2,1)}
+  .ring{position:absolute;inset:0;border-radius:50%;border:3px dashed #D5C9BA}
+  .node{position:absolute;left:50%;top:50%;width:var(--n);height:var(--n);margin:calc(var(--n)/-2) 0 0 calc(var(--n)/-2);
+        transform:rotate(var(--a)) translateY(calc(var(--R)*-1)) rotate(calc(var(--a)*-1))}
+  .nodeIn{position:relative;width:100%;height:100%;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+          background:#fff;border:3px solid #D5DBE1;font-size:calc(var(--n)*.46);padding:0;color:inherit;
+          transition:background .3s,border-color .3s,scale .3s}
+  .up{position:relative;width:100%;height:100%;transform:rotate(calc(var(--rot,0deg)*-1));
+      transition:transform .9s cubic-bezier(.45,.05,.2,1)}
+  .node.on .nodeIn{background:var(--red);border-color:var(--red);scale:1.28;box-shadow:0 8px 20px rgba(200,50,46,.35)}
+  .cap{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);white-space:nowrap;
+       font:700 .72rem system-ui,sans-serif;color:var(--navy)}
+  .node.on .cap{color:var(--red);top:calc(100% + 14px);background:#fff;padding:1px 10px;border-radius:99px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .center{position:absolute;left:50%;top:50%;width:calc(var(--R)*1.12);aspect-ratio:1;transform:translate(-50%,-50%);z-index:1;
+          border-radius:50%;overflow:hidden;border:5px solid #fff;box-shadow:0 8px 24px rgba(20,58,90,.2);background:#FBF8F4}
+  .center img{width:100%;height:100%;object-fit:cover}
+  .pointer{position:absolute;left:50%;top:calc(50% - var(--R) - var(--n)*1.1);transform:translateX(-50%);
+           color:var(--red);font-size:1.1rem;line-height:1}
+  .src{display:inline-block;margin-left:6px;padding:0 6px;border-radius:99px;font:700 .68rem/1.6 system-ui,sans-serif;white-space:nowrap;vertical-align:middle}
+  .src.pdf{background:#E8F3EF;color:#1F6B5F}
+  .src.ours{background:#EEF1F4;color:#5E6B7A}
+  .progress{display:flex;gap:6px;align-items:center}
+  .progress i{width:10px;height:10px;border-radius:50%;background:#D5DBE1}
+  .progress i.on{background:var(--route)}
+</style></head>
+<body>
+<div class="alert"><b>000</b>
+  <span>In danger or thinking about harming yourself? Call 000 or Lifeline 13 11 14. Student support line (24/7): 1800 887 283</span></div>
+
+<div class="scene">
+  <div class="wheelstage" id="stage">
+    <div class="pointer">▼</div>
+    <div class="wheel" id="wheel"><div class="ring"></div></div>
+    <div class="center"><img id="centerImg" alt=""></div>
+  </div>
+  <div class="controls">
+    <span class="step-name" id="stepName"></span>
+    <div class="progress" id="progress"></div>
+    <div class="buttons">
+      <button id="backBtn">Back</button>
+      <button id="playBtn">▶ Play all</button>
+      <button id="nextBtn" class="primary">Next suggestion</button>
+    </div>
+  </div>
+</div>
+
+<div class="head" aria-live="polite">
+  <div><p class="eyebrow" id="eyebrow"></p><h2 id="title"></h2></div>
+  <div class="lang" id="langButtons"></div>
+</div>
+<div class="grid">
+  <div class="box"><h3>What happens here</h3><p id="what"></p></div>
+  <div class="box do"><h3>What you can do</h3><ul id="todo"></ul></div>
+  <div class="box say"><h3>What to say</h3><p class="say-en" id="sayEn"></p><p class="say-tr" id="sayTr" hidden></p></div>
+  <div class="box"><h3>Tip</h3><p id="tip"></p></div>
+</div>
+<p class="small">
+  General information, not medical advice or a replacement for professional help. 📄 means it comes from the OSHC
+  brochure (page shown). ✎ means it is our own advice (the Lifeline number is not from the brochure).
+  Translations are samples and will be checked by native speakers.
+</p>
+
+<script>
+const START_LANG = "__LANG__";
+const LANGUAGES = { en:"English", si:"සිංහල", fa:"فارسی", vi:"Tiếng Việt", id:"Bahasa Indonesia" };
+const RTL_LANGUAGES = ["fa"];
+const PAUSE_BETWEEN_STEPS = 5000;
+const CENTER_IMAGE = "__IMG_CENTER__";
+const STEPS = [
+  { name:"Normal", icon:"💛", title:"It's normal to miss home",
+    what:"Missing home is very common for students living far away. You are not alone, and there are people and services that can help.",
+    todo:["Notice how you feel and name it: “I miss home”","Tell someone you trust, a friend or a family member","Remember that it often gets easier as you settle in"],
+    say:"I feel homesick. Can I talk to someone?",
+    tr:{si:"මට ගෙදර සිහිවෙනවා. කවුරුහරි එක්ක කතා කරන්න පුළුවන්ද?",fa:"دلتنگ خانه‌ام. می‌توانم با کسی صحبت کنم؟",vi:"Tôi nhớ nhà. Tôi có thể nói chuyện với ai đó không?",id:"Saya merasa rindu rumah. Bisakah saya bicara dengan seseorang?"},
+    tip:"If you ever feel unsafe or think about harming yourself, call 000 or Lifeline on 13 11 14 right away." },
+  { name:"Talk", icon:"📞", title:"Talk to someone, any time",
+    what:"You can call 1800 887 283 any time, day or night, for health advice from a registered nurse, counselling services, interpreter services and more.",
+    todo:["Call 1800 887 283, day or night","Ask for a registered nurse or a counsellor","Tell them how you feel and ask what help is available"],
+    say:"Can I speak to a nurse or a counsellor, please?",
+    tr:{si:"කරුණාකර හෙදියක හෝ උපදේශකයෙකු සමඟ කතා කළ හැකිද?",fa:"ممکن است با یک پرستار یا مشاور صحبت کنم؟",vi:"Tôi có thể nói chuyện với y tá hoặc chuyên viên tư vấn không?",id:"Bisakah saya berbicara dengan perawat atau konselor?"},
+    tip:"Some services may not be available 24/7, and a call back may be needed." },
+  { name:"Language", icon:"🗣️", title:"Get help in your language",
+    what:"Medibank's support team speaks about a dozen languages, and phone interpreters cover around 150 languages.",
+    todo:["Tell the nurse or counsellor which language you speak","Ask for a telephone interpreter","Customer service speaks about a dozen languages"],
+    say:"I need an interpreter. My language is ___.",
+    tr:{si:"මට පරිවර්තකයෙකු අවශ්‍යයි. මගේ භාෂාව ___.",fa:"به مترجم نیاز دارم. زبان من ___ است.",vi:"Tôi cần một thông dịch viên. Ngôn ngữ của tôi là ___.",id:"Saya butuh penerjemah. Bahasa saya ___."},
+    tip:"Some parts of the Medibank OSHC app can be translated into simplified Chinese." },
+  { name:"Counselling", icon:"💬", title:"See a counsellor or psychologist",
+    what:"Comprehensive OSHC provides benefits towards psychology, counselling and mental health social worker services from recognised providers.",
+    todo:["Psychology: up to $100 per consultation","Counselling or social worker: up to $70 per consultation","Yearly limit: $200 (single), $400 (couple or family)"],
+    say:"Is counselling covered under my OSHC?",
+    tr:{si:"මගේ OSHC යටතේ උපදේශනය ආවරණය වෙනවාද?",fa:"آیا مشاوره زیر پوشش OSHC من است؟",vi:"Tư vấn tâm lý có nằm trong OSHC của tôi không?",id:"Apakah konseling ditanggung OSHC saya?"},
+    tip:"Ask the price first. If the provider charges more than Medibank pays, you pay the difference." },
+  { name:"GP plan", icon:"🩺", title:"Ask your GP for a plan",
+    what:"You can also receive benefits for out-of-hospital mental health support, including seeing a psychologist through a GP mental health treatment plan.",
+    todo:["Book a GP, ideally a Direct Billing one (use Find a Provider)","Ask: “Can I have a mental health treatment plan?”","Use the plan to see a psychologist"],
+    say:"Can I have a mental health treatment plan?",
+    tr:{si:"මට මානසික සෞඛ්‍ය ප්‍රතිකාර සැලැස්මක් ලබා ගත හැකිද?",fa:"آیا می‌توانم یک طرح درمان سلامت روان بگیرم؟",vi:"Tôi có thể có kế hoạch điều trị sức khỏe tâm thần không?",id:"Bisakah saya mendapat rencana perawatan kesehatan mental?"},
+    tip:"Waiting periods may apply to some services. Check the Medibank OSHC Member Guide or call 134 148." },
+  { name:"Connect", icon:"🤝", title:"Connect with people",
+    what:"Student Rewards Plus gives access to discounts, and to support and information to help you find work and build your skills while studying in Australia.",
+    todo:["Open Student Rewards Plus in the Medibank OSHC app","Use it for discounts and help to find work","Join a club or student group on your campus"],
+    say:"Are there any student groups I can join?",
+    tr:{si:"මට එක්විය හැකි ශිෂ්‍ය කණ්ඩායම් තිබේද?",fa:"آیا گروه دانشجویی هست که بتوانم عضو شوم؟",vi:"Có nhóm sinh viên nào tôi có thể tham gia không?",id:"Apakah ada kelompok mahasiswa yang bisa saya ikuti?"},
+    tip:"Put a regular call with family in your calendar, so you have something to look forward to." }
+];
+
+/* Text and page numbers found in the PDF by Python */
+const PDF_DATA_RAW = "__PDF_DATA__";
+let PDF_DATA = {};
+try { PDF_DATA = JSON.parse(decodeURIComponent(PDF_DATA_RAW)); } catch (e) {}
+STEPS.forEach((s, i) => { if (PDF_DATA.what && PDF_DATA.what[i]) s.what = PDF_DATA.what[i]; });
+
+const N = STEPS.length, SLICE = 360 / N;
+let idx = 0, step = 0, autoplay = false, timer = null;
+let lang = LANGUAGES[START_LANG] ? START_LANG : "en";
+const $ = id => document.getElementById(id);
+
+// Build the round wheel: one node per suggestion
+$("wheel").insertAdjacentHTML("beforeend", STEPS.map((s, i) =>
+  `<div class="node" style="--a:${i * SLICE}deg" data-i="${i}">
+     <div class="up"><button class="nodeIn" aria-label="${s.name}">${s.icon}</button><span class="cap">${s.name}</span></div></div>`).join(""));
+document.querySelectorAll(".node").forEach(n => {
+  n.onclick = () => { stopPlaying(); const d = ((+n.dataset.i - step + N + N / 2) % N) - N / 2; go(idx + d); };
+});
+
+function mark(page) {
+  return page ? ` <span class="src pdf" title="From the OSHC brochure">📄 p.${page}</span>`
+              : ` <span class="src ours" title="Our own advice, not from the brochure">✎ our advice</span>`;
+}
+
+function updateInfo() {
+  const s = STEPS[step], d = PDF_DATA;
+  $("stepName").textContent = `Suggestion ${step + 1} of ${N}: ${s.name}`;
+  $("eyebrow").textContent = `Suggestion ${step + 1} · ${s.name}`;
+  $("title").textContent = s.title;
+  $("what").innerHTML = s.what + (d.what ? mark(d.whatPage[step]) : "");
+  $("todo").innerHTML = s.todo.map((t, k) => `<li>${t}${d.marks ? mark(d.marks.todo[step][k]) : ""}</li>`).join("");
+  $("sayEn").textContent = `“${s.say}”`;
+  $("tip").innerHTML = s.tip + (d.marks ? mark(d.marks.tip[step]) : "");
+  updateTranslation();
+}
+function updateTranslation() {
+  const box = $("sayTr");
+  if (lang === "en") { box.hidden = true; return; }
+  box.hidden = false;  box.textContent = STEPS[step].tr[lang];
+  box.lang = lang;  box.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
+}
+function updateLanguageButtons() {
+  $("langButtons").innerHTML = Object.entries(LANGUAGES)
+    .map(([c, l]) => `<button lang="${c}" data-lang="${c}" aria-pressed="${c === lang}">${l}</button>`).join("");
+  $("langButtons").querySelectorAll("button").forEach(b => {
+    b.onclick = () => { lang = b.dataset.lang; updateLanguageButtons(); updateTranslation(); };
+  });
+}
+
+// Turn the wheel so the chosen suggestion is at the top
+function go(newIdx) {
+  idx = newIdx;  step = ((idx % N) + N) % N;
+  $("stage").style.setProperty("--rot", (-idx * SLICE) + "deg");
+  document.querySelectorAll(".node").forEach(n => n.classList.toggle("on", +n.dataset.i === step));
+  $("progress").innerHTML = STEPS.map((_, i) => `<i class="${i <= step ? "on" : ""}"></i>`).join("");
+  $("playBtn").textContent = autoplay ? "❚❚ Pause" : "▶ Play all";
+  updateInfo();
+}
+function stopPlaying() { autoplay = false; clearTimeout(timer); $("playBtn").textContent = "▶ Play all"; }
+function tick() {
+  if (!autoplay) return;
+  if (step === N - 1) { stopPlaying(); return; }
+  go(idx + 1);  timer = setTimeout(tick, PAUSE_BETWEEN_STEPS);
+}
+
+$("nextBtn").onclick = () => { stopPlaying(); go(idx + 1); };
+$("backBtn").onclick = () => { stopPlaying(); go(idx - 1); };
+$("playBtn").onclick = () => {
+  if (autoplay) { stopPlaying(); return; }
+  autoplay = true;  if (step === N - 1) go(idx + 1);  else go(idx);
+  timer = setTimeout(tick, PAUSE_BETWEEN_STEPS);
+};
+
+$("centerImg").src = CENTER_IMAGE.startsWith("__") ? "homesick.png" : CENTER_IMAGE;
+updateLanguageButtons();  go(0);
+</script></body></html>
