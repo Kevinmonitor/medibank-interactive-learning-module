@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<!--
+  Find a Health Provider guide (OSHC Compass)
+  A practice version of the Medibank OSHC "Find a Provider" tool.
+  A mouse pointer shows what to click and type, on screenshots of the real tool.
+
+  1. STYLES   2. PAGE   3. SCRIPT (settings, step text, screen positions, animation, buttons)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find a Health Provider Guide</title>
+<style>
+  /* Colours used everywhere (change them here) */
+  :root {
+    --red: #C8322E;        /* main brand colour */
+    --red-soft: #FCEDEC;   /* light red background */
+    --navy: #1F3A5F;       /* signs and headings */
+    --ink: #1D2A3A;        /* main text */
+    --muted: #5E6B7A;      /* small grey text */
+    --line: #E3E6EA;       /* borders */
+    --wall: #F6F4F1;       /* hallway wall */
+    --floor: #E9E4DC;      /* hallway floor */
+    --route: #E07A1F;      /* orange highlight */
+    --teal: #2A8C82;       /* staff uniforms */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* Emergency banner at the top */
+  .alert {
+    display: flex; gap: 10px; align-items: center;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 10px; padding: 8px 14px; margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .alert b { font-size: 1.3rem; }
+
+  /* Hallway box (scrolls sideways on small screens) */
+  .scene  { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scroll { overflow-x: auto; scroll-behavior: smooth; }
+  svg     { display: block; width: 100%; min-width: 880px; height: auto; }
+
+  /* Each station: door + sign */
+  .station .door      { fill: #fff; stroke: #CBC4B8; stroke-width: 2; }
+  .station .sign      { fill: var(--navy); }
+  .station .sign-text { font: 700 13px system-ui, sans-serif; fill: #fff; }
+  .station .num       { fill: #fff; }
+  .station .num-text  { font: 800 12px system-ui, sans-serif; fill: var(--navy); }
+
+  /* Station states: already visited / current */
+  .station.done .sign     { fill: #5D7A73; }
+  .station.here .sign     { fill: var(--red); }
+  .station.here .num-text { fill: var(--red); }
+  .station.here .door     { stroke: var(--route); stroke-width: 3; }
+
+  /* Progress dots on the floor */
+  .dot    { fill: #CFC7BA; }
+  .dot.on { fill: var(--route); }
+
+  /* Walking animation: arms and legs swing */
+  .leg, .arm { transform-box: fill-box; transform-origin: top center; }
+  .walking .leg, .walking .arm { animation: swing 0.42s ease-in-out infinite alternate; }
+  .walking .leg2, .walking .arm2 { animation-direction: alternate-reverse; }
+  @keyframes swing {
+    from { transform: rotate(-26deg); }
+    to   { transform: rotate(26deg); }
+  }
+
+  /* Speech bubble above the current station */
+  #bubble       { transition: opacity 0.25s; }
+  .bubble-label { font: 700 10px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; fill: var(--red); }
+  .bubble-text  { font: 700 14px system-ui, sans-serif; fill: var(--ink); }
+
+  /* Buttons under the hallway */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-top: 1px solid var(--line);
+  }
+  .controls .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-name { font-weight: 700; color: var(--navy); }
+
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 8px 14px; border-radius: 9px;
+    border: 1.5px solid var(--line); background: #fff; color: var(--ink);
+  }
+  button.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  button:focus-visible { outline: 3px solid var(--route); outline-offset: 2px; }
+
+  /* Step heading + language buttons */
+  .head {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: baseline; justify-content: space-between;
+    margin: 16px 0 10px;
+  }
+  .eyebrow {
+    margin: 0; color: var(--red);
+    font: 700 11px ui-monospace, Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  h2 { margin: 2px 0 0; font-size: 1.4rem; line-height: 1.2; color: var(--navy); }
+
+  .lang { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lang button { padding: 4px 10px; border-radius: 99px; font-weight: 600; }
+  .lang button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* Four info boxes in a row (stack on small screens) */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
+
+  .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .box h3 {
+    margin: 0 0 6px; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .box p, .box ul { margin: 0; }
+  .box ul { padding-left: 18px; }
+  .box.do  { background: #F1F4F8; border-color: #F1F4F8; }
+  .box.say { background: var(--red-soft); border-color: var(--red-soft); }
+  .say-en  { font-weight: 700; }
+  .say-tr  { margin-top: 6px; font-size: 1.05rem; }
+
+  .small { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); }
+
+  /* Turn off animation for people who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    .walking .leg, .walking .arm { animation: none; }
+  }
+
+  [hidden] { display: none !important; }
+  .urlbar { display:flex; align-items:center; gap:8px; margin:8px 10px; padding:6px 14px; background:#EEF1F4;
+            border-radius:99px; font:600 13px system-ui, sans-serif; color:#3c4a59; }
+  .stage { position:relative; width:100%; aspect-ratio:2880/1105; overflow:hidden; background:#fff; --fs:12px; }
+  .shot  { position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity .35s; }
+  .shot.on { opacity:1; }
+  .fieldtext { position:absolute; display:flex; align-items:center; background:#fff; color:#1d2a3a;
+               font:400 var(--fs)/1 Arial, Helvetica, sans-serif; padding-left:.9%; white-space:nowrap; overflow:hidden; }
+  .fieldtext::after { content:""; width:1px; height:1.2em; background:#1d2a3a; margin-left:2px; animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .hl { position:absolute; border:3px solid var(--route); border-radius:8px; pointer-events:none;
+        box-shadow:0 0 0 2000px rgba(20,30,40,.28); transition:all .55s ease; }
+  .cursor { position:absolute; width:calc(var(--fs)*2.2); min-width:0; height:auto; z-index:5; pointer-events:none;
+            transition:left .9s ease, top .9s ease; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35)); }
+  .ripple { position:absolute; width:calc(var(--fs)*3); height:calc(var(--fs)*3); margin:calc(var(--fs)*-1.5) 0 0 calc(var(--fs)*-1.5);
+            border:3px solid var(--route); border-radius:50%; opacity:0; z-index:4; pointer-events:none; }
+  .ripple.go { animation:ripple .5s ease-out; }
+  @keyframes ripple { from { opacity:1; transform:scale(.3); } to { opacity:0; transform:scale(1.4); } }
+  .bubble { position:absolute; z-index:6; max-width:26%; background:#fff; border:2px solid var(--route); border-radius:12px;
+            padding:.55em .8em; font:700 calc(var(--fs)*1.2)/1.25 system-ui, sans-serif; color:var(--ink);
+            opacity:0; transition:opacity .25s; box-shadow:0 4px 14px rgba(0,0,0,.18); transform:translateY(-50%); }
+  .bubble small { display:block; font:700 calc(var(--fs)*.75) ui-monospace, Menlo, monospace; letter-spacing:.08em; color:var(--red); }
+  .bring { position:absolute; z-index:6; left:58%; top:43%; display:flex; gap:3%; font:700 calc(var(--fs)*1.1) system-ui, sans-serif; }
+  .bring div { width:12vw; max-width:190px; aspect-ratio:1.6; background:#fff; border-radius:10px; padding:.7em .9em;
+               display:flex; align-items:flex-end; box-shadow:0 6px 18px rgba(0,0,0,.3); border-top:.9em solid var(--red); }
+  .bring div + div { border-top-color:var(--navy); }
+  .progress { display:flex; gap:6px; align-items:center; }
+  .progress i { width:10px; height:10px; border-radius:50%; background:#D5DBE1; }
+  .progress i.on { background:var(--route); }
+</style>
+</head>
+<body>
+<div class="alert">
+  <b>000</b>
+  <span>Emergency? Call 000. Need health advice? Student Health and Support Line (24/7): 1800 887 283</span>
+</div>
+
+<div class="scene">
+  <div class="urlbar"><span>🔒</span><span>medibankoshc.com.au/find-provider</span></div>
+  <div class="stage" id="stage">
+    <img class="shot on" id="imgForm" alt="The Find a Provider search form">
+    <img class="shot" id="imgRes" alt="Search results with a map">
+    <div class="fieldtext" id="ft1" hidden></div>
+    <div class="fieldtext" id="ft2" hidden></div>
+    <div class="hl" id="hl"></div>
+    <div class="bring" id="bring" hidden><div>OSHC card</div><div>Photo ID</div></div>
+    <div class="ripple" id="ripple"></div>
+    <svg class="cursor" id="cursor" viewBox="0 0 24 24" style="left:50%;top:30%">
+      <path d="M3 2l15 9-6.5 1.8L8 19z" fill="#fff" stroke="#1D2A3A" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+    <div class="bubble" id="bubble"><small>HERE YOU NEED TO</small><span id="bubbleText"></span></div>
+  </div>
+  <div class="controls">
+    <span class="step-name" id="stepName"></span>
+    <div class="progress" id="progress"></div>
+    <div class="buttons">
+      <button id="backBtn">Back</button>
+      <button id="replayBtn">↻ Replay</button>
+      <button id="playBtn">▶ Play all</button>
+      <button id="nextBtn" class="primary">Next step</button>
+    </div>
+  </div>
+</div>
+
+<div class="head" aria-live="polite">
+  <div><p class="eyebrow" id="eyebrow"></p><h2 id="title"></h2></div>
+  <div class="lang" id="langButtons"></div>
+</div>
+
+<div class="grid">
+  <div class="box"><h3>What happens here</h3><p id="what"></p></div>
+  <div class="box do"><h3>What you need to do</h3><ul id="todo"></ul></div>
+  <div class="box say"><h3>What to say</h3><p class="say-en" id="sayEn"></p><p class="say-tr" id="sayTr" hidden></p></div>
+  <div class="box"><h3>Tip</h3><p id="tip"></p></div>
+</div>
+
+<p class="small" id="source" hidden></p>
+<p class="small">
+  General information, not medical advice. This is a practice version: the screenshots show the real tool,
+  but the search and the result are only an example, and the real site may look different over time.
+  Translations are samples and will be checked by native speakers.
+</p>
+
+<script>
+/* ---------- 3a. Settings and languages ---------- */
+const START_LANG = "__LANG__";
+const LANGUAGES = { en: "English", si: "සිංහල", fa: "فارسی", vi: "Tiếng Việt", id: "Bahasa Indonesia" };
+const RTL_LANGUAGES = ["fa"];
+const PAUSE_BETWEEN_STEPS = 3500;     // ms, used by "Play all"
+
+// Screenshots (Python fills these in; opened alone, the files next to this one are used)
+const IMG = { form: "__IMG_FORM__", res: "__IMG_RESULTS__" };
+
+/* ---------- 3b. Step content (edit text here) ---------- */
+const STEPS = [
+  {
+    name: "Search tool", bubble: "Open Find a Provider", title: "Open the Find a Provider tool",
+    what: "Use the Find a Provider search tool, or let your phone's GPS guide you to the nearest health provider via the Medibank OSHC app.",
+    todo: ["Go to medibankoshc.com.au/find-provider, or open the Medibank OSHC app",
+           "Allow location in the app if you want your phone's GPS to find places near you",
+           "Register for Online Member Services first, so your cover is active"],
+    say: "Can you help me find a doctor near me?",
+    tr: { si: "ළඟම ඇති වෛද්‍යවරයෙක් සොයා ගැනීමට ඔබට උදව් කළ හැකිද?",
+          fa: "می‌توانید به من کمک کنید یک پزشک نزدیک پیدا کنم؟",
+          vi: "Bạn có thể giúp tôi tìm bác sĩ gần đây không?",
+          id: "Bisakah Anda membantu saya mencari dokter terdekat?" },
+    tip: "The app also holds your digital membership card, which is handy at every appointment."
+  },
+  {
+    name: "Service", bubble: "Choose the type of service", title: "Choose a service",
+    what: "You can search for providers by service: GPs, Hospitals, OSHC Direct Billing Clinics and after-hours doctor home visits.",
+    todo: ["Choose what you need: GP, hospital, Direct Billing clinic or home visit",
+           "For a mild illness, start with a GP",
+           "For a life-threatening emergency, call 000 instead"],
+    say: "I need to see a GP today.",
+    tr: { si: "මට අද GP කෙනෙකු හමුවීමට අවශ්‍යයි.",
+          fa: "امروز باید یک پزشک عمومی (GP) ببینم.",
+          vi: "Hôm nay tôi cần khám bác sĩ đa khoa (GP).",
+          id: "Saya perlu bertemu dokter umum (GP) hari ini." },
+    tip: "Not sure which service? Call the 24/7 Student Health and Support Line on 1800 887 283 to talk to a nurse."
+  },
+  {
+    name: "Location", bubble: "Enter your address", title: "Select your location",
+    what: "Simply enter your address or location and the tool shows the details of the closest providers that Medibank has an arrangement with.",
+    todo: ["Type your address, suburb or campus", "Or let the app use your phone's GPS",
+           "Try a few places, like home and campus, to see what is near each"],
+    say: "Is there a clinic near my address?",
+    tr: { si: "මගේ ලිපිනය ළඟ සායනයක් තිබේද?",
+          fa: "آیا نزدیک آدرس من کلینیکی هست؟",
+          vi: "Gần địa chỉ của tôi có phòng khám nào không?",
+          id: "Apakah ada klinik dekat alamat saya?" },
+    tip: "Practise now: search around your campus before you ever get sick."
+  },
+  {
+    name: "Results", bubble: "Check the map and directions", title: "Check the results and directions",
+    what: "A map with directions shows the provider's address and contact details, with suggestions on how best to get there, no matter how you travel.",
+    todo: ["Check the provider's address and contact details", "Open the map and choose how you will travel",
+           "Phone ahead to check opening hours"],
+    say: "How do I get there by public transport?",
+    tr: { si: "පොදු ප්‍රවාහනයෙන් එහි යන්නේ කෙසේද?",
+          fa: "با حمل‌ونقل عمومی چطور می‌توانم به آنجا بروم؟",
+          vi: "Tôi đi đến đó bằng phương tiện công cộng như thế nào?",
+          id: "Bagaimana cara ke sana dengan transportasi umum?" },
+    tip: "Save the address in your phone's maps so you can find it fast when you feel unwell."
+  },
+  {
+    name: "Billing", bubble: "Ask about Direct Billing", title: "Understand Direct Billing",
+    what: "A Direct Billing provider sends the bill straight to Medibank.",
+    todo: ["Choose an OSHC Direct Billing provider when you can",
+           "Ask: will you send the bill straight to Medibank?",
+           "Ask about any out-of-pocket cost before you book"],
+    say: "Do you direct bill Medibank OSHC?",
+    tr: { si: "ඔබ Medibank OSHC වෙත සෘජුවම බිල් කරනවාද?",
+          fa: "آیا صورت‌حساب را مستقیم برای Medibank OSHC ارسال می‌کنید؟",
+          vi: "Bên bạn có thanh toán trực tiếp với Medibank OSHC không?",
+          id: "Apakah Anda menagih langsung ke Medibank OSHC?" },
+    tip: "If the doctor charges more than Medibank pays, you pay the difference."
+  },
+  {
+    name: "Hospitals", bubble: "Look for Members' Choice", title: "Members' Choice hospitals",
+    what: "Medibank has arrangements with most private hospitals and day surgeries in Australia. These form the Members' Choice hospital network.",
+    todo: ["Search by 'Hospitals' to see Members' Choice hospitals",
+           "Remember you can choose a public or a private hospital",
+           "Private hospitals outside the network may mean large out-of-pocket costs"],
+    say: "Is this hospital in the Medibank Members' Choice network?",
+    tr: { si: "මෙම රෝහල Medibank Members' Choice ජාලයට අයත්ද?",
+          fa: "آیا این بیمارستان جزو شبکه Members' Choice مدی‌بانک است؟",
+          vi: "Bệnh viện này có thuộc mạng lưới Members' Choice của Medibank không?",
+          id: "Apakah rumah sakit ini termasuk jaringan Members' Choice Medibank?" },
+    tip: "In a life-threatening emergency, call 000 or go straight to the nearest emergency department. Don't search first."
+  },
+  {
+    name: "Visit", bubble: "Take your card and photo ID", title: "Before your appointment",
+    what: "Confirm any out-of-pocket expenses with the Direct Billing provider before your consultation.",
+    todo: ["Take your Medibank OSHC membership card", "Take photo ID, such as your student ID card",
+           "Confirm any out-of-pocket costs before the consultation"],
+    say: "Are there any out-of-pocket costs for this visit?",
+    tr: { si: "මෙම හමුවීම සඳහා මා විසින් ගෙවිය යුතු අමතර ගාස්තු තිබේද?",
+          fa: "آیا برای این ویزیت هزینه‌ای از جیب من پرداخت می‌شود؟",
+          vi: "Lần khám này tôi có phải trả thêm chi phí nào không?",
+          id: "Apakah ada biaya tambahan yang harus saya bayar untuk kunjungan ini?" },
+    tip: "Keep your receipts and invoices. You may need them to make a claim in the app."
+  }
+];
+
+/* Text read from the PDF by Python (fills in "what" for each step) */
+const PDF_DATA_RAW = "__PDF_DATA__";
+let PDF_DATA = {};
+try { PDF_DATA = JSON.parse(decodeURIComponent(PDF_DATA_RAW)); } catch (e) {}
+STEPS.forEach((s, i) => {
+  const fromPdf = PDF_DATA.steps && PDF_DATA.steps[i];
+  if (fromPdf) s.what = fromPdf;
+});
+
+
+
+
+/* ---------- 3c. What the pointer does at each step ---------- */
+// All positions are pixels on the screenshots (2880 x 1105): [left, top, right, bottom]
+const SW = 2880, SH = 1105;
+const GP = "General Practitioners (GP)", PLACE = "Hawthorn VIC 3122, Australia";
+const F1 = [333, 659, 1588, 753], F2 = [333, 833, 1588, 926], SEARCH = [333, 1021, 510, 1102];
+const CARD = [309, 555, 1001, 1105], PHONE = [330, 950, 680, 1020];
+
+// screen = which screenshot | box = orange frame | cursor = pointer target
+// type = [field, text] typed in | fill = text already there | click = press Search, then show "then"
+const VISUALS = [
+  { screen: "form", box: [333, 283, 1530, 484], cursor: [1450, 560] },
+  { screen: "form", box: F1, cursor: [1100, 706], type: [[1, GP]] },
+  { screen: "form", fill: [[1, GP]], box: F2, cursor: [1100, 880], type: [[2, PLACE]] },
+  { screen: "form", fill: [[1, GP], [2, PLACE]], box: SEARCH, cursor: [421, 1061], click: true,
+    then: { screen: "res", box: CARD, cursor: [618, 897] } },
+  { screen: "res", box: PHONE, cursor: [580, 985] },
+  { screen: "form", box: F1, cursor: [1100, 706], type: [[1, "Hospitals"]] },
+  { screen: "res", box: CARD, cursor: [900, 700], bring: true }
+];
+
+/* ---------- Page state ---------- */
+let step = 0;
+let lang = LANGUAGES[START_LANG] ? START_LANG : "en";
+let autoplay = false;
+let token = 0;                                 // changes whenever a new step starts (cancels the old one)
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, reduceMotion ? 0 : ms));
+const pct = (v, total) => (v / total * 100) + "%";
+
+/* ---------- 3d. Drawing and moving things ---------- */
+function setRect(el, b) {
+  el.style.left = pct(b[0], SW);  el.style.top = pct(b[1], SH);
+  el.style.width = pct(b[2] - b[0], SW);  el.style.height = pct(b[3] - b[1], SH);
+}
+function moveCursor(p) { $("cursor").style.left = pct(p[0], SW); $("cursor").style.top = pct(p[1], SH); }
+
+function setScreen(name) {
+  $("imgForm").classList.toggle("on", name === "form");
+  $("imgRes").classList.toggle("on", name === "res");
+}
+
+// Text shown inside a search box (1 = "I'm looking for", 2 = "Closest to")
+function setField(n, text) {
+  const el = $("ft" + n), f = n === 1 ? F1 : F2;
+  if (!text) { el.hidden = true; el.textContent = ""; return; }
+  setRect(el, [f[0] + 6, f[1] + 6, f[2] - 130, f[3] - 6]);
+  el.hidden = false;  el.textContent = text;
+}
+function clearFields() { setField(1, ""); setField(2, ""); }
+
+async function typeInto(n, text, my) {
+  for (let k = 1; k <= text.length; k++) {
+    if (my !== token) return false;
+    setField(n, text.slice(0, k));
+    await sleep(45);
+  }
+  return true;
+}
+
+function showBubble(box) {
+  const b = $("bubble"), onRight = box[2] < 2000;
+  const centreY = Math.min(Math.max((box[1] + box[3]) / 2, 150), SH - 170);
+  b.style.left  = onRight ? pct(box[2] + 40, SW) : "auto";
+  b.style.right = onRight ? "auto" : pct(SW - box[0] + 40, SW);
+  b.style.top = pct(centreY, SH);
+  $("bubbleText").textContent = STEPS[step].bubble;
+  b.style.opacity = 1;
+}
+
+// Play one step. Returns the token if it finished without being interrupted.
+async function runStep(i) {
+  const my = ++token, v = VISUALS[i];
+  $("bubble").style.opacity = 0;  $("bring").hidden = true;
+  setScreen(v.screen);  clearFields();
+  (v.fill || []).forEach(([n, t]) => setField(n, t));
+  setRect($("hl"), v.box);  moveCursor(v.cursor);
+  await sleep(1000);  if (my !== token) return;
+
+  for (const [n, t] of (v.type || [])) { if (!await typeInto(n, t, my)) return; }
+
+  let finalBox = v.box;
+  if (v.click) {
+    const r = $("ripple");
+    r.style.left = $("cursor").style.left;  r.style.top = $("cursor").style.top;
+    r.classList.remove("go");  void r.offsetWidth;  r.classList.add("go");
+    await sleep(500);  if (my !== token) return;
+    setScreen(v.then.screen);  clearFields();
+    finalBox = v.then.box;  setRect($("hl"), finalBox);  moveCursor(v.then.cursor);
+    await sleep(1000);  if (my !== token) return;
+  }
+  showBubble(finalBox);
+  if (v.bring) $("bring").hidden = false;
+  return my;
+}
+
+/* ---------- 3e. Updating the page ---------- */
+function updateInfo() {
+  const s = STEPS[step];
+  $("stepName").textContent = `Step ${step + 1} of ${STEPS.length}: ${s.name}`;
+  $("eyebrow").textContent = `Step ${step + 1} · ${s.name}`;
+  $("title").textContent = s.title;
+  $("what").textContent = s.what;
+  $("todo").innerHTML = s.todo.map(item => `<li>${item}</li>`).join("");
+  $("sayEn").textContent = `“${s.say}”`;
+  $("tip").textContent = s.tip;
+  const src = $("source");
+  src.hidden = !PDF_DATA.page;
+  if (PDF_DATA.page) src.textContent = `Source: ${PDF_DATA.file}, page ${PDF_DATA.page}`;
+  updateTranslation();
+}
+
+function updateTranslation() {
+  const box = $("sayTr");
+  if (lang === "en") { box.hidden = true; return; }
+  box.hidden = false;
+  box.textContent = STEPS[step].tr[lang];
+  box.lang = lang;
+  box.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
+}
+
+function updateLanguageButtons() {
+  $("langButtons").innerHTML = Object.entries(LANGUAGES)
+    .map(([code, label]) => `<button lang="${code}" data-lang="${code}" aria-pressed="${code === lang}">${label}</button>`)
+    .join("");
+  $("langButtons").querySelectorAll("button").forEach(btn => {
+    btn.onclick = () => { lang = btn.dataset.lang; updateLanguageButtons(); updateTranslation(); };
+  });
+}
+
+function updateProgress() {
+  $("progress").innerHTML = STEPS.map((_, i) => `<i class="${i <= step ? "on" : ""}"></i>`).join("");
+}
+
+function updateButtons() {
+  $("backBtn").disabled = step === 0;
+  $("nextBtn").textContent = step === STEPS.length - 1 ? "Start again" : "Next step";
+  $("playBtn").textContent = autoplay ? "❚❚ Pause" : "▶ Play all";
+}
+
+async function goToStep(newStep) {
+  step = newStep;
+  updateInfo();  updateProgress();  updateButtons();
+  const my = await runStep(step);
+  if (!my || my !== token || !autoplay) return;
+  await sleep(PAUSE_BETWEEN_STEPS);
+  if (my !== token || !autoplay) return;
+  if (step < STEPS.length - 1) goToStep(step + 1); else stopPlaying();
+}
+
+function stopPlaying() { autoplay = false; updateButtons(); }
+
+/* ---------- 3f. Buttons and start-up ---------- */
+$("nextBtn").onclick = () => { stopPlaying(); goToStep(step < STEPS.length - 1 ? step + 1 : 0); };
+$("backBtn").onclick = () => { stopPlaying(); if (step > 0) goToStep(step - 1); };
+$("replayBtn").onclick = () => { stopPlaying(); goToStep(step); };
+$("playBtn").onclick = () => {
+  autoplay = !autoplay;  updateButtons();
+  if (autoplay) goToStep(step === STEPS.length - 1 ? 0 : step);
+};
+
+// Text inside the picture scales with the picture
+new ResizeObserver(() => $("stage").style.setProperty("--fs", ($("stage").clientWidth * 0.0118) + "px"))
+  .observe($("stage"));
+
+const pick = (value, file) => value.startsWith("__") ? file : value;
+$("imgForm").src = pick(IMG.form, "find_provider_form.jpg");
+$("imgRes").src = pick(IMG.res, "find_provider_results.jpg");
+
+updateLanguageButtons();
+goToStep(0);
+</script>
+</body>
+</html>

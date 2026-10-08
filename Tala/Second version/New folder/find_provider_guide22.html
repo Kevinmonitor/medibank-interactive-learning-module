@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<!--
+  Hospital Visit Guide (OSHC Compass)
+  A student walks along a hospital hallway and stops at each station.
+  At every stop we show: what happens, what to do, what to say, and a tip.
+
+  File layout:
+    1. STYLES     - colours, layout and the walking animation
+    2. PAGE       - the hallway, buttons and info boxes
+    3. SCRIPT
+       3a. Settings and languages
+       3b. Step content (edit text here)
+       3c. Drawing the hallway
+       3d. Moving the person
+       3e. Updating the page
+       3f. Buttons and start-up
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find a Health Provider Guide</title>
+
+<!-- ============================================================
+     1. STYLES
+     ============================================================ -->
+<style>
+  /* Colours used everywhere (change them here) */
+  :root {
+    --red: #C8322E;        /* main brand colour */
+    --red-soft: #FCEDEC;   /* light red background */
+    --navy: #1F3A5F;       /* signs and headings */
+    --ink: #1D2A3A;        /* main text */
+    --muted: #5E6B7A;      /* small grey text */
+    --line: #E3E6EA;       /* borders */
+    --wall: #F6F4F1;       /* hallway wall */
+    --floor: #E9E4DC;      /* hallway floor */
+    --route: #E07A1F;      /* orange highlight */
+    --teal: #2A8C82;       /* staff uniforms */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* Emergency banner at the top */
+  .alert {
+    display: flex; gap: 10px; align-items: center;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 10px; padding: 8px 14px; margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .alert b { font-size: 1.3rem; }
+
+  /* Hallway box (scrolls sideways on small screens) */
+  .scene  { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scroll { overflow-x: auto; scroll-behavior: smooth; }
+  svg     { display: block; width: 100%; min-width: 880px; height: auto; }
+
+  /* Each station: door + sign */
+  .station .door      { fill: #fff; stroke: #CBC4B8; stroke-width: 2; }
+  .station .sign      { fill: var(--navy); }
+  .station .sign-text { font: 700 13px system-ui, sans-serif; fill: #fff; }
+  .station .num       { fill: #fff; }
+  .station .num-text  { font: 800 12px system-ui, sans-serif; fill: var(--navy); }
+
+  /* Station states: already visited / current */
+  .station.done .sign     { fill: #5D7A73; }
+  .station.here .sign     { fill: var(--red); }
+  .station.here .num-text { fill: var(--red); }
+  .station.here .door     { stroke: var(--route); stroke-width: 3; }
+
+  /* Progress dots on the floor */
+  .dot    { fill: #CFC7BA; }
+  .dot.on { fill: var(--route); }
+
+  /* Walking animation: arms and legs swing */
+  .leg, .arm { transform-box: fill-box; transform-origin: top center; }
+  .walking .leg, .walking .arm { animation: swing 0.42s ease-in-out infinite alternate; }
+  .walking .leg2, .walking .arm2 { animation-direction: alternate-reverse; }
+  @keyframes swing {
+    from { transform: rotate(-26deg); }
+    to   { transform: rotate(26deg); }
+  }
+
+  /* Speech bubble above the current station */
+  #bubble       { transition: opacity 0.25s; }
+  .bubble-label { font: 700 10px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; fill: var(--red); }
+  .bubble-text  { font: 700 14px system-ui, sans-serif; fill: var(--ink); }
+
+  /* Buttons under the hallway */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-top: 1px solid var(--line);
+  }
+  .controls .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-name { font-weight: 700; color: var(--navy); }
+
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 8px 14px; border-radius: 9px;
+    border: 1.5px solid var(--line); background: #fff; color: var(--ink);
+  }
+  button.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  button:focus-visible { outline: 3px solid var(--route); outline-offset: 2px; }
+
+  /* Step heading + language buttons */
+  .head {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: baseline; justify-content: space-between;
+    margin: 16px 0 10px;
+  }
+  .eyebrow {
+    margin: 0; color: var(--red);
+    font: 700 11px ui-monospace, Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  h2 { margin: 2px 0 0; font-size: 1.4rem; line-height: 1.2; color: var(--navy); }
+
+  .lang { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lang button { padding: 4px 10px; border-radius: 99px; font-weight: 600; }
+  .lang button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* Four info boxes in a row (stack on small screens) */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
+
+  .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .box h3 {
+    margin: 0 0 6px; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .box p, .box ul { margin: 0; }
+  .box ul { padding-left: 18px; }
+  .box.do  { background: #F1F4F8; border-color: #F1F4F8; }
+  .box.say { background: var(--red-soft); border-color: var(--red-soft); }
+  .say-en  { font-weight: 700; }
+  .say-tr  { margin-top: 6px; font-size: 1.05rem; }
+
+  .small { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); }
+
+  /* Turn off animation for people who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    .walking .leg, .walking .arm { animation: none; }
+  }
+</style>
+</head>
+
+<body>
+<!-- ============================================================
+     2. PAGE
+     ============================================================ -->
+
+<!-- Emergency banner -->
+<div class="alert">
+  <b>000</b>
+  <span>Emergency? Call 000. Need health advice? Student Health and Support Line (24/7): 1800 887 283</span>
+</div>
+
+<!-- Hallway scene + controls -->
+<div class="scene">
+  <div class="scroll" id="scroll">
+    <svg id="hall" viewBox="0 0 1120 330" role="img"
+         aria-label="A student walking past each stop when finding a health provider"></svg>
+  </div>
+  <div class="controls">
+    <span class="step-name" id="stepName"></span>
+    <div class="buttons">
+      <button id="backBtn">Back</button>
+      <button id="playBtn">▶ Play all</button>
+      <button id="nextBtn" class="primary">Next step</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step title + language picker -->
+<div class="head" aria-live="polite">
+  <div>
+    <p class="eyebrow" id="eyebrow"></p>
+    <h2 id="title"></h2>
+  </div>
+  <div class="lang" id="langButtons"></div>
+</div>
+
+<!-- Info boxes -->
+<div class="grid">
+  <div class="box">
+    <h3>What happens here</h3>
+    <p id="what"></p>
+  </div>
+  <div class="box do">
+    <h3>What you need to do</h3>
+    <ul id="todo"></ul>
+  </div>
+  <div class="box say">
+    <h3>What to say</h3>
+    <p class="say-en" id="sayEn"></p>
+    <p class="say-tr" id="sayTr" hidden></p>
+  </div>
+  <div class="box">
+    <h3>Tip</h3>
+    <p id="tip"></p>
+  </div>
+</div>
+
+<p class="small" id="source" hidden></p>
+<p class="small">
+  General information, not medical advice. Translations are samples and will be checked by native speakers.
+</p>
+
+<!-- ============================================================
+     3. SCRIPT
+     ============================================================ -->
+<script>
+/* ---------- 3a. Settings and languages ---------- */
+
+// Python replaces __LANG__ with the student's language (e.g. "si").
+// If the file is opened on its own, it starts in English.
+const START_LANG = "__LANG__";
+
+// Language buttons: code -> label
+const LANGUAGES = {
+  en: "English",
+  si: "සිංහල",
+  fa: "فارسی",
+  vi: "Tiếng Việt",
+  id: "Bahasa Indonesia"
+};
+
+// Languages written right to left
+const RTL_LANGUAGES = ["fa"];
+
+// Hallway layout
+const FLOOR_Y = 300;                         // where the person stands
+const stationX = i => 90 + i * 157;          // x position of station i
+const WALK_SPEED = 170;                      // pixels per second
+const PAUSE_BETWEEN_STEPS = 3000;            // ms, used by "Play all"
+
+
+/* ---------- 3b. Step content (edit text here) ---------- */
+// name   = sign above the door
+// bubble = short message in the speech bubble
+// tr     = translations of "say"
+
+const STEPS = [
+  {
+    name: "Search tool", bubble: "Open Find a Provider", title: "Open the Find a Provider tool",
+    what: "Use the Find a Provider search tool, or let your phone's GPS guide you to the nearest health provider via the Medibank OSHC app.",
+    todo: ["Go to medibankoshc.com.au/find-provider, or open the Medibank OSHC app",
+           "Allow location in the app if you want your phone's GPS to find places near you",
+           "Register for Online Member Services first, so your cover is active"],
+    say: "Can you help me find a doctor near me?",
+    tr: { si: "ළඟම ඇති වෛද්‍යවරයෙක් සොයා ගැනීමට ඔබට උදව් කළ හැකිද?",
+          fa: "می‌توانید به من کمک کنید یک پزشک نزدیک پیدا کنم؟",
+          vi: "Bạn có thể giúp tôi tìm bác sĩ gần đây không?",
+          id: "Bisakah Anda membantu saya mencari dokter terdekat?" },
+    tip: "The app also holds your digital membership card, which is handy at every appointment."
+  },
+  {
+    name: "Service", bubble: "Choose the type of service", title: "Choose a service",
+    what: "You can search for providers by service: GPs, Hospitals, OSHC Direct Billing Clinics and after-hours doctor home visits.",
+    todo: ["Choose what you need: GP, hospital, Direct Billing clinic or home visit",
+           "For a mild illness, start with a GP",
+           "For a life-threatening emergency, call 000 instead"],
+    say: "I need to see a GP today.",
+    tr: { si: "මට අද GP කෙනෙකු හමුවීමට අවශ්‍යයි.",
+          fa: "امروز باید یک پزشک عمومی (GP) ببینم.",
+          vi: "Hôm nay tôi cần khám bác sĩ đa khoa (GP).",
+          id: "Saya perlu bertemu dokter umum (GP) hari ini." },
+    tip: "Not sure which service? Call the 24/7 Student Health and Support Line on 1800 887 283 to talk to a nurse."
+  },
+  {
+    name: "Location", bubble: "Enter your address", title: "Select your location",
+    what: "Simply enter your address or location and the tool shows the details of the closest providers that Medibank has an arrangement with.",
+    todo: ["Type your address, suburb or campus", "Or let the app use your phone's GPS",
+           "Try a few places, like home and campus, to see what is near each"],
+    say: "Is there a clinic near my address?",
+    tr: { si: "මගේ ලිපිනය ළඟ සායනයක් තිබේද?",
+          fa: "آیا نزدیک آدرس من کلینیکی هست؟",
+          vi: "Gần địa chỉ của tôi có phòng khám nào không?",
+          id: "Apakah ada klinik dekat alamat saya?" },
+    tip: "Practise now: search around your campus before you ever get sick."
+  },
+  {
+    name: "Results", bubble: "Check the map and directions", title: "Check the results and directions",
+    what: "A map with directions shows the provider's address and contact details, with suggestions on how best to get there, no matter how you travel.",
+    todo: ["Check the provider's address and contact details", "Open the map and choose how you will travel",
+           "Phone ahead to check opening hours"],
+    say: "How do I get there by public transport?",
+    tr: { si: "පොදු ප්‍රවාහනයෙන් එහි යන්නේ කෙසේද?",
+          fa: "با حمل‌ونقل عمومی چطور می‌توانم به آنجا بروم؟",
+          vi: "Tôi đi đến đó bằng phương tiện công cộng như thế nào?",
+          id: "Bagaimana cara ke sana dengan transportasi umum?" },
+    tip: "Save the address in your phone's maps so you can find it fast when you feel unwell."
+  },
+  {
+    name: "Billing", bubble: "Ask about Direct Billing", title: "Understand Direct Billing",
+    what: "A Direct Billing provider sends the bill straight to Medibank.",
+    todo: ["Choose an OSHC Direct Billing provider when you can",
+           "Ask: will you send the bill straight to Medibank?",
+           "Ask about any out-of-pocket cost before you book"],
+    say: "Do you direct bill Medibank OSHC?",
+    tr: { si: "ඔබ Medibank OSHC වෙත සෘජුවම බිල් කරනවාද?",
+          fa: "آیا صورت‌حساب را مستقیم برای Medibank OSHC ارسال می‌کنید؟",
+          vi: "Bên bạn có thanh toán trực tiếp với Medibank OSHC không?",
+          id: "Apakah Anda menagih langsung ke Medibank OSHC?" },
+    tip: "If the doctor charges more than Medibank pays, you pay the difference."
+  },
+  {
+    name: "Hospitals", bubble: "Look for Members' Choice", title: "Members' Choice hospitals",
+    what: "Medibank has arrangements with most private hospitals and day surgeries in Australia. These form the Members' Choice hospital network.",
+    todo: ["Search by 'Hospitals' to see Members' Choice hospitals",
+           "Remember you can choose a public or a private hospital",
+           "Private hospitals outside the network may mean large out-of-pocket costs"],
+    say: "Is this hospital in the Medibank Members' Choice network?",
+    tr: { si: "මෙම රෝහල Medibank Members' Choice ජාලයට අයත්ද?",
+          fa: "آیا این بیمارستان جزو شبکه Members' Choice مدی‌بانک است؟",
+          vi: "Bệnh viện này có thuộc mạng lưới Members' Choice của Medibank không?",
+          id: "Apakah rumah sakit ini termasuk jaringan Members' Choice Medibank?" },
+    tip: "In a life-threatening emergency, call 000 or go straight to the nearest emergency department. Don't search first."
+  },
+  {
+    name: "Visit", bubble: "Take your card and photo ID", title: "Before your appointment",
+    what: "Confirm any out-of-pocket expenses with the Direct Billing provider before your consultation.",
+    todo: ["Take your Medibank OSHC membership card", "Take photo ID, such as your student ID card",
+           "Confirm any out-of-pocket costs before the consultation"],
+    say: "Are there any out-of-pocket costs for this visit?",
+    tr: { si: "මෙම හමුවීම සඳහා මා විසින් ගෙවිය යුතු අමතර ගාස්තු තිබේද?",
+          fa: "آیا برای این ویزیت هزینه‌ای از جیب من پرداخت می‌شود؟",
+          vi: "Lần khám này tôi có phải trả thêm chi phí nào không?",
+          id: "Apakah ada biaya tambahan yang harus saya bayar untuk kunjungan ini?" },
+    tip: "Keep your receipts and invoices. You may need them to make a claim in the app."
+  }
+];
+
+/* Text read from the PDF by Python (fills in "what" for each step) */
+const PDF_DATA_RAW = "__PDF_DATA__";
+let PDF_DATA = {};
+try { PDF_DATA = JSON.parse(decodeURIComponent(PDF_DATA_RAW)); } catch (e) {}
+STEPS.forEach((s, i) => {
+  const fromPdf = PDF_DATA.steps && PDF_DATA.steps[i];
+  if (fromPdf) s.what = fromPdf;
+});
+
+
+/* ---------- Page state ---------- */
+let step = 0;                                  // current step number
+let lang = LANGUAGES[START_LANG] ? START_LANG : "en";
+let personX = stationX(0) - 60;                // person starts just left of the entrance
+let autoplay = false;                          // true while "Play all" runs
+let frame = 0;                                 // animation frame id
+
+const $ = id => document.getElementById(id);   // short helper
+
+
+/* ---------- 3c. Drawing the hallway ---------- */
+
+// A simple staff member (head + body)
+function drawStaff(x, y, colour = "var(--teal)") {
+  return `
+    <circle cx="${x}" cy="${y - 38}" r="8" fill="#C98E68"/>
+    <rect x="${x - 9}" y="${y - 29}" width="18" height="24" rx="6" fill="${colour}"/>`;
+}
+
+// What is inside each doorway (one drawing per station)
+const ROOM_DRAWINGS = [
+  // 0 Search tool: phone with search bar
+  x => `
+    <rect x="${x - 22}" y="116" width="44" height="112" rx="8" fill="#20303F"/>
+    <rect x="${x - 18}" y="126" width="36" height="92" rx="4" fill="#fff"/>
+    <rect x="${x - 14}" y="134" width="28" height="10" rx="5" fill="#E3E6EA"/>
+    <circle cx="${x + 6}" cy="139" r="3" fill="none" stroke="var(--red)" stroke-width="1.5"/>
+    <rect x="${x - 14}" y="152" width="28" height="8" rx="2" fill="#FCEDEC"/>
+    <rect x="${x - 14}" y="164" width="28" height="8" rx="2" fill="#FCEDEC"/>`,
+
+  // 1 Service: menu of four choices
+  x => [0, 1, 2, 3].map(r => `
+    <rect x="${x - 34}" y="${122 + r * 26}" width="68" height="20" rx="4" fill="${r === 0 ? '#FCEDEC' : '#F1F4F8'}" stroke="${r === 0 ? 'var(--red)' : '#D5DBE1'}"/>
+    <circle cx="${x - 22}" cy="${132 + r * 26}" r="5" fill="${['#C8322E','#1F3A5F','#2A8C82','#E07A1F'][r]}"/>
+    <rect x="${x - 12}" y="${129 + r * 26}" width="38" height="6" rx="3" fill="#9FB3C3"/>`).join(""),
+
+  // 2 Location: map with pin
+  x => `
+    <rect x="${x - 38}" y="120" width="76" height="110" rx="4" fill="#EAF1EE"/>
+    <path d="M${x - 38} 170 L${x + 38} 150 M${x - 10} 120 L${x + 6} 230" stroke="#fff" stroke-width="7"/>
+    <path d="M${x} 188 C${x - 16} 168 ${x - 14} 148 ${x} 148 C${x + 14} 148 ${x + 16} 168 ${x} 188 Z" fill="var(--red)"/>
+    <circle cx="${x}" cy="164" r="5" fill="#fff"/>`,
+
+  // 3 Results: map, route and destination
+  x => `
+    <rect x="${x - 38}" y="120" width="76" height="110" rx="4" fill="#EEF2F6"/>
+    <path d="M${x - 28} 214 L${x - 28} 180 L${x + 10} 180 L${x + 10} 144" fill="none" stroke="var(--route)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 8"/>
+    <circle cx="${x - 28}" cy="214" r="6" fill="#1F3A5F"/>
+    <path d="M${x + 10} 150 C${x - 2} 134 ${x} 128 ${x + 10} 128 C${x + 20} 128 ${x + 22} 134 ${x + 10} 150 Z" fill="var(--red)"/>
+    <rect x="${x + 4}" y="190" width="28" height="14" rx="3" fill="#fff" stroke="#B7C3CC"/>`,
+
+  // 4 Billing: invoice going straight to Medibank
+  x => `
+    <rect x="${x - 36}" y="150" width="30" height="42" rx="3" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 31}" y="158" width="20" height="3" fill="#9FB3C3"/><rect x="${x - 31}" y="166" width="20" height="3" fill="#9FB3C3"/><rect x="${x - 31}" y="174" width="12" height="3" fill="#9FB3C3"/>
+    <path d="M${x - 2} 171 L${x + 8} 171" stroke="var(--route)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M${x + 6} 165 L${x + 13} 171 L${x + 6} 177" fill="none" stroke="var(--route)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M${x + 26} 146 L${x + 40} 152 L${x + 40} 176 Q${x + 40} 188 ${x + 26} 194 Q${x + 12} 188 ${x + 12} 176 L${x + 12} 152 Z" fill="var(--red)"/>
+    <path d="M${x + 26} 159 v22 M${x + 17} 170 h18" stroke="#fff" stroke-width="4"/>
+    <rect x="${x - 38}" y="204" width="76" height="32" rx="3" fill="#D9D2C6"/>`,
+
+  // 5 Hospitals: small hospital with a tick
+  x => `
+    <rect x="${x - 34}" y="150" width="68" height="86" rx="3" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 10}" y="124" width="20" height="26" fill="#fff" stroke="#B7C3CC"/>
+    <path d="M${x} 129 v14 M${x - 7} 136 h14" stroke="var(--red)" stroke-width="4"/>
+    ${[-24, 10].map(d => [0, 1].map(r => `<rect x="${x + d}" y="${162 + r * 26}" width="14" height="16" fill="#DCEBF2"/>`).join("")).join("")}
+    <rect x="${x - 8}" y="206" width="16" height="30" fill="#AFC6D1"/>
+    <circle cx="${x + 32}" cy="146" r="11" fill="#1E8E4E"/>
+    <path d="M${x + 26} 146 l4 5 l8 -9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`,
+
+  // 6 Visit: desk with OSHC card and photo ID
+  x => drawStaff(x + 16, 200, "#6B7FA0") + `
+    <rect x="${x - 38}" y="200" width="76" height="36" rx="3" fill="#D9D2C6"/>
+    <rect x="${x - 32}" y="184" width="28" height="18" rx="3" fill="#fff" stroke="var(--red)" stroke-width="2"/>
+    <rect x="${x - 28}" y="190" width="14" height="3" fill="var(--red)"/>
+    <rect x="${x - 2}" y="188" width="22" height="14" rx="2" fill="#fff" stroke="#6B7FA0"/>
+    <circle cx="${x + 6}" cy="194" r="3" fill="#C98E68"/>`
+];
+
+// One station: door, inside drawing, sign and floor dot
+function drawStation(stepInfo, i) {
+  const x = stationX(i);
+  return `
+    <g class="station" id="station${i}">
+      <rect class="door" x="${x - 46}" y="108" width="92" height="128" rx="4"/>
+      ${ROOM_DRAWINGS[i](x)}
+      <rect class="sign" x="${x - 66}" y="72" width="132" height="28" rx="6"/>
+      <circle class="num" cx="${x - 50}" cy="86" r="9"/>
+      <text class="num-text" x="${x - 50}" y="90" text-anchor="middle">${i + 1}</text>
+      <text class="sign-text" x="${x - 34}" y="91">${stepInfo.name}</text>
+    </g>
+    <circle class="dot" id="dot${i}" cx="${x}" cy="${FLOOR_Y + 16}" r="6"/>`;
+}
+
+// The speech bubble (text is filled in later)
+function drawBubble() {
+  return `
+    <g id="bubble" opacity="0">
+      <rect id="bubbleBox" x="0" y="8" width="230" height="52" rx="10"
+            fill="#fff" stroke="var(--route)" stroke-width="2"/>
+      <path id="bubbleTail" d="" fill="#fff" stroke="var(--route)" stroke-width="2"/>
+      <text id="bubbleLabel" class="bubble-label" x="0" y="28">HERE YOU NEED TO</text>
+      <text id="bubbleText" class="bubble-text" x="0" y="48"></text>
+    </g>`;
+}
+
+// The student: legs and arms swing while walking, holding an OSHC card
+function drawPerson() {
+  return `
+    <g id="person">
+      <ellipse cx="0" cy="30" rx="13" ry="4" fill="rgba(0,0,0,.15)"/>
+      <g id="body">
+        <rect class="leg leg1" x="-6"  y="10" width="5"   height="18" rx="2.5" fill="#1F3A5F"/>
+        <rect class="leg leg2" x="1"   y="10" width="5"   height="18" rx="2.5" fill="#1F3A5F"/>
+        <rect class="arm arm1" x="-12" y="-6" width="4.5" height="16" rx="2.2" fill="#E0A77E"/>
+        <rect class="arm arm2" x="7.5" y="-6" width="4.5" height="16" rx="2.2" fill="#E0A77E"/>
+        <rect x="-8" y="-8" width="16" height="21" rx="6" fill="var(--red)"/>
+        <circle cx="0" cy="-16" r="8" fill="#E0A77E"/>
+        <path d="M-8 -17a8 8 0 0 1 16 0c-3-3-10-4-16 0z" fill="#2B2B2B"/>
+        <rect x="9" y="4" width="10" height="7" rx="1.5" fill="#fff" stroke="var(--red)" stroke-width="1.5"/>
+      </g>
+    </g>`;
+}
+
+// Build the whole hallway once
+function drawHall() {
+  const first = stationX(0);
+  const last = stationX(STEPS.length - 1);
+
+  $("hall").innerHTML = `
+    <rect width="1120" height="250" fill="var(--wall)"/>
+    <rect y="236" width="1120" height="94" fill="var(--floor)"/>
+    <rect y="236" width="1120" height="4" fill="#D6CFC3"/>
+    <line x1="${first}" y1="${FLOOR_Y + 16}" x2="${last}" y2="${FLOOR_Y + 16}"
+          stroke="#D2C9BB" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+    ${STEPS.map(drawStation).join("")}
+    ${drawBubble()}
+    ${drawPerson()}`;
+}
+
+
+/* ---------- 3d. Moving the person ---------- */
+
+// Put the person at personX, facing left (-1) or right (1)
+function placePerson(direction) {
+  $("person").setAttribute("transform", `translate(${personX} ${FLOOR_Y - 22}) scale(1.5)`);
+  if (direction) {
+    $("body").setAttribute("transform", direction < 0 ? "scale(-1 1)" : "");
+  }
+}
+
+// Show or hide the speech bubble over the current station
+function showBubble(show) {
+  const bubble = $("bubble");
+  if (!show) { bubble.setAttribute("opacity", 0); return; }
+
+  const text = STEPS[step].bubble;
+  const x = stationX(step);
+  const width = Math.max(200, text.length * 8.6 + 32);
+  const left = Math.min(1110 - width, Math.max(10, x - width / 2));   // keep inside the picture
+
+  $("bubbleBox").setAttribute("x", left);
+  $("bubbleBox").setAttribute("width", width);
+  $("bubbleLabel").setAttribute("x", left + 14);
+  $("bubbleText").setAttribute("x", left + 14);
+  $("bubbleText").textContent = text;
+  $("bubbleTail").setAttribute("d", `M${x - 8} 59 L${x} 70 L${x + 8} 59`);
+  bubble.setAttribute("opacity", 1);
+}
+
+// On small screens, scroll the hallway to keep the person in view
+function keepPersonInView() {
+  const box = $("scroll");
+  if (box.scrollWidth > box.clientWidth) {
+    const scale = box.scrollWidth / 1120;
+    box.scrollLeft = personX * scale - box.clientWidth / 2;
+  }
+}
+
+// Walk to targetX, then run onArrive
+function walkTo(targetX, onArrive) {
+  cancelAnimationFrame(frame);
+  showBubble(false);
+  $("person").classList.add("walking");
+
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const speed = reduceMotion ? 9999 : WALK_SPEED;
+  let lastTime = performance.now();
+
+  function tick(now) {
+    const seconds = Math.min(50, now - lastTime) / 1000;
+    lastTime = now;
+    const distance = targetX - personX;
+    const stepSize = speed * seconds;
+
+    // Arrived
+    if (Math.abs(distance) <= stepSize) {
+      personX = targetX;
+      placePerson(Math.sign(distance));
+      $("person").classList.remove("walking");
+      keepPersonInView();
+      showBubble(true);
+      if (onArrive) onArrive();
+      return;
+    }
+
+    // Keep walking
+    personX += Math.sign(distance) * stepSize;
+    placePerson(Math.sign(distance));
+    keepPersonInView();
+    frame = requestAnimationFrame(tick);
+  }
+
+  frame = requestAnimationFrame(tick);
+}
+
+
+/* ---------- 3e. Updating the page ---------- */
+
+// Colour the stations and dots for the current step
+function updateStations() {
+  STEPS.forEach((_, i) => {
+    $("station" + i).classList.toggle("here", i === step);
+    $("station" + i).classList.toggle("done", i < step);
+    $("dot" + i).classList.toggle("on", i <= step);
+  });
+}
+
+// Fill the four info boxes
+function updateInfo() {
+  const s = STEPS[step];
+  $("stepName").textContent = `Step ${step + 1} of ${STEPS.length}: ${s.name}`;
+  $("eyebrow").textContent = `Step ${step + 1} · ${s.name}`;
+  $("title").textContent = s.title;
+  $("what").textContent = s.what;
+  $("todo").innerHTML = s.todo.map(item => `<li>${item}</li>`).join("");
+  $("sayEn").textContent = `“${s.say}”`;
+  $("tip").textContent = s.tip;
+  const src = $("source");
+  src.hidden = !PDF_DATA.page;
+  if (PDF_DATA.page) src.textContent = `Source: ${PDF_DATA.file}, page ${PDF_DATA.page}`;
+  updateTranslation();
+}
+
+// Show the phrase in the chosen language (hidden for English)
+function updateTranslation() {
+  const box = $("sayTr");
+  if (lang === "en") { box.hidden = true; return; }
+  box.hidden = false;
+  box.textContent = STEPS[step].tr[lang];
+  box.lang = lang;
+  box.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
+}
+
+// Draw the language buttons
+function updateLanguageButtons() {
+  $("langButtons").innerHTML = Object.entries(LANGUAGES)
+    .map(([code, label]) =>
+      `<button lang="${code}" data-lang="${code}" aria-pressed="${code === lang}">${label}</button>`)
+    .join("");
+
+  $("langButtons").querySelectorAll("button").forEach(btn => {
+    btn.onclick = () => {
+      lang = btn.dataset.lang;
+      updateLanguageButtons();
+      updateTranslation();
+    };
+  });
+}
+
+// Enable/disable buttons and set their labels
+function updateButtons() {
+  $("backBtn").disabled = step === 0;
+  $("nextBtn").textContent = step === STEPS.length - 1 ? "Start again" : "Next step";
+  $("playBtn").textContent = autoplay ? "❚❚ Pause" : "▶ Play all";
+}
+
+// Update everything, then walk to the current station
+function goToStep(newStep) {
+  step = newStep;
+  updateStations();
+  updateInfo();
+  updateButtons();
+  walkTo(stationX(step), whenArrived);
+}
+
+// During "Play all", wait a bit then move to the next step
+function whenArrived() {
+  if (!autoplay) return;
+  setTimeout(() => {
+    if (!autoplay) return;
+    if (step < STEPS.length - 1) {
+      goToStep(step + 1);
+    } else {
+      stopPlaying();
+    }
+  }, PAUSE_BETWEEN_STEPS);
+}
+
+// Put the person back at the start
+function restart() {
+  personX = stationX(0) - 60;
+  placePerson(1);
+  goToStep(0);
+}
+
+function stopPlaying() {
+  autoplay = false;
+  updateButtons();
+}
+
+
+/* ---------- 3f. Buttons and start-up ---------- */
+
+$("nextBtn").onclick = () => {
+  stopPlaying();
+  if (step < STEPS.length - 1) goToStep(step + 1);
+  else restart();
+};
+
+$("backBtn").onclick = () => {
+  stopPlaying();
+  if (step > 0) goToStep(step - 1);
+};
+
+$("playBtn").onclick = () => {
+  autoplay = !autoplay;
+  updateButtons();
+  if (!autoplay) return;
+  if (step === STEPS.length - 1) restart();
+  else goToStep(step);
+};
+
+// Start
+drawHall();
+placePerson(1);
+updateLanguageButtons();
+goToStep(0);
+</script>
+</body>
+</html>
