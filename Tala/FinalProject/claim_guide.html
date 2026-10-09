@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<!--
+  Make a Claim Guide (OSHC Compass)
+  The student chooses how to claim (online, form, mail, store), then walks through the steps.
+  At every stop we show: what happens, what to do, what to say, and a tip.
+
+  File layout:
+    1. STYLES     - colours, layout and the walking animation
+    2. PAGE       - the hallway, buttons and info boxes
+    3. SCRIPT
+       3a. Settings and languages
+       3b. Step content (edit text here)
+       3c. Drawing the hallway
+       3d. Moving the person
+       3e. Updating the page
+       3f. Buttons and start-up
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Make a Claim Guide</title>
+
+<!-- ============================================================
+     1. STYLES
+     ============================================================ -->
+<style>
+  /* Colours used everywhere (change them here) */
+  :root {
+    --red: #C8322E;        /* main brand colour */
+    --red-soft: #FCEDEC;   /* light red background */
+    --navy: #1F3A5F;       /* signs and headings */
+    --ink: #1D2A3A;        /* main text */
+    --muted: #5E6B7A;      /* small grey text */
+    --line: #E3E6EA;       /* borders */
+    --wall: #F6F4F1;       /* hallway wall */
+    --floor: #E9E4DC;      /* hallway floor */
+    --route: #E07A1F;      /* orange highlight */
+    --teal: #2A8C82;       /* staff uniforms */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* Emergency banner at the top */
+  .alert {
+    display: flex; gap: 10px; align-items: center;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 10px; padding: 8px 14px; margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .alert b { font-size: 1.3rem; }
+
+  /* Hallway box (scrolls sideways on small screens) */
+  .scene  { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scroll { overflow-x: auto; scroll-behavior: smooth; }
+  svg     { display: block; width: 100%; min-width: 880px; height: auto; }
+
+  /* Each station: door + sign */
+  .station .door      { fill: #fff; stroke: #CBC4B8; stroke-width: 2; }
+  .station .sign      { fill: var(--navy); }
+  .station .sign-text { font: 700 13px system-ui, sans-serif; fill: #fff; }
+  .station .num       { fill: #fff; }
+  .station .num-text  { font: 800 12px system-ui, sans-serif; fill: var(--navy); }
+
+  /* Station states: already visited / current */
+  .station.done .sign     { fill: #5D7A73; }
+  .station.here .sign     { fill: var(--red); }
+  .station.here .num-text { fill: var(--red); }
+  .station.here .door     { stroke: var(--route); stroke-width: 3; }
+
+  /* Progress dots on the floor */
+  .dot    { fill: #CFC7BA; }
+  .dot.on { fill: var(--route); }
+
+  /* Walking animation: arms and legs swing */
+  .leg, .arm { transform-box: fill-box; transform-origin: top center; }
+  .walking .leg, .walking .arm { animation: swing 0.42s ease-in-out infinite alternate; }
+  .walking .leg2, .walking .arm2 { animation-direction: alternate-reverse; }
+  @keyframes swing {
+    from { transform: rotate(-26deg); }
+    to   { transform: rotate(26deg); }
+  }
+
+  /* Speech bubble above the current station */
+  #bubble       { transition: opacity 0.25s; }
+  .bubble-label { font: 700 10px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; fill: var(--red); }
+  .bubble-text  { font: 700 14px system-ui, sans-serif; fill: var(--ink); }
+
+  /* Buttons under the hallway */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-top: 1px solid var(--line);
+  }
+  .controls .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-name { font-weight: 700; color: var(--navy); }
+
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 8px 14px; border-radius: 9px;
+    border: 1.5px solid var(--line); background: #fff; color: var(--ink);
+  }
+  button.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  button:focus-visible { outline: 3px solid var(--route); outline-offset: 2px; }
+
+  /* Step heading + language buttons */
+  .head {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: baseline; justify-content: space-between;
+    margin: 16px 0 10px;
+  }
+  .eyebrow {
+    margin: 0; color: var(--red);
+    font: 700 11px ui-monospace, Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  h2 { margin: 2px 0 0; font-size: 1.4rem; line-height: 1.2; color: var(--navy); }
+
+  .lang { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lang button { padding: 4px 10px; border-radius: 99px; font-weight: 600; }
+  .lang button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* Four info boxes in a row (stack on small screens) */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
+
+  .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .box h3 {
+    margin: 0 0 6px; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .box p, .box ul { margin: 0; }
+  .box ul { padding-left: 18px; }
+  .box.do  { background: #F1F4F8; border-color: #F1F4F8; }
+  .box.say { background: var(--red-soft); border-color: var(--red-soft); }
+  .say-en  { font-weight: 700; }
+  .say-tr  { margin-top: 6px; font-size: 1.05rem; }
+
+  .small { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); }
+
+  /* The two big choices at the start */
+  .choose { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 4px; }
+  @media (max-width: 640px) { .choose { grid-template-columns: 1fr; } }
+  .choose[hidden], .grid[hidden] { display: none; }
+  .pick {
+    text-align: left; padding: 16px 18px; border-radius: 14px; border: 2px solid var(--line);
+    background: #fff; display: flex; flex-direction: column; gap: 6px; font-weight: 400;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .pick:hover { transform: translateY(-3px); border-color: var(--navy); box-shadow: 0 5px 16px rgba(20,58,90,.15); }
+  .pick .badge { align-self: flex-start; font: 800 12px ui-monospace, Menlo, monospace; letter-spacing: .06em;
+                 padding: 3px 10px; border-radius: 99px; color: #fff; background: var(--teal); }
+  .pick.store .badge { background: var(--red); }
+  .pick.form .badge { background: var(--navy); }
+  .pick.mail .badge { background: #6B6F76; }
+  .pick b { font-size: 1.15rem; color: var(--navy); }
+  .pick span { color: var(--muted); }
+  .pick .go { color: var(--red); font-weight: 700; }
+  .hint { margin: 10px 0 0; color: var(--muted); font-size: .9rem; }
+
+  /* Turn off animation for people who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    .walking .leg, .walking .arm { animation: none; }
+  }
+</style>
+</head>
+
+<body>
+<!-- ============================================================
+     2. PAGE
+     ============================================================ -->
+
+<!-- Emergency banner -->
+<div class="alert">
+  <b>!</b>
+  <span>Keep every receipt and invoice. You need them to make a claim.</span>
+</div>
+
+<!-- Hallway scene + controls -->
+<div class="scene">
+  <div class="scroll" id="scroll">
+    <svg id="hall" viewBox="0 0 1120 330" role="img"
+         aria-label="A student walking past each step of making an OSHC claim"></svg>
+  </div>
+  <div class="controls">
+    <span class="step-name" id="stepName"></span>
+    <div class="buttons">
+      <button id="againBtn">↺ Choose again</button>
+      <button id="backBtn">Back</button>
+      <button id="playBtn">▶ Play all</button>
+      <button id="nextBtn" class="primary">Next step</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step title + language picker -->
+<div class="head" aria-live="polite">
+  <div>
+    <p class="eyebrow" id="eyebrow"></p>
+    <h2 id="title"></h2>
+  </div>
+  <div class="lang" id="langButtons"></div>
+</div>
+
+<!-- The two choices (shown first) -->
+<div class="choose" id="choose" hidden>
+  <button class="pick online" id="pickOnline">
+    <span class="badge">WEB / APP</span>
+    <b>Online Member Services or the app</b>
+    <span>Log in, add your details and upload your receipts. Online claims generally pay out within 5 business days.</span>
+    <span class="go">Show me how →</span>
+  </button>
+  <button class="pick form" id="pickForm">
+    <span class="badge">FORM</span>
+    <b>Online Claims Form</b>
+    <span>Fill in a short form with your membership number and upload your claim document.</span>
+    <span class="go">Show me how →</span>
+  </button>
+  <button class="pick mail" id="pickMail">
+    <span class="badge">MAIL</span>
+    <b>By mail</b>
+    <span>Fill in the claim form and post it with your receipts.</span>
+    <span class="go">Show me how →</span>
+  </button>
+  <button class="pick store" id="pickStore">
+    <span class="badge">STORE</span>
+    <b>In a Medibank store</b>
+    <span>Drop off your claim, with your receipts, at any Medibank store.</span>
+    <span class="go">Show me how →</span>
+  </button>
+</div>
+<p class="hint" id="hint" hidden>Not sure which way is best? Choose the first one. You can also phone Medibank.</p>
+
+<!-- Info boxes -->
+<div class="grid" id="info">
+  <div class="box">
+    <h3>What happens here</h3>
+    <p id="what"></p>
+  </div>
+  <div class="box do">
+    <h3>What you need to do</h3>
+    <ul id="todo"></ul>
+  </div>
+  <div class="box say">
+    <h3>What to say</h3>
+    <p class="say-en" id="sayEn"></p>
+    <p class="say-tr" id="sayTr" hidden></p>
+  </div>
+  <div class="box">
+    <h3>Tip</h3>
+    <p id="tip"></p>
+  </div>
+</div>
+
+<p class="small" id="source"></p>
+<p class="small">
+  General information, not medical advice. Translations are samples and will be checked by native speakers.
+  Amounts can change: check your own cover summary.
+</p>
+
+<!-- ============================================================
+     3. SCRIPT
+     ============================================================ -->
+<script>
+/* ---------- 3a. Settings and languages ---------- */
+
+// Python replaces __LANG__ with the student's language (e.g. "si").
+// If the file is opened on its own, it starts in English.
+const START_LANG = "__LANG__";
+
+// Language buttons: code -> label
+const LANGUAGES = {
+  en: "English",
+  si: "සිංහල",
+  fa: "فارسی",
+  vi: "Tiếng Việt",
+  id: "Bahasa Indonesia"
+};
+
+// Languages written right to left
+const RTL_LANGUAGES = ["fa"];
+
+// Hallway layout
+const FLOOR_Y = 300;                         // where the person stands
+let stationCount = 1;                        // how many stations the hallway has now
+const stationX = i => stationCount < 2 ? 560 : 90 + i * (942 / (stationCount - 1));   // x position of station i
+const WALK_SPEED = 170;                      // pixels per second
+const PAUSE_BETWEEN_STEPS = 3000;            // ms, used by "Play all"
+
+
+// The brochure text. Python reads it from the PDF and puts it here (see Claim_Guide.py).
+// If the file is opened on its own, or a part is not found in the PDF, the saved text below is used.
+let PAYLOAD = {};
+try { PAYLOAD = JSON.parse(decodeURIComponent("__PDF_DATA__")); } catch (e) { PAYLOAD = {}; }
+const LIVE = !!PAYLOAD.facts;
+
+// From the brochure PDF (read live)
+const F = Object.assign({
+  begin: "You can begin claiming when your membership has been activated and your relevant waiting periods are served.",
+  oms: "Medibank OSHC OMS is a convenient way of managing your membership online.",
+  register: "You can register at medibankoshc.com.au or download the Medibank OSHC app.",
+  waiting: "We won’t pay benefits for any items purchased or services received while you are serving a waiting period.",
+  appClaim: "Make claims for most medical services",
+  storeUrl: "medibank.com.au/locations",
+  phoneAu: "134 148",
+  phoneOs: "+61 3 9862 1095",
+  hours: "Monday to Friday 8am-8pm AEST",
+  mustPayDiff: "You must pay any difference between the benefit we pay and the actual fee charged for the service.",
+  gpRate: "100%",
+  specRate: "85%",
+  contribution: "$30",
+  pct: "100% of cost"
+}, PAYLOAD.facts || {});
+
+// Where it is in the brochure, as words (for example "on page 5")
+const PG = Object.assign({ begin: "on the inside front cover", wait: "on page 6", support: "on page 14", rx: "on page 8", contact: "on the back cover" }, PAYLOAD.pages || {});
+
+// From the Medibank website and member portal. These are SAVED texts, not read from the PDF.
+// Check them now and then. Update the date when you do.
+const WEB_DATE = "9 October 2026";
+const W = {
+  online5: "Online claims generally pay out within 5 business days.",
+  keepCopy: "Keep a copy of your paperwork and receipts in case you need them later.",
+  formIntro: "You can make claims for most medical services you have already paid for.",
+  bankRule: "Make sure Medibank has your correct Australian bank account.",
+  mailAddr: "Medibank OSHC, GPO 2984, Melbourne Vic 3001",
+  storeSlow: "Benefits take longer to process when you claim in-store.",
+  bankNeeded: "To make claims online, you will need to nominate an Australian bank account. This is where we will pay benefits for claims under your OSHC.",
+  bankPaid: "Once you have registered your Australian bank account, you will be able to submit your claim, and any benefits paid will be deposited into your chosen account."
+};
+const SRC_WEB = `the Medibank website “How to make an online claim” (saved ${WEB_DATE})`;
+const SRC_PORTAL = `the Medibank member portal (saved ${WEB_DATE})`;
+
+/* ---------- 3b. Step content (edit text here) ---------- */
+// room   = picture inside the door (see ROOMS below)
+// name   = sign above the door, bubble = short message in the speech bubble
+// tr     = translations of "say"
+// src    = where the text comes from (brochure, website, member portal, or our own advice)
+// Text in ${F.something} is read from the brochure PDF. Text in ${W.something} is saved from the website.
+
+const T = {
+  ready:  { si: "මගේ සාමාජිකත්වය ආරම්භ වී ඇත්ද? මට දැන් ක්ලේම් කළ හැකිද?", fa: "آیا عضویتم شروع شده؟ آیا می‌توانم الان claim ثبت کنم؟", vi: "Bảo hiểm của tôi đã bắt đầu chưa ạ? Tôi đã có thể yêu cầu chi trả chưa?", id: "Apakah keanggotaan saya sudah mulai? Apakah saya sudah bisa mengklaim?" },
+  make:   { si: "කරුණාකර මට ක්ලේම් එකක් ඉදිරිපත් කරන්න අවශ්‍යයි.", fa: "می‌خواهم یک claim ثبت کنم.", vi: "Tôi muốn nộp yêu cầu chi trả ạ.", id: "Saya ingin mengajukan klaim." },
+  bank:   { si: "මට මගේ ඕස්ට්‍රේලියානු බැංකු ගිණුම එකතු කළ යුතුයි.", fa: "باید حساب بانکی استرالیایی‌ام را اضافه کنم.", vi: "Tôi cần thêm tài khoản ngân hàng Úc của mình ạ.", id: "Saya perlu menambahkan rekening bank Australia saya." },
+  itemised: { si: "කරුණාකර මගේ ක්ලේම් එක සඳහා විස්තරාත්මක රිසිට්පතක් දෙන්න පුළුවන්ද?", fa: "لطفاً می‌توانید برای claim من یک رسید با جزئیات بدهید؟", vi: "Bạn có thể cho tôi hóa đơn chi tiết để yêu cầu chi trả được không ạ?", id: "Bisakah Anda memberi saya struk rinci untuk klaim saya?" },
+  when:   { si: "මගේ ක්ලේම් එකට මුදල් ගෙවන්නේ කවදාද?", fa: "claim من چه زمانی پرداخت می‌شود؟", vi: "Khi nào yêu cầu chi trả của tôi được thanh toán ạ?", id: "Kapan klaim saya akan dibayar?" },
+  much:   { si: "මට කොපමණ මුදලක් ආපසු ලැබෙනවාද?", fa: "چقدر از هزینه را پس می‌گیرم؟", vi: "Tôi sẽ được hoàn lại bao nhiêu ạ?", id: "Berapa yang akan saya terima kembali?" },
+  number: { si: "මගේ සාමාජික අංකය සොයාගත හැක්කේ කොහෙන්ද?", fa: "شماره عضویتم را از کجا پیدا کنم؟", vi: "Tôi có thể tìm số thành viên ở đâu ạ?", id: "Di mana saya bisa menemukan nomor keanggotaan saya?" },
+  send:   { si: "ක්ලේම් පෝරමය යවන්න ඕනේ කොහේටද?", fa: "فرم claim را به کجا بفرستم؟", vi: "Tôi gửi mẫu yêu cầu chi trả đến đâu ạ?", id: "Ke mana saya harus mengirim formulir klaim?" },
+  store:  { si: "ළඟම Medibank වෙළඳසැල කොහෙද?", fa: "نزدیک‌ترین فروشگاه Medibank کجاست؟", vi: "Cửa hàng Medibank gần nhất ở đâu ạ?", id: "Di mana toko Medibank terdekat?" }
+};
+
+// Steps that more than one way uses
+const STEP_READY = {
+  room: "check", name: "Get ready", bubble: "Check your cover. Find your receipts",
+  title: "Get ready",
+  what: `${F.begin}`,
+  todo: [
+    "Find your receipts and invoices (and the prescription or referral letter)",
+    "Check your membership is active",
+    "Take a clear photo or scan of each paper"
+  ],
+  say: "Has my membership started? Can I claim yet?", tr: T.ready,
+  tip: `${F.waiting}`,
+  src: `Brochure ${PG.begin} and ${PG.wait}. The list of things to do is our own advice.`
+};
+const STEP_MONEY = {
+  room: "oshc", name: "Your money", bubble: "What you get back depends on your cover",
+  title: "How much do I get back?",
+  what: "What you get back depends on the service and on your cover. These are examples from the brochure.",
+  todo: [
+    `GP consultations: Medibank pays ${F.gpRate} of the MBS fee`,
+    `Specialists, pathology and x-rays: ${F.specRate} of the MBS fee`,
+    `Prescription medicines: you pay a ${F.contribution} contribution. Medibank pays ${F.pct} (maximum per item), up to your annual limit`
+  ],
+  say: "How much will I get back?", tr: T.much,
+  tip: `${F.mustPayDiff}`,
+  src: `Brochure ${PG.rx} (Medical and Prescription medicines).`
+};
+
+const PATHS = {
+  online: [
+    STEP_READY,
+    {
+      room: "laptop", name: "Log in", bubble: "Log in and choose “Make a claim”",
+      title: "Log in to Online Member Services (or the app)",
+      what: `${F.oms} ${F.register}`,
+      todo: [
+        "Open Online Member Services on the website, or open the Medibank OSHC app",
+        "Log in. If you have not registered yet, register first",
+        "On the “How can we help you today?” page, choose “Make a claim”"
+      ],
+      say: "I'd like to make a claim, please.", tr: T.make,
+      tip: `${F.appClaim}, in Online Member Services or in the Medibank OSHC app.`,
+      src: `Brochure ${PG.begin} and ${PG.support}. The “Make a claim” tile is from ${SRC_PORTAL}.`
+    },
+    {
+      room: "bank", name: "Bank", bubble: "You need an Australian bank account",
+      title: "Add your Australian bank account",
+      what: `${W.bankNeeded}`,
+      todo: [
+        "Have your Australian bank account details ready",
+        "If the page says no account is registered, click “add bank account details”",
+        `Or call ${F.phoneAu} (from outside Australia: ${F.phoneOs})`
+      ],
+      say: "I need to add my Australian bank account.", tr: T.bank,
+      tip: `The phone line is open ${F.hours}. ${W.bankPaid}`,
+      src: `${SRC_PORTAL}, and brochure ${PG.contact} (phone numbers and hours).`
+    },
+    {
+      room: "form", name: "Details", bubble: "Fill in the claim and upload your receipts",
+      title: "Fill in the claim",
+      what: "You give details about the claim, then scan and upload your receipts.",
+      todo: [
+        "Say what the service was and when you had it",
+        "Scan or take a photo of each receipt and upload it",
+        "Check everything, then submit"
+      ],
+      say: "Can you give me an itemised receipt for my claim?", tr: T.itemised,
+      tip: `${W.keepCopy}`,
+      src: `Steps from ${SRC_WEB}. The first and third things to do are our own advice.`
+    },
+    {
+      room: "clock", name: "Payment", bubble: "Wait for the payment",
+      title: "Wait for the payment",
+      what: `${W.online5} Benefits are paid into your chosen Australian bank account.`,
+      todo: [
+        "Check your bank account after 5 business days",
+        "Keep a copy of every receipt",
+        "Call Medibank if the money has not arrived"
+      ],
+      say: "When will my claim be paid?", tr: T.when,
+      tip: `Questions? Call ${F.phoneAu} (${F.hours}).`,
+      src: `${SRC_WEB} and ${SRC_PORTAL}. Phone and hours: brochure ${PG.contact}.`
+    },
+    STEP_MONEY
+  ],
+
+  form: [
+    STEP_READY,
+    {
+      room: "form", name: "Claims Form", bubble: "Open the Online Claims Form",
+      title: "Open the Online Claims Form",
+      what: `${W.formIntro}`,
+      todo: [
+        "Open the Online Claims Form on the Medibank OSHC website",
+        "Enter your membership number, date of birth, first name, surname and email address",
+        "Have your claim document ready to upload"
+      ],
+      say: "Where can I find my membership number?", tr: T.number,
+      tip: "Your membership number is on your membership card. You can see the digital card in the Medibank OSHC app.",
+      src: `Steps from ${SRC_WEB}. The tip is our own advice.`
+    },
+    {
+      room: "laptop", name: "Upload", bubble: "Upload your document and submit",
+      title: "Upload your document and submit",
+      what: "You upload a copy of your claim document and say if you have already paid in full. Then you agree to the Terms and Conditions and submit.",
+      todo: [
+        "Upload a copy of your claim document (for example the receipt)",
+        "Choose whether the services have been paid in full",
+        "Read and agree to the Terms and Conditions, then click “Submit your Claim”"
+      ],
+      say: "Can you give me an itemised receipt for my claim?", tr: T.itemised,
+      tip: `${W.keepCopy}`,
+      src: `Steps from ${SRC_WEB}. The example in the first step is our own advice.`
+    },
+    {
+      room: "clock", name: "Payment", bubble: "Wait for the payment",
+      title: "Wait for the payment",
+      what: `${W.online5} ${W.bankRule}`,
+      todo: [
+        "Check your bank account after 5 business days",
+        "Keep a copy of every receipt",
+        "Call Medibank if the money has not arrived"
+      ],
+      say: "When will my claim be paid?", tr: T.when,
+      tip: `Questions? Call ${F.phoneAu} (${F.hours}).`,
+      src: `${SRC_WEB}. Phone and hours: brochure ${PG.contact}.`
+    },
+    STEP_MONEY
+  ],
+
+  mail: [
+    STEP_READY,
+    {
+      room: "form", name: "Claim form", bubble: "Fill in the Medibank OSHC claim form",
+      title: "Fill in the claim form",
+      what: "Complete the Medibank OSHC claim form. A PDF of the form is on the Medibank website.",
+      todo: [
+        "Download the claim form (PDF) from the Medibank website",
+        "Fill it in carefully",
+        "Make copies of your paperwork and receipts before you post them"
+      ],
+      say: "Where do I send the claim form?", tr: T.send,
+      tip: `${W.keepCopy}`,
+      src: `Steps from ${SRC_WEB}. The list of things to do is our own advice.`
+    },
+    {
+      room: "mail", name: "Post", bubble: "Post the form with your receipts",
+      title: "Post it with your receipts",
+      what: `Send the form with your receipts to: ${W.mailAddr}.`,
+      todo: [
+        `Write the address clearly: ${W.mailAddr}`,
+        "Post the form together with your receipts",
+        "Keep your copies"
+      ],
+      say: "Where do I send the claim form?", tr: T.send,
+      tip: `The website gives “5 business days” for online claims only. To ask how long a posted claim takes, call ${F.phoneAu} (${F.hours}).`,
+      src: `${SRC_WEB}. Phone and hours: brochure ${PG.contact}.`
+    },
+    STEP_MONEY
+  ],
+
+  store: [
+    STEP_READY,
+    {
+      room: "store", name: "Find a store", bubble: "Find your nearest Medibank store",
+      title: "Find a Medibank store",
+      what: `Go to ${F.storeUrl} to find your nearest Medibank store. You can drop off your claim at any Medibank store.`,
+      todo: [
+        `Open ${F.storeUrl} and find the nearest store`,
+        "Check the opening hours before you go",
+        "Take your receipts and details about your claim"
+      ],
+      say: "Where is the nearest Medibank store?", tr: T.store,
+      tip: "You can also claim online. The website says benefits are processed faster online than in a store.",
+      src: `Brochure ${PG.contact} (store finder) and ${SRC_WEB}. The list of things to do is our own advice.`
+    },
+    {
+      room: "store", name: "In store", bubble: "Hand over your receipts",
+      title: "Hand in your claim",
+      what: `Bring your receipts and details about your claim. ${W.storeSlow}`,
+      todo: [
+        "Say you would like to submit a claim",
+        "Give the staff your receipts and your details",
+        "Ask how long it will take"
+      ],
+      say: "I'd like to submit a claim, please.", tr: T.make,
+      tip: `${W.keepCopy}`,
+      src: `${SRC_WEB}. The list of things to do is our own advice.`
+    },
+    STEP_MONEY
+  ]
+};
+
+// Put the step number in front of each title
+for (const key of Object.keys(PATHS)) {
+  PATHS[key] = PATHS[key].map((s, i) => Object.assign({}, s, { title: `${i + 1}. ${s.title}` }));
+}
+
+// Shown first: the student picks one of the four ways
+const CHOOSE = { room: "check", name: "Start", bubble: "How do you want to claim?", title: "How do you want to claim?",
+                 what: "", todo: [], say: "", tr: {}, tip: "", src: "" };
+let STEPS = [CHOOSE];
+let choosing = true;
+
+
+/* ---------- Page state ---------- */
+let step = 0;                                  // current step number
+let lang = LANGUAGES[START_LANG] ? START_LANG : "en";
+let personX = stationX(0) - 60;                // person starts just left of the entrance
+let autoplay = false;                          // true while "Play all" runs
+let frame = 0;                                 // animation frame id
+
+const $ = id => document.getElementById(id);   // short helper
+
+
+/* ---------- 3c. Drawing the hallway ---------- */
+
+// A simple staff member (head + body)
+function drawStaff(x, y, colour = "var(--teal)") {
+  return `
+    <circle cx="${x}" cy="${y - 38}" r="8" fill="#C98E68"/>
+    <rect x="${x - 9}" y="${y - 29}" width="18" height="24" rx="6" fill="${colour}"/>`;
+}
+
+// What is inside each doorway (one drawing per station)
+const ROOMS = {
+  // Find a GP: a phone with a map pin
+  search: x => `
+    <rect x="${x - 24}" y="122" width="48" height="96" rx="8" fill="#20303F"/>
+    <rect x="${x - 20}" y="130" width="40" height="80" rx="4" fill="#EAF4F8"/>
+    <rect x="${x - 16}" y="134" width="32" height="8" rx="3" fill="#fff" stroke="#B7C3CC"/>
+    <path d="M${x} 200 c-10 -12 -12 -18 -12 -24 a12 12 0 0 1 24 0 c0 6 -2 12 -12 24z" fill="var(--red)"/>
+    <circle cx="${x}" cy="176" r="4" fill="#fff"/>`,
+
+  // Reception: staff with a computer
+  reception: x => drawStaff(x - 12, 196, "#6B7FA0") + `
+    <rect x="${x - 38}" y="196" width="76" height="40" rx="3" fill="#D9D2C6"/>
+    <rect x="${x + 6}"  y="170" width="26" height="20" rx="2" fill="#40576F"/>
+    <rect x="${x + 16}" y="190" width="6"  height="6"  fill="#40576F"/>`,
+
+  // GP: doctor at a desk with a "GP" sign
+  gp: x => `
+    <rect x="${x - 18}" y="120" width="36" height="22" rx="5" fill="var(--navy)"/>
+    <text x="${x}" y="136" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="system-ui">GP</text>` +
+    drawStaff(x - 14, 200, "#F4F7F9") + `
+    <rect x="${x - 38}" y="200" width="76" height="36" rx="3" fill="#D9D2C6"/>
+    <rect x="${x + 6}" y="176" width="22" height="28" rx="2" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x + 10}" y="184" width="14" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 10}" y="190" width="14" height="2" fill="#B7C3CC"/>`,
+
+  // Tests: X-ray machine
+  tests: x => `
+    <rect x="${x - 30}" y="150" width="60" height="16" rx="4" fill="#B9C4CE"/>
+    <rect x="${x - 6}"  y="166" width="12" height="30" fill="#9AA8B4"/>
+    <rect x="${x - 36}" y="200" width="72" height="12" rx="3" fill="#DDE3E8"/>
+    <rect x="${x - 4}"  y="212" width="8"  height="24" fill="#9AA8B4"/>
+    <circle cx="${x + 26}" cy="136" r="6" fill="#F2C94C"/>`,
+
+  // Pharmacy: pharmacist, boxes on the shelf
+  pharmacy: x => `
+    <rect x="${x - 38}" y="124" width="76" height="4" fill="#B8AFA0"/>
+    <rect x="${x - 34}" y="108" width="14" height="16" rx="2" fill="#C8322E"/>
+    <rect x="${x - 16}" y="112" width="12" height="12" rx="2" fill="#8FA7B8"/>
+    <rect x="${x + 2}"  y="106" width="14" height="18" rx="2" fill="#2A8C82"/>
+    <rect x="${x + 22}" y="112" width="12" height="12" rx="2" fill="#E0A77E"/>
+    <rect x="${x - 6}" y="136" width="12" height="36" rx="2" fill="#1E8E4E"/>
+    <rect x="${x - 18}" y="148" width="36" height="12" rx="2" fill="#1E8E4E"/>` +
+    drawStaff(x + 8, 200, "#F4F7F9") + `
+    <rect x="${x - 38}" y="204" width="76" height="32" rx="3" fill="#D9D2C6"/>`,
+
+  // Pay: card machine and receipt
+  pay: x => `
+    <rect x="${x - 38}" y="200" width="76" height="36" rx="3" fill="#D9D2C6"/>
+    <rect x="${x - 30}" y="172" width="26" height="28" rx="3" fill="#40576F"/>
+    <rect x="${x - 26}" y="177" width="18" height="8" rx="1" fill="#7FE0B3"/>
+    <rect x="${x + 8}" y="150" width="22" height="50" rx="1" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x + 12}" y="158" width="14" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 12}" y="165" width="14" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 12}" y="172" width="9"  height="2" fill="#B7C3CC"/>
+    <text x="${x + 19}" y="190" text-anchor="middle" font-size="9" font-weight="800" fill="var(--red)" font-family="system-ui">$</text>`,
+
+  // Your OSHC: the OSHC card
+  oshc: x => `
+    <rect x="${x - 32}" y="140" width="64" height="42" rx="6" fill="var(--red)"/>
+    <rect x="${x - 32}" y="150" width="64" height="8" fill="#A82824"/>
+    <text x="${x}" y="174" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui">OSHC</text>
+    <path d="M${x} 196 l8 4 v10 c0 6 -4 10 -8 12 c-4 -2 -8 -6 -8 -12 v-10 z" fill="#1E8E4E"/>`,
+
+  // Phone: a wall phone with a "24/7" screen
+  phone: x => `
+    <rect x="${x - 26}" y="128" width="52" height="84" rx="9" fill="#40576F"/>
+    <rect x="${x - 20}" y="136" width="40" height="18" rx="3" fill="#7FE0B3"/>
+    <text x="${x}" y="150" text-anchor="middle" font-size="11" font-weight="800" fill="#143a5a" font-family="monospace">24/7</text>` +
+    [0, 1, 2].map(r => [-12, 0, 12].map(c => `<circle cx="${x + c}" cy="${166 + r * 14}" r="3.5" fill="#B7C3CC"/>`).join("")).join(""),
+
+  // Call 000: the same phone, with 000 on the screen
+  call000: x => `
+    <rect x="${x - 26}" y="128" width="52" height="84" rx="9" fill="#40576F"/>
+    <rect x="${x - 20}" y="136" width="40" height="18" rx="3" fill="#FCEDEC"/>
+    <text x="${x}" y="150" text-anchor="middle" font-size="13" font-weight="800" fill="var(--red)" font-family="monospace">000</text>` +
+    [0, 1, 2].map(r => [-12, 0, 12].map(c => `<circle cx="${x + c}" cy="${166 + r * 14}" r="3.5" fill="#B7C3CC"/>`).join("")).join(""),
+
+  // Language: two speech bubbles
+  translate: x => `
+    <rect x="${x - 38}" y="128" width="44" height="30" rx="9" fill="#DCEBF2" stroke="#AFC6D1"/>
+    <text x="${x - 16}" y="149" text-anchor="middle" font-size="16" font-weight="800" fill="var(--navy)" font-family="system-ui">A</text>
+    <rect x="${x - 6}" y="168" width="44" height="30" rx="9" fill="#FCEDEC" stroke="#F0C4C1"/>
+    <text x="${x + 16}" y="189" text-anchor="middle" font-size="16" font-weight="800" fill="var(--red)" font-family="system-ui">文</text>`,
+
+  // App: a phone with a doctor on the screen
+  app: x => `
+    <rect x="${x - 24}" y="122" width="48" height="96" rx="8" fill="#20303F"/>
+    <rect x="${x - 20}" y="130" width="40" height="80" rx="4" fill="#F4F7F9"/>
+    <circle cx="${x}" cy="156" r="10" fill="#C98E68"/>
+    <rect x="${x - 14}" y="168" width="28" height="22" rx="8" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 3}" y="172" width="6" height="14" fill="var(--red)"/>
+    <rect x="${x - 7}" y="176" width="14" height="6" fill="var(--red)"/>
+    <circle cx="${x}" cy="200" r="7" fill="#1E8E4E"/>`,
+
+  // Next step: a signpost with three arrows
+  signpost: x => `
+    <rect x="${x - 3}" y="116" width="6" height="120" fill="#9AA8B4"/>
+    <path d="M${x - 34} 128 h50 l10 9 l-10 9 h-50 z" fill="var(--teal)"/>
+    <text x="${x - 8}" y="142" text-anchor="middle" font-size="10" font-weight="800" fill="#fff" font-family="system-ui">REST</text>
+    <path d="M${x + 34} 156 h-50 l-10 9 l10 9 h50 z" fill="var(--navy)"/>
+    <text x="${x + 8}" y="170" text-anchor="middle" font-size="10" font-weight="800" fill="#fff" font-family="system-ui">GP</text>
+    <path d="M${x - 34} 184 h50 l10 9 l-10 9 h-50 z" fill="var(--red)"/>
+    <text x="${x - 8}" y="198" text-anchor="middle" font-size="10" font-weight="800" fill="#fff" font-family="system-ui">000</text>`,
+
+  // Ambulance
+  ambulance: x => `
+    <rect x="${x - 40}" y="168" width="58" height="44" rx="4" fill="#fff" stroke="#B7C3CC"/>
+    <path d="M${x + 18} 178 h14 l10 14 v20 h-24 z" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 40}" y="188" width="82" height="5" fill="var(--red)"/>
+    <rect x="${x - 17}" y="174" width="6" height="14" fill="var(--red)"/>
+    <rect x="${x - 21}" y="178" width="14" height="6" fill="var(--red)"/>
+    <circle cx="${x - 22}" cy="214" r="8" fill="#40576F"/><circle cx="${x + 26}" cy="214" r="8" fill="#40576F"/>
+    <rect x="${x - 6}" y="160" width="12" height="6" rx="2" fill="var(--red)"/>`,
+
+  // Hospital: a building with a red cross
+  hospital: x => `
+    <rect x="${x - 36}" y="150" width="72" height="86" fill="#F4F7F9" stroke="#B7C3CC"/>
+    <circle cx="${x}" cy="136" r="14" fill="#fff" stroke="var(--red)" stroke-width="3"/>
+    <rect x="${x - 2.5}" y="127" width="5" height="18" fill="var(--red)"/>
+    <rect x="${x - 9}" y="133.5" width="18" height="5" fill="var(--red)"/>
+    <rect x="${x - 10}" y="200" width="20" height="36" fill="#DCEBF2" stroke="#AFC6D1"/>
+    <rect x="${x - 28}" y="162" width="14" height="14" fill="#DCEBF2"/><rect x="${x + 14}" y="162" width="14" height="14" fill="#DCEBF2"/>
+    <rect x="${x - 28}" y="184" width="14" height="14" fill="#DCEBF2"/><rect x="${x + 14}" y="184" width="14" height="14" fill="#DCEBF2"/>`,
+
+  // Get ready: a clipboard with ticks
+  check: x => `
+    <rect x="${x - 28}" y="122" width="56" height="78" rx="6" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 12}" y="116" width="24" height="12" rx="3" fill="#40576F"/>` +
+    [0, 1, 2].map(r => `
+    <path d="M${x - 20} ${146 + r * 18} l4 4 l8 -9" fill="none" stroke="#1E8E4E" stroke-width="2.5"/>
+    <rect x="${x - 4}" y="${143 + r * 18}" width="22" height="3" fill="#B7C3CC"/>`).join(""),
+
+  // Log in: a laptop with a login box
+  laptop: x => `
+    <rect x="${x - 36}" y="138" width="72" height="48" rx="4" fill="#20303F"/>
+    <rect x="${x - 31}" y="143" width="62" height="38" rx="2" fill="#EAF4F8"/>
+    <rect x="${x - 18}" y="150" width="36" height="7" rx="2" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 18}" y="161" width="36" height="7" rx="2" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x - 18}" y="172" width="36" height="7" rx="3" fill="var(--red)"/>
+    <rect x="${x - 44}" y="186" width="88" height="6" rx="3" fill="#B9C4CE"/>`,
+
+  // Bank: a building with columns
+  bank: x => `
+    <path d="M${x - 38} 160 L${x} 132 L${x + 38} 160 z" fill="#B9C4CE"/>` +
+    [-26, -9, 9, 26].map(c => `<rect x="${x + c - 5}" y="164" width="10" height="46" fill="#DDE3E8" stroke="#B7C3CC"/>`).join("") + `
+    <rect x="${x - 40}" y="210" width="80" height="10" fill="#B9C4CE"/>
+    <circle cx="${x}" cy="156" r="6" fill="#fff"/>
+    <text x="${x}" y="160" text-anchor="middle" font-size="10" font-weight="800" fill="var(--navy)" font-family="system-ui">$</text>`,
+
+  // Form: a sheet with lines and an upload arrow
+  form: x => `
+    <rect x="${x - 26}" y="122" width="52" height="76" rx="3" fill="#fff" stroke="#B7C3CC"/>` +
+    [0, 1, 2, 3].map(r => `<rect x="${x - 18}" y="${134 + r * 12}" width="${r === 3 ? 20 : 36}" height="3" fill="#B7C3CC"/>`).join("") + `
+    <circle cx="${x + 20}" cy="196" r="14" fill="#1E8E4E"/>
+    <path d="M${x + 20} 204 v-14 M${x + 14} 196 l6 -7 l6 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+
+  // Payment: a calendar showing 5 days
+  clock: x => `
+    <rect x="${x - 30}" y="128" width="60" height="68" rx="6" fill="#fff" stroke="#B7C3CC"/>
+    <path d="M${x - 30} 134 a6 6 0 0 1 6 -6 h48 a6 6 0 0 1 6 6 v12 h-60 z" fill="var(--red)"/>
+    <text x="${x}" y="177" text-anchor="middle" font-size="28" font-weight="800" fill="var(--navy)" font-family="system-ui">5</text>
+    <text x="${x}" y="190" text-anchor="middle" font-size="8" font-weight="700" fill="var(--muted)" font-family="system-ui">DAYS</text>`,
+
+  // Post: an envelope with a stamp
+  mail: x => `
+    <rect x="${x - 34}" y="148" width="68" height="46" rx="4" fill="#fff" stroke="#B7C3CC"/>
+    <path d="M${x - 34} 150 L${x} 174 L${x + 34} 150" fill="none" stroke="#B7C3CC" stroke-width="2"/>
+    <rect x="${x + 16}" y="154" width="14" height="14" rx="2" fill="var(--red)" opacity="0.85"/>`,
+
+  // Store: a shop front with an awning
+  store: x => `
+    <rect x="${x - 40}" y="126" width="80" height="20" fill="#fff"/>` +
+    [0, 1, 2, 3, 4].map(i => `<rect x="${x - 40 + i * 16}" y="126" width="8" height="20" fill="var(--red)"/>`).join("") + `
+    <rect x="${x - 36}" y="154" width="42" height="40" fill="#DCEBF2" stroke="#AFC6D1"/>
+    <rect x="${x + 12}" y="154" width="24" height="82" fill="#EAF4F8" stroke="#AFC6D1"/>
+    <rect x="${x - 20}" y="198" width="40" height="12" rx="3" fill="#D9D2C6"/>`
+};
+// One station: door, inside drawing, sign and floor dot
+function drawStation(stepInfo, i) {
+  const x = stationX(i);
+  return `
+    <g class="station" id="station${i}">
+      <rect class="door" x="${x - 46}" y="108" width="92" height="128" rx="4"/>
+      ${ROOMS[stepInfo.room](x)}
+      <rect class="sign" x="${x - 66}" y="72" width="132" height="28" rx="6"/>
+      <circle class="num" cx="${x - 50}" cy="86" r="9"/>
+      <text class="num-text" x="${x - 50}" y="90" text-anchor="middle">${i + 1}</text>
+      <text class="sign-text" x="${x - 34}" y="91">${stepInfo.name}</text>
+    </g>
+    <circle class="dot" id="dot${i}" cx="${x}" cy="${FLOOR_Y + 16}" r="6"/>`;
+}
+
+// The speech bubble (text is filled in later)
+function drawBubble() {
+  return `
+    <g id="bubble" opacity="0">
+      <rect id="bubbleBox" x="0" y="8" width="230" height="52" rx="10"
+            fill="#fff" stroke="var(--route)" stroke-width="2"/>
+      <path id="bubbleTail" d="" fill="#fff" stroke="var(--route)" stroke-width="2"/>
+      <text id="bubbleLabel" class="bubble-label" x="0" y="28">HERE YOU NEED TO</text>
+      <text id="bubbleText" class="bubble-text" x="0" y="48"></text>
+    </g>`;
+}
+
+// The student: legs and arms swing while walking, holding an OSHC card
+function drawPerson() {
+  return `
+    <g id="person">
+      <ellipse cx="0" cy="30" rx="13" ry="4" fill="rgba(0,0,0,.15)"/>
+      <g id="body">
+        <rect class="leg leg1" x="-6"  y="10" width="5"   height="18" rx="2.5" fill="#1F3A5F"/>
+        <rect class="leg leg2" x="1"   y="10" width="5"   height="18" rx="2.5" fill="#1F3A5F"/>
+        <rect class="arm arm1" x="-12" y="-6" width="4.5" height="16" rx="2.2" fill="#E0A77E"/>
+        <rect class="arm arm2" x="7.5" y="-6" width="4.5" height="16" rx="2.2" fill="#E0A77E"/>
+        <rect x="-8" y="-8" width="16" height="21" rx="6" fill="var(--red)"/>
+        <circle cx="0" cy="-16" r="8" fill="#E0A77E"/>
+        <path d="M-8 -17a8 8 0 0 1 16 0c-3-3-10-4-16 0z" fill="#2B2B2B"/>
+        <rect x="9" y="4" width="10" height="7" rx="1.5" fill="#fff" stroke="var(--red)" stroke-width="1.5"/>
+      </g>
+    </g>`;
+}
+
+// Build the whole hallway once
+function drawHall() {
+  const first = stationX(0);
+  const last = stationX(STEPS.length - 1);
+
+  $("hall").innerHTML = `
+    <rect width="1120" height="250" fill="var(--wall)"/>
+    <rect y="236" width="1120" height="94" fill="var(--floor)"/>
+    <rect y="236" width="1120" height="4" fill="#D6CFC3"/>
+    <line x1="${first}" y1="${FLOOR_Y + 16}" x2="${last}" y2="${FLOOR_Y + 16}"
+          stroke="#D2C9BB" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+    ${STEPS.map(drawStation).join("")}
+    ${drawBubble()}
+    ${drawPerson()}`;
+}
+
+
+/* ---------- 3d. Moving the person ---------- */
+
+// Put the person at personX, facing left (-1) or right (1)
+function placePerson(direction) {
+  $("person").setAttribute("transform", `translate(${personX} ${FLOOR_Y - 22}) scale(1.5)`);
+  if (direction) {
+    $("body").setAttribute("transform", direction < 0 ? "scale(-1 1)" : "");
+  }
+}
+
+// Show or hide the speech bubble over the current station
+function showBubble(show) {
+  const bubble = $("bubble");
+  if (!show) { bubble.setAttribute("opacity", 0); return; }
+
+  const text = STEPS[step].bubble;
+  const x = stationX(step);
+  const width = Math.max(200, text.length * 8.6 + 32);
+  const left = Math.min(1110 - width, Math.max(10, x - width / 2));   // keep inside the picture
+
+  $("bubbleBox").setAttribute("x", left);
+  $("bubbleBox").setAttribute("width", width);
+  $("bubbleLabel").setAttribute("x", left + 14);
+  $("bubbleText").setAttribute("x", left + 14);
+  $("bubbleText").textContent = text;
+  $("bubbleTail").setAttribute("d", `M${x - 8} 59 L${x} 70 L${x + 8} 59`);
+  bubble.setAttribute("opacity", 1);
+}
+
+// On small screens, scroll the hallway to keep the person in view
+function keepPersonInView() {
+  const box = $("scroll");
+  if (box.scrollWidth > box.clientWidth) {
+    const scale = box.scrollWidth / 1120;
+    box.scrollLeft = personX * scale - box.clientWidth / 2;
+  }
+}
+
+// Walk to targetX, then run onArrive
+function walkTo(targetX, onArrive) {
+  cancelAnimationFrame(frame);
+  showBubble(false);
+  $("person").classList.add("walking");
+
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const speed = reduceMotion ? 9999 : WALK_SPEED;
+  let lastTime = performance.now();
+
+  function tick(now) {
+    const seconds = Math.min(50, now - lastTime) / 1000;
+    lastTime = now;
+    const distance = targetX - personX;
+    const stepSize = speed * seconds;
+
+    // Arrived
+    if (Math.abs(distance) <= stepSize) {
+      personX = targetX;
+      placePerson(Math.sign(distance));
+      $("person").classList.remove("walking");
+      keepPersonInView();
+      showBubble(true);
+      if (onArrive) onArrive();
+      return;
+    }
+
+    // Keep walking
+    personX += Math.sign(distance) * stepSize;
+    placePerson(Math.sign(distance));
+    keepPersonInView();
+    frame = requestAnimationFrame(tick);
+  }
+
+  frame = requestAnimationFrame(tick);
+}
+
+
+/* ---------- 3e. Updating the page ---------- */
+
+// Colour the stations and dots for the current step
+function updateStations() {
+  STEPS.forEach((_, i) => {
+    $("station" + i).classList.toggle("here", i === step);
+    $("station" + i).classList.toggle("done", i < step);
+    $("dot" + i).classList.toggle("on", i <= step);
+  });
+}
+
+// Fill the four info boxes
+function updateInfo() {
+  const s = STEPS[step];
+  $("stepName").textContent = choosing ? "Start here" : `Step ${step + 1} of ${STEPS.length}: ${s.name}`;
+  $("eyebrow").textContent = choosing ? "Start" : `Step ${step + 1} · ${s.name}`;
+  $("title").textContent = s.title;
+  $("what").textContent = s.what;
+  $("todo").innerHTML = s.todo.map(item => `<li>${item}</li>`).join("");
+  $("sayEn").textContent = `“${s.say}”`;
+  $("tip").textContent = s.tip;
+  $("source").textContent = "Source: " + s.src + (LIVE && s.src.startsWith("Brochure") ? " The brochure text is read from the PDF." : "");
+  updateTranslation();
+}
+
+// Show the phrase in the chosen language (hidden for English)
+function updateTranslation() {
+  const box = $("sayTr");
+  if (lang === "en") { box.hidden = true; return; }
+  box.hidden = false;
+  box.textContent = STEPS[step].tr[lang];
+  box.lang = lang;
+  box.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
+}
+
+// Draw the language buttons
+function updateLanguageButtons() {
+  $("langButtons").innerHTML = Object.entries(LANGUAGES)
+    .map(([code, label]) =>
+      `<button lang="${code}" data-lang="${code}" aria-pressed="${code === lang}">${label}</button>`)
+    .join("");
+
+  $("langButtons").querySelectorAll("button").forEach(btn => {
+    btn.onclick = () => {
+      lang = btn.dataset.lang;
+      updateLanguageButtons();
+      updateTranslation();
+    };
+  });
+}
+
+// Enable/disable buttons and set their labels
+function updateButtons() {
+  $("backBtn").disabled = choosing || step === 0;
+  $("playBtn").disabled = choosing;
+  $("nextBtn").disabled = choosing;
+  $("againBtn").hidden = choosing;
+  $("nextBtn").textContent = step === STEPS.length - 1 ? "Start again" : "Next step";
+  $("playBtn").textContent = autoplay ? "❚❚ Pause" : "▶ Play all";
+  $("choose").hidden = !choosing;
+  $("hint").hidden = !choosing;
+  $("info").hidden = choosing;
+  $("source").hidden = choosing;
+}
+
+// Update everything, then walk to the current station
+function goToStep(newStep) {
+  step = newStep;
+  updateStations();
+  updateInfo();
+  updateButtons();
+  walkTo(stationX(step), whenArrived);
+}
+
+// During "Play all", wait a bit then move to the next step
+function whenArrived() {
+  if (!autoplay) return;
+  setTimeout(() => {
+    if (!autoplay) return;
+    if (step < STEPS.length - 1) {
+      goToStep(step + 1);
+    } else {
+      stopPlaying();
+    }
+  }, PAUSE_BETWEEN_STEPS);
+}
+
+// Put the person back at the start
+function restart() {
+  personX = stationX(0) - 60;
+  placePerson(1);
+  goToStep(0);
+}
+
+function stopPlaying() {
+  autoplay = false;
+  updateButtons();
+}
+
+
+/* ---------- 3f. Buttons and start-up ---------- */
+
+$("nextBtn").onclick = () => {
+  stopPlaying();
+  if (step < STEPS.length - 1) goToStep(step + 1);
+  else restart();
+};
+
+$("backBtn").onclick = () => {
+  stopPlaying();
+  if (step > 0) goToStep(step - 1);
+};
+
+$("playBtn").onclick = () => {
+  autoplay = !autoplay;
+  updateButtons();
+  if (!autoplay) return;
+  if (step === STEPS.length - 1) restart();
+  else goToStep(step);
+};
+
+// Choosing how to claim: show the first door and the four big buttons
+function showChoose() {
+  stopPlaying();
+  choosing = true;
+  STEPS = [CHOOSE];
+  stationCount = 1;
+  step = 0;
+  personX = stationX(0) - 90;
+  drawHall();
+  placePerson(1);
+  updateStations();
+  updateInfo();
+  updateButtons();
+  walkTo(stationX(0) - 70, null);
+}
+
+// Start one of the two ways
+function startPath(key) {
+  choosing = false;
+  STEPS = PATHS[key];
+  stationCount = STEPS.length;
+  personX = stationX(0) - 60;
+  drawHall();
+  placePerson(1);
+  goToStep(0);
+}
+
+$("pickOnline").onclick = () => startPath("online");
+$("pickForm").onclick   = () => startPath("form");
+$("pickMail").onclick   = () => startPath("mail");
+$("pickStore").onclick  = () => startPath("store");
+$("hint").textContent = `Not sure which way is best? Choose the first one. You can also call Medibank on ${F.phoneAu} (from outside Australia: ${F.phoneOs}). ${F.hours}.`;
+$("againBtn").onclick = showChoose;
+
+// Start
+updateLanguageButtons();
+showChoose();
+</script>
+</body>
+</html>

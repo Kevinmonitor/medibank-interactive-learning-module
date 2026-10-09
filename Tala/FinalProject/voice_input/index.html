@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+  Microphone row for Streamlit (a tiny custom component).
+  Left: the instruction text. Right (in front of it): the microphone button.
+  The browser turns speech into text (Chrome or Edge), then sends the text back to Python.
+-->
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; font-family:"Lucida Sans","Lucida Sans Unicode",Arial,sans-serif; color:#143a5a; }
+  .row { display:grid; grid-template-columns:auto 1fr; column-gap:28px; align-items:center; padding:4px 0; }
+  #status { font-weight:700; font-size:16px; line-height:1.35; }
+  .right { display:flex; flex-direction:column; align-items:flex-start; }
+  #mic { width:64px; height:64px; border-radius:50%; border:0; cursor:pointer; background:#C8322E; color:#fff;
+         font-size:28px; box-shadow:0 4px 14px rgba(200,50,46,.3); transition:transform .2s; }
+  #mic:hover { transform:scale(1.06); }
+  #mic:disabled { background:#b8bcc2; cursor:not-allowed; box-shadow:none; }
+  #mic.on { animation:pulse 1.2s infinite; background:#A82824; }
+  @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(200,50,46,.5); } 100% { box-shadow:0 0 0 22px rgba(200,50,46,0); } }
+  #heard { min-height:0; margin-top:4px; font-size:14px; color:#273b42; font-style:italic; }
+  #note  { font-size:12px; color:#5E6B7A; }
+</style></head>
+<body>
+  <div class="row">
+    <div id="status">Tap the microphone and tell me what you are worried about</div>
+    <div class="right">
+      <button id="mic" aria-label="Tap and speak">🎤</button>
+      <div id="heard"></div>
+      <div id="note"></div>
+    </div>
+  </div>
+<script>
+// --- Talking to Streamlit (the component protocol) ---
+const send = (type, data) => window.parent.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+send("streamlit:componentReady", { apiVersion: 1 });
+const resize = () => send("streamlit:setFrameHeight", { height: document.body.scrollHeight + 4 });
+window.addEventListener("load", resize);
+resize();
+
+let lang = "en-AU";
+window.addEventListener("message", e => {
+  if (e.data && e.data.type === "streamlit:render" && e.data.args && e.data.args.lang) lang = e.data.args.lang;
+});
+
+// --- Speech recognition (built into Chrome and Edge) ---
+const $ = id => document.getElementById(id);
+const IDLE = "Tap the microphone and tell me what you are worried about";
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, listening = false;
+
+if (!SR) {
+  $("status").textContent = "Voice needs Chrome or Edge. You can type below instead.";
+  $("mic").disabled = true;
+}
+
+function stop() { listening = false; $("mic").classList.remove("on"); }
+
+$("mic").onclick = () => {
+  if (listening && rec) { rec.stop(); return; }
+  rec = new SR();
+  rec.lang = lang;
+  rec.interimResults = true;
+  rec.maxAlternatives = 3;
+  let finalText = "", alternatives = [];
+
+  rec.onstart = () => {
+    listening = true;  $("mic").classList.add("on");
+    $("status").textContent = "Listening… speak now";  $("heard").textContent = "";  $("note").textContent = "";
+  };
+  rec.onresult = ev => {
+    let text = "";
+    for (let i = 0; i < ev.results.length; i++) text += ev.results[i][0].transcript;
+    finalText = text;  $("heard").textContent = "“" + text + "”";  resize();
+    // Chrome's other guesses (2nd and 3rd best), so Python can pick the one that fits best
+    alternatives = [];
+    for (let k = 1; k < 3; k++) {
+      let guess = "";
+      for (let i = 0; i < ev.results.length; i++) guess += (ev.results[i][k] || ev.results[i][0]).transcript;
+      guess = guess.trim();
+      if (guess && guess !== text.trim() && !alternatives.includes(guess)) alternatives.push(guess);
+    }
+  };
+  rec.onerror = ev => {
+    stop();
+    const msg = { "not-allowed": "The microphone is blocked. Allow it in the address bar, or type below.",
+                  "no-speech": "I didn't hear anything. Try again.",
+                  "network": "Voice needs an internet connection." }[ev.error] || ("Voice problem: " + ev.error);
+    $("status").textContent = IDLE;  $("note").textContent = msg;  resize();
+  };
+  rec.onend = () => {
+    stop();
+    if (finalText.trim()) {
+      $("status").textContent = "Got it! Finding the best practice for you…";
+      send("streamlit:setComponentValue", { value: { text: finalText.trim(), alts: alternatives, id: Date.now() }, dataType: "json" });
+    } else if (!$("note").textContent) {
+      $("status").textContent = IDLE;
+    }
+  };
+  rec.start();
+};
+</script></body></html>

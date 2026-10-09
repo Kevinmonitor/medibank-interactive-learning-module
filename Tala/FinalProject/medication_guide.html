@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<!--
+  Medication Guide (OSHC Compass)
+  A student walks through the steps of getting medicine from a pharmacy.
+  At every stop we show: what happens, what to do, what to say, and a tip.
+
+  File layout:
+    1. STYLES     - colours, layout and the walking animation
+    2. PAGE       - the hallway, buttons and info boxes
+    3. SCRIPT
+       3a. Settings and languages
+       3b. Step content (edit text here)
+       3c. Drawing the hallway
+       3d. Moving the person
+       3e. Updating the page
+       3f. Buttons and start-up
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medication Guide</title>
+
+<!-- ============================================================
+     1. STYLES
+     ============================================================ -->
+<style>
+  /* Colours used everywhere (change them here) */
+  :root {
+    --red: #C8322E;        /* main brand colour */
+    --red-soft: #FCEDEC;   /* light red background */
+    --navy: #1F3A5F;       /* signs and headings */
+    --ink: #1D2A3A;        /* main text */
+    --muted: #5E6B7A;      /* small grey text */
+    --line: #E3E6EA;       /* borders */
+    --wall: #F6F4F1;       /* hallway wall */
+    --floor: #E9E4DC;      /* hallway floor */
+    --route: #E07A1F;      /* orange highlight */
+    --teal: #2A8C82;       /* staff uniforms */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* Emergency banner at the top */
+  .alert {
+    display: flex; gap: 10px; align-items: center;
+    background: var(--red-soft); color: var(--red);
+    border-radius: 10px; padding: 8px 14px; margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .alert b { font-size: 1.3rem; }
+
+  /* Hallway box (scrolls sideways on small screens) */
+  .scene  { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .scroll { overflow-x: auto; scroll-behavior: smooth; }
+  svg     { display: block; width: 100%; min-width: 880px; height: auto; }
+
+  /* Each station: door + sign */
+  .station .door      { fill: #fff; stroke: #CBC4B8; stroke-width: 2; }
+  .station .sign      { fill: var(--navy); }
+  .station .sign-text { font: 700 13px system-ui, sans-serif; fill: #fff; }
+  .station .num       { fill: #fff; }
+  .station .num-text  { font: 800 12px system-ui, sans-serif; fill: var(--navy); }
+
+  /* Station states: already visited / current */
+  .station.done .sign     { fill: #5D7A73; }
+  .station.here .sign     { fill: var(--red); }
+  .station.here .num-text { fill: var(--red); }
+  .station.here .door     { stroke: var(--route); stroke-width: 3; }
+
+  /* Progress dots on the floor */
+  .dot    { fill: #CFC7BA; }
+  .dot.on { fill: var(--route); }
+
+  /* Walking animation: arms and legs swing */
+  .leg, .arm { transform-box: fill-box; transform-origin: top center; }
+  .walking .leg, .walking .arm { animation: swing 0.42s ease-in-out infinite alternate; }
+  .walking .leg2, .walking .arm2 { animation-direction: alternate-reverse; }
+  @keyframes swing {
+    from { transform: rotate(-26deg); }
+    to   { transform: rotate(26deg); }
+  }
+
+  /* Speech bubble above the current station */
+  #bubble       { transition: opacity 0.25s; }
+  .bubble-label { font: 700 10px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; fill: var(--red); }
+  .bubble-text  { font: 700 14px system-ui, sans-serif; fill: var(--ink); }
+
+  /* Buttons under the hallway */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-top: 1px solid var(--line);
+  }
+  .controls .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-name { font-weight: 700; color: var(--navy); }
+
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: 8px 14px; border-radius: 9px;
+    border: 1.5px solid var(--line); background: #fff; color: var(--ink);
+  }
+  button.primary { background: var(--red); border-color: var(--red); color: #fff; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  button:focus-visible { outline: 3px solid var(--route); outline-offset: 2px; }
+
+  /* Step heading + language buttons */
+  .head {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: baseline; justify-content: space-between;
+    margin: 16px 0 10px;
+  }
+  .eyebrow {
+    margin: 0; color: var(--red);
+    font: 700 11px ui-monospace, Menlo, monospace;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  h2 { margin: 2px 0 0; font-size: 1.4rem; line-height: 1.2; color: var(--navy); }
+
+  .lang { display: flex; gap: 6px; flex-wrap: wrap; }
+  .lang button { padding: 4px 10px; border-radius: 99px; font-weight: 600; }
+  .lang button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* Four info boxes in a row (stack on small screens) */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid { grid-template-columns: 1fr; } }
+
+  .box { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .box h3 {
+    margin: 0 0 6px; color: var(--muted);
+    font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .box p, .box ul { margin: 0; }
+  .box ul { padding-left: 18px; }
+  .box.do  { background: #F1F4F8; border-color: #F1F4F8; }
+  .box.say { background: var(--red-soft); border-color: var(--red-soft); }
+  .say-en  { font-weight: 700; }
+  .say-tr  { margin-top: 6px; font-size: 1.05rem; }
+
+  .small { margin: 10px 0 0; font-size: 0.78rem; color: var(--muted); }
+
+  /* The two big choices at the start */
+  .choose { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  @media (max-width: 640px) { .choose { grid-template-columns: 1fr; } }
+  .choose[hidden], .grid[hidden] { display: none; }
+  .pick {
+    text-align: left; padding: 16px 18px; border-radius: 14px; border: 2px solid var(--line);
+    background: #fff; display: flex; flex-direction: column; gap: 6px; font-weight: 400;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .pick:hover { transform: translateY(-3px); border-color: var(--navy); box-shadow: 0 5px 16px rgba(20,58,90,.15); }
+  .pick .badge { align-self: flex-start; font: 800 12px ui-monospace, Menlo, monospace; letter-spacing: .06em;
+                 padding: 3px 10px; border-radius: 99px; color: #fff; background: var(--teal); }
+  .pick.rx .badge { background: var(--red); }
+  .pick b { font-size: 1.15rem; color: var(--navy); }
+  .pick span { color: var(--muted); }
+  .pick .go { color: var(--red); font-weight: 700; }
+  .hint { margin: 10px 0 0; color: var(--muted); font-size: .9rem; }
+
+  /* Turn off animation for people who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    .walking .leg, .walking .arm { animation: none; }
+  }
+</style>
+</head>
+
+<body>
+<!-- ============================================================
+     2. PAGE
+     ============================================================ -->
+
+<!-- Emergency banner -->
+<div class="alert">
+  <b>000</b>
+  <span>Life-threatening emergency? Call 000 first. A pharmacy is not for emergencies.</span>
+</div>
+
+<!-- Hallway scene + controls -->
+<div class="scene">
+  <div class="scroll" id="scroll">
+    <svg id="hall" viewBox="0 0 1120 330" role="img"
+         aria-label="A student walking past each step of getting medicine at a pharmacy"></svg>
+  </div>
+  <div class="controls">
+    <span class="step-name" id="stepName"></span>
+    <div class="buttons">
+      <button id="againBtn">↺ Change type</button>
+      <button id="backBtn">Back</button>
+      <button id="playBtn">▶ Play all</button>
+      <button id="nextBtn" class="primary">Next step</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step title + language picker -->
+<div class="head" aria-live="polite">
+  <div>
+    <p class="eyebrow" id="eyebrow"></p>
+    <h2 id="title"></h2>
+  </div>
+  <div class="lang" id="langButtons"></div>
+</div>
+
+<!-- The two choices (shown first) -->
+<div class="choose" id="choose" hidden>
+  <button class="pick otc" id="pickOtc">
+    <span class="badge">OTC</span>
+    <b>Over-the-counter medicine</b>
+    <span>For example pain relief or cold and flu tablets. No prescription needed. You can look at the shelves yourself.</span>
+    <span class="go">Show me how →</span>
+  </button>
+  <button class="pick rx" id="pickRx">
+    <span class="badge">Rx</span>
+    <b>Prescription medicine</b>
+    <span>A doctor has to prescribe it. You go to the pharmacist with your prescription.</span>
+    <span class="go">Show me how →</span>
+  </button>
+</div>
+<p class="hint" id="hint" hidden>Not sure which one you need? Ask the pharmacist at the counter. They can tell you.</p>
+
+<!-- Info boxes -->
+<div class="grid" id="info">
+  <div class="box">
+    <h3>What happens here</h3>
+    <p id="what"></p>
+  </div>
+  <div class="box do">
+    <h3>What you need to do</h3>
+    <ul id="todo"></ul>
+  </div>
+  <div class="box say">
+    <h3>What to say</h3>
+    <p class="say-en" id="sayEn"></p>
+    <p class="say-tr" id="sayTr" hidden></p>
+  </div>
+  <div class="box">
+    <h3>Tip</h3>
+    <p id="tip"></p>
+  </div>
+</div>
+
+<p class="small" id="source"></p>
+<p class="small">
+  General information, not medical advice. Translations are samples and will be checked by native speakers.
+  Amounts can change: check your own cover summary.
+</p>
+
+<!-- ============================================================
+     3. SCRIPT
+     ============================================================ -->
+<script>
+/* ---------- 3a. Settings and languages ---------- */
+
+// Python replaces __LANG__ with the student's language (e.g. "si").
+// If the file is opened on its own, it starts in English.
+const START_LANG = "__LANG__";
+
+// Language buttons: code -> label
+const LANGUAGES = {
+  en: "English",
+  si: "සිංහල",
+  fa: "فارسی",
+  vi: "Tiếng Việt",
+  id: "Bahasa Indonesia"
+};
+
+// Languages written right to left
+const RTL_LANGUAGES = ["fa"];
+
+// Hallway layout
+const FLOOR_Y = 300;                         // where the person stands
+let stationCount = 1;                        // how many stations the hallway has now
+const stationX = i => stationCount < 2 ? 560 : 90 + i * (942 / (stationCount - 1));   // x position of station i
+const WALK_SPEED = 170;                      // pixels per second
+const PAUSE_BETWEEN_STEPS = 3000;            // ms, used by "Play all"
+
+
+// The brochure text. Python reads it from the PDF and puts it here (see Medication_Guide.py).
+// If the file is opened on its own, or a part is not found in the PDF, the saved text below is used.
+let PAYLOAD = {};
+try { PAYLOAD = JSON.parse(decodeURIComponent("__PDF_DATA__")); } catch (e) { PAYLOAD = {}; }
+const LIVE = !!PAYLOAD.facts;
+
+const F = Object.assign({
+  pharmacy: "A pharmacy is the place to go if you need to get medication.",
+  needRx: "Some medication can only be bought if you have been given a prescription from a doctor (GP or specialist).",
+  pbs: "The government’s Pharmaceutical Benefits Scheme (PBS) provides Australian residents, as well as certain international visitors covered by a Reciprocal Health Care Agreement with access to many prescription medicines at subsidised prices. However, most international visitors to Australia are not eligible under the PBS, which means they’ll be required to pay the full price of the medication they need.",
+  help: "Comprehensive OSHC provides benefits towards the cost of eligible prescription medicines.",
+  eligible: "Benefits are payable only for prescription medicines prescribed by a doctor (GP or specialist) to treat an illness, injury or condition.",
+  contribution: "$30",
+  pct: "100% of cost",
+  annualSingle: "$1,000",
+  annualFamily: "$1,000 per member / $2,000 per membership",
+  difference: "If the cost of the prescription medicine is higher than the benefit we pay, you must pay the difference.",
+  notCovered: "We don’t pay benefits towards prescription medicines for cosmetic purposes or for prescription medicines that relate to an Excluded service.",
+  highCost: "It’s important to note that you may have large out-of-pocket expenses if you need treatment that uses high-cost prescription medicines (e.g. prescription medicines used in cancer treatment).",
+  extrasCharge: "Benefits will be paid after a set charge has been deducted.",
+  extrasWait: "2 months",
+  top60: "$200", top75: "$400", top90: "$600",
+  healthy: "$500",
+  essential: "not covered"
+}, PAYLOAD.facts || {});
+
+// Printed brochure page numbers
+const PG = Object.assign({ help: 5, rx: 8, extras: 10 }, PAYLOAD.pages || {});
+
+/* ---------- 3b. Step content (edit text here) ---------- */
+// name   = sign above the door
+// bubble = short message in the speech bubble
+// tr     = translations of "say"
+
+const PATHS = {
+  rx: [
+  {
+    room: "doctor",
+    name: "Doctor",
+    bubble: "Ask the doctor for a prescription",
+    title: "1. Get a prescription",
+    what: `${F.needRx} You cannot take it from the open shelves.`,
+    todo: ["Tell the doctor what is wrong and which medicines you already take", "Ask the doctor to write the prescription (on paper or on your phone)", "Keep the prescription safe"],
+    say: "Can I have a prescription for this medicine, please?",
+    tr: {"si": "කරුණාකර මේ බෙහෙත සඳහා බෙහෙත් වට්ටෝරුවක් ලබා දෙන්න පුළුවන්ද?", "fa": "لطفاً می‌توانید برای این دارو نسخه بنویسید؟", "vi": "Bác sĩ có thể kê đơn thuốc này cho tôi được không ạ?", "id": "Bisakah saya minta resep untuk obat ini?"},
+    tip: `${F.eligible}`,
+    src: `Brochure pages ${PG.help} and ${PG.rx}. The list of things to do is our own advice.`
+  },
+  {
+    room: "pharmacy",
+    name: "Pharmacy",
+    bubble: "Prescription medicine: go to the pharmacist",
+    title: "2. Go to a pharmacy",
+    what: `${F.pharmacy} With a prescription, you do not look at the shelves yourself. You go straight to the pharmacist at the counter.`,
+    todo: ["Take your prescription (paper, or the e-prescription on your phone)", "Take your OSHC card and your student ID", "Go to the pharmacist at the counter"],
+    say: "Hi, I have a prescription.",
+    tr: {"si": "ආයුබෝවන්, මා ළඟ බෙහෙත් වට්ටෝරුවක් තියෙනවා.", "fa": "سلام، من نسخه دارم.", "vi": "Xin chào, tôi có đơn thuốc ạ.", "id": "Halo, saya punya resep."},
+    tip: "A pharmacy is also called a chemist. You do not need an appointment.",
+    src: `Brochure page ${PG.help} (first sentence). The rest is our own advice.`
+  },
+  {
+    room: "pharmacist",
+    name: "Pharmacist",
+    bubble: "Give your prescription to the pharmacist",
+    title: "3. Talk to the pharmacist",
+    what: "The pharmacist checks your prescription and gets your medicine ready. They can explain how and when to take it.",
+    todo: ["Give the prescription to the pharmacist", "Say if you have allergies or take other medicines", "Ask how and when to take the medicine"],
+    say: "How should I take this medicine?",
+    tr: {"si": "මේ බෙහෙත ගන්න ඕනේ කොහොමද?", "fa": "این دارو را چطور باید مصرف کنم؟", "vi": "Tôi nên uống thuốc này như thế nào ạ?", "id": "Bagaimana cara minum obat ini?"},
+    tip: "It is OK to ask the pharmacist to say it again in simpler words.",
+    src: "Our own advice, not from the brochure."
+  },
+  {
+    room: "price",
+    name: "Price",
+    bubble: "Most students pay the full price",
+    title: "4. Check the price",
+    what: `${F.pbs}`,
+    todo: ["Ask the price before you pay", "Remember: most international students do not get PBS prices", "Ask if a cheaper brand with the same medicine is available"],
+    say: "How much is this medicine?",
+    tr: {"si": "මේ බෙහෙතේ මිල කීයද?", "fa": "قیمت این دارو چقدر است؟", "vi": "Thuốc này giá bao nhiêu ạ?", "id": "Berapa harga obat ini?"},
+    tip: "If your country has a Reciprocal Health Care Agreement with Australia, you may get PBS prices. Check this before you buy.",
+    src: `Brochure page ${PG.help}. The first and third things to do are our own advice.`
+  },
+  {
+    room: "pay",
+    name: "Pay",
+    bubble: "Pay, then keep the receipt",
+    title: "5. Pay and keep your receipt",
+    what: "You pay at the counter. The receipt shows what you bought and what it cost. You will need it if you make a claim.",
+    todo: ["Pay at the counter", "Ask for a receipt", "Take a photo of the receipt so you do not lose it"],
+    say: "Can I have a receipt, please?",
+    tr: {"si": "කරුණාකර මට රිසිට්පතක් ලබා ගන්න පුළුවන්ද?", "fa": "لطفاً می‌توانم رسید داشته باشم؟", "vi": "Cho tôi xin hóa đơn được không ạ?", "id": "Boleh saya minta struk?"},
+    tip: "Keep the receipt. See the card “I need to make a claim” to learn how to claim the money back.",
+    src: "Our own advice, not from the brochure."
+  },
+  {
+    room: "oshc",
+    name: "Your OSHC",
+    bubble: "Comprehensive OSHC helps with the cost",
+    title: "6. What Comprehensive OSHC pays",
+    what: `${F.help} ${F.eligible}`,
+    todo: [`You pay a ${F.contribution} contribution. Medibank pays ${F.pct} (maximum per item)`, `Annual limit: ${F.annualSingle} for a single membership. Couple or family: ${F.annualFamily}`, F.difference],
+    say: "I have Medibank OSHC. Can I claim for this medicine?",
+    tr: {"si": "මා ළඟ Medibank OSHC තියෙනවා. මේ බෙහෙත සඳහා ක්ලේම් කරන්න පුළුවන්ද?", "fa": "من بیمه OSHC مدیبانک دارم. می‌توانم هزینه این دارو را مطالبه کنم؟", "vi": "Tôi có bảo hiểm Medibank OSHC. Tôi có thể yêu cầu chi trả thuốc này không ạ?", "id": "Saya punya Medibank OSHC. Bisakah saya mengklaim obat ini?"},
+    tip: `${F.notCovered} ${F.highCost}`,
+    src: `Brochure pages ${PG.help} and ${PG.rx}.`
+  },
+  {
+    room: "extras",
+    name: "Extras",
+    bubble: "Extras cover can add more",
+    title: "7. Extras cover for other medicines",
+    what: `Medibank Extras is a separate cover you can buy on top. It can pay towards prescription medicines that the PBS does not subsidise (non-PBS). ${F.extrasCharge} A waiting period of ${F.extrasWait} applies.`,
+    todo: [`Top Extras 60, 75 and 90: ${F.top60}, ${F.top75} and ${F.top90} each year`, `Healthy Start Extras: one combined limit of ${F.healthy}, shared with other services`, `Essential Extras 75: ${F.essential}`],
+    say: "Does my Extras cover pay for this medicine?",
+    tr: {"si": "මගේ Extras ආවරණයෙන් මේ බෙහෙත සඳහා ගෙවනවාද?", "fa": "آیا پوشش Extras من هزینه این دارو را می‌پردازد؟", "vi": "Gói Extras của tôi có chi trả thuốc này không ạ?", "id": "Apakah Extras saya menanggung obat ini?"},
+    tip: "The $ figure is the most Medibank pays for each service per calendar year, per member. Check your own cover summary before you buy.",
+    src: `Brochure page ${PG.extras} (Extras table, “Prescription pharmaceuticals (non-PBS)”).`
+  }
+  ],
+  otc: [
+  {
+    room: "pharmacy",
+    name: "Pharmacy",
+    bubble: "Over-the-counter: you can choose it yourself",
+    title: "1. Go to a pharmacy",
+    what: `Over-the-counter (OTC) medicine can be bought without a prescription, for example pain relief or cold and flu tablets. ${F.pharmacy} You can look at the shelves yourself.`,
+    todo: ["Look for the sign Pharmacy or Chemist", "Walk in and look at the shelves yourself", "Pharmacists are there to help if you have a question"],
+    say: "Hi, I'm looking for a medicine for a cold.",
+    tr: {"si": "ආයුබෝවන්, මම සෙම්ප්‍රතිශ්‍යාවට බෙහෙතක් සොයනවා.", "fa": "سلام، دنبال دارو برای سرماخوردگی می‌گردم.", "vi": "Xin chào, tôi đang tìm thuốc cảm ạ.", "id": "Halo, saya mencari obat flu."},
+    tip: "OTC means “over the counter”. You do not need a doctor or an appointment.",
+    src: `Brochure page ${PG.help} (one sentence). The rest is our own advice.`
+  },
+  {
+    room: "shelves",
+    name: "Shelves",
+    bubble: "Read the label before you choose",
+    title: "2. Look at the shelves yourself",
+    what: "Medicines on the shelves are grouped by problem, for example pain, cold and flu, stomach, allergy and skin. Pick one and read the label carefully.",
+    todo: ["Read what it is for and how much to take", "Check the warnings and the ingredients, especially if you have allergies", "Never take more than the label says"],
+    say: "Excuse me, where are the pain relief tablets?",
+    tr: {"si": "සමාවෙන්න, වේදනා නාශක පෙති තියෙන්නේ කොහෙද?", "fa": "ببخشید، قرص‌های مسکن کجاست؟", "vi": "Xin lỗi, thuốc giảm đau ở đâu ạ?", "id": "Permisi, di mana obat pereda nyeri?"},
+    tip: "The same ingredient can have different brand names and prices. The pharmacist can show you the cheaper one.",
+    src: "Our own advice, not from the brochure."
+  },
+  {
+    room: "pharmacist",
+    name: "Pharmacist",
+    bubble: "Not sure? Ask. Some medicines are behind the counter",
+    title: "3. Ask the pharmacist if you are not sure",
+    what: "Some medicines are kept behind the counter. You have to ask the pharmacist for them. The pharmacist can also check that a medicine is safe with your other medicines.",
+    todo: ["Say what the problem is and how long you have had it", "Tell them about allergies and other medicines you take", "Ask them to show you the right medicine"],
+    say: "Is this OK to take with my other medicine?",
+    tr: {"si": "මේක මගේ අනිත් බෙහෙත් එක්ක ගන්න කමක් නැද්ද?", "fa": "آیا مصرف این با داروهای دیگرم مشکلی ندارد؟", "vi": "Thuốc này uống cùng thuốc khác của tôi có được không ạ?", "id": "Apakah obat ini aman diminum bersama obat saya yang lain?"},
+    tip: "If you feel very sick, or the problem does not get better, see a GP instead.",
+    src: "Our own advice, not from the brochure."
+  },
+  {
+    room: "pay",
+    name: "Pay",
+    bubble: "Take it to the counter and pay",
+    title: "4. Pay at the counter",
+    what: "You take your medicine to the counter and pay, as in any shop. The pharmacist may ask if you have any questions.",
+    todo: ["Pay at the counter", "Ask for a receipt", "Read the label again at home before you take it"],
+    say: "Can I have a receipt, please?",
+    tr: {"si": "කරුණාකර මට රිසිට්පතක් ලබා ගන්න පුළුවන්ද?", "fa": "لطفاً می‌توانم رسید داشته باشم؟", "vi": "Cho tôi xin hóa đơn được không ạ?", "id": "Boleh saya minta struk?"},
+    tip: "Keep the receipt for your own records.",
+    src: "Our own advice, not from the brochure."
+  },
+  {
+    room: "oshc",
+    name: "Your OSHC",
+    bubble: "OSHC only pays for prescription medicine",
+    title: "5. Does OSHC pay for this?",
+    what: `Comprehensive OSHC: ${F.eligible} So you pay for over-the-counter medicine yourself.`,
+    todo: ["Over-the-counter medicine: you pay the full price", `Prescription medicine from a doctor: Medibank pays after a ${F.contribution} contribution`, "Go back and choose “Prescription medicine” to see how that works"],
+    say: "Is this medicine covered by OSHC?",
+    tr: {"si": "මේ බෙහෙත OSHC මගින් ආවරණය වෙනවාද?", "fa": "آیا OSHC هزینه این دارو را پوشش می‌دهد؟", "vi": "OSHC có chi trả thuốc này không ạ?", "id": "Apakah OSHC menanggung obat ini?"},
+    tip: "Not sure which kind of medicine you need? The pharmacist can tell you.",
+    src: `Brochure page ${PG.rx} (Prescription medicines).`
+  }
+  ]
+};
+
+// Shown first: the student picks one of the two ways
+const CHOOSE = {
+    room: "pharmacy",
+    name: "Pharmacy",
+    bubble: "What kind of medicine do you need?",
+    title: "What kind of medicine do you need?",
+    what: "",
+    todo: [],
+    say: "",
+    tr: {},
+    tip: "",
+    src: ""
+  };
+let STEPS = [CHOOSE];
+let choosing = true;
+
+/* ---------- Page state ---------- */
+let step = 0;                                  // current step number
+let lang = LANGUAGES[START_LANG] ? START_LANG : "en";
+let personX = stationX(0) - 60;                // person starts just left of the entrance
+let autoplay = false;                          // true while "Play all" runs
+let frame = 0;                                 // animation frame id
+
+const $ = id => document.getElementById(id);   // short helper
+
+
+/* ---------- 3c. Drawing the hallway ---------- */
+
+// A simple staff member (head + body)
+function drawStaff(x, y, colour = "var(--teal)") {
+  return `
+    <circle cx="${x}" cy="${y - 38}" r="8" fill="#C98E68"/>
+    <rect x="${x - 9}" y="${y - 29}" width="18" height="24" rx="6" fill="${colour}"/>`;
+}
+
+// What is inside each doorway (one drawing per station)
+const ROOM_DRAWINGS = [
+  // 0 Doctor: doctor at a desk, writing a prescription
+  x => drawStaff(x - 14, 196) + `
+    <rect x="${x - 38}" y="196" width="76" height="40" rx="3" fill="#D9D2C6"/>
+    <rect x="${x + 4}" y="168" width="28" height="34" rx="2" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x + 9}" y="176" width="18" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 9}" y="182" width="18" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 9}" y="188" width="12" height="2" fill="#B7C3CC"/>
+    <text x="${x + 18}" y="174" text-anchor="middle" font-size="8" font-weight="800" fill="var(--red)" font-family="system-ui">Rx</text>`,
+
+  // 1 Pharmacy: glass door with a green cross
+  x => `
+    <rect x="${x - 38}" y="120" width="36" height="116" fill="#DCEBF2" stroke="#AFC6D1"/>
+    <rect x="${x + 2}"  y="120" width="36" height="116" fill="#DCEBF2" stroke="#AFC6D1"/>
+    <rect x="${x - 6}" y="126" width="12" height="36" rx="2" fill="#1E8E4E"/>
+    <rect x="${x - 18}" y="138" width="36" height="12" rx="2" fill="#1E8E4E"/>`,
+
+  // 2 Pharmacist: pharmacist at a counter, shelf of medicine boxes behind
+  x => `
+    <rect x="${x - 38}" y="124" width="76" height="4" fill="#B8AFA0"/>
+    <rect x="${x - 34}" y="108" width="14" height="16" rx="2" fill="#C8322E"/>
+    <rect x="${x - 16}" y="112" width="12" height="12" rx="2" fill="#8FA7B8"/>
+    <rect x="${x + 2}"  y="106" width="14" height="18" rx="2" fill="#2A8C82"/>
+    <rect x="${x + 22}" y="112" width="12" height="12" rx="2" fill="#E0A77E"/>` +
+    drawStaff(x + 8, 200, "#F4F7F9") + `
+    <rect x="${x - 38}" y="200" width="76" height="36" rx="3" fill="#D9D2C6"/>
+    <rect x="${x - 26}" y="188" width="14" height="12" rx="2" fill="#C8322E"/>`,
+
+  // 3 Price: a price screen
+  x => `
+    <rect x="${x - 34}" y="130" width="68" height="40" rx="4" fill="#20303F"/>
+    <text x="${x}" y="148" text-anchor="middle" font-size="9" fill="#9FB3C3" font-family="monospace">FULL PRICE</text>
+    <text x="${x}" y="164" text-anchor="middle" font-size="14" font-weight="800" fill="#F2C94C" font-family="monospace">$ $ $</text>
+    <rect x="${x - 38}" y="200" width="76" height="36" rx="3" fill="#D9D2C6"/>
+    <rect x="${x - 10}" y="186" width="20" height="14" rx="2" fill="#fff" stroke="#B7C3CC"/>`,
+
+  // 4 Pay: card machine and receipt
+  x => `
+    <rect x="${x - 38}" y="200" width="76" height="36" rx="3" fill="#D9D2C6"/>
+    <rect x="${x - 30}" y="172" width="26" height="28" rx="3" fill="#40576F"/>
+    <rect x="${x - 26}" y="177" width="18" height="8" rx="1" fill="#7FE0B3"/>
+    <rect x="${x + 8}" y="150" width="22" height="50" rx="1" fill="#fff" stroke="#B7C3CC"/>
+    <rect x="${x + 12}" y="158" width="14" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 12}" y="165" width="14" height="2" fill="#B7C3CC"/>
+    <rect x="${x + 12}" y="172" width="9"  height="2" fill="#B7C3CC"/>
+    <text x="${x + 19}" y="190" text-anchor="middle" font-size="9" font-weight="800" fill="var(--red)" font-family="system-ui">$</text>`,
+
+  // 5 Your OSHC: the OSHC card
+  x => `
+    <rect x="${x - 32}" y="140" width="64" height="42" rx="6" fill="var(--red)"/>
+    <rect x="${x - 32}" y="150" width="64" height="8" fill="#A82824"/>
+    <text x="${x}" y="174" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui">OSHC</text>
+    <path d="M${x} 196 l8 4 v10 c0 6 -4 10 -8 12 c-4 -2 -8 -6 -8 -12 v-10 z" fill="#1E8E4E"/>`,
+
+  // 6 Extras: a card with a plus
+  x => `
+    <rect x="${x - 32}" y="140" width="64" height="42" rx="6" fill="var(--navy)"/>
+    <text x="${x}" y="166" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui">EXTRAS</text>
+    <circle cx="${x + 24}" cy="198" r="14" fill="#F2C94C"/>
+    <rect x="${x + 22}" y="190" width="4" height="16" fill="var(--navy)"/>
+    <rect x="${x + 16}" y="196" width="16" height="4" fill="var(--navy)"/>`,
+
+  // 7 Shelves: rows of medicine boxes
+  x => [124, 160, 196].map((y, row) => `
+    <rect x="${x - 40}" y="${y + 26}" width="80" height="3" fill="#B8AFA0"/>` +
+    ["#C8322E", "#8FA7B8", "#2A8C82", "#E0A77E", "#C8322E"].map((c, k) => `
+    <rect x="${x - 38 + k * 16 + (row % 2) * 3}" y="${y + 6 + (k % 2) * 6}" width="12" height="${20 - (k % 2) * 6}" rx="2" fill="${c}"/>`).join("")
+  ).join("") + `
+    <text x="${x}" y="122" text-anchor="middle" font-size="9" font-weight="800" fill="#1E8E4E" font-family="system-ui">OTC</text>`
+];
+const ROOM_INDEX = { doctor: 0, pharmacy: 1, pharmacist: 2, price: 3, pay: 4, oshc: 5, extras: 6, shelves: 7 };
+
+// One station: door, inside drawing, sign and floor dot
+function drawStation(stepInfo, i) {
+  const x = stationX(i);
+  return `
+    <g class="station" id="station${i}">
+      <rect class="door" x="${x - 46}" y="108" width="92" height="128" rx="4"/>
+      ${ROOM_DRAWINGS[ROOM_INDEX[stepInfo.room]](x)}
+      <rect class="sign" x="${x - 66}" y="72" width="132" height="28" rx="6"/>
+      <circle class="num" cx="${x - 50}" cy="86" r="9"/>
+      <text class="num-text" x="${x - 50}" y="90" text-anchor="middle">${i + 1}</text>
+      <text class="sign-text" x="${x - 34}" y="91">${stepInfo.name}</text>
+    </g>
+    <circle class="dot" id="dot${i}" cx="${x}" cy="${FLOOR_Y + 16}" r="6"/>`;
+}
+
+// The speech bubble (text is filled in later)
+function drawBubble() {
+  return `
+    <g id="bubble" opacity="0">
+      <rect id="bubbleBox" x="0" y="8" width="230" height="52" rx="10"
+            fill="#fff" stroke="var(--route)" stroke-width="2"/>
+      <path id="bubbleTail" d="" fill="#fff" stroke="var(--route)" stroke-width="2"/>
+      <text id="bubbleLabel" class="bubble-label" x="0" y="28">HERE YOU NEED TO</text>
+      <text id="bubbleText" class="bubble-text" x="0" y="48"></text>
+    </g>`;
+}
+
+// The student: legs and arms swing while walking, holding an OSHC card
+function drawPerson() {
+  return `
+    <g id="person">
+      <ellipse cx="0" cy="30" rx="13" ry="4" fill="rgba(0,0,0,.15)"/>
+      <g id="body">
+        <rect class="leg leg1" x="-6"  y="10" width="5"   height="18" rx="2.5" fill="#1F3A5F"/>
+        <rect class="leg leg2" x="1"   y="10" width="5"   height="18" rx="2.5" fill="#1F3A5F"/>
+        <rect class="arm arm1" x="-12" y="-6" width="4.5" height="16" rx="2.2" fill="#E0A77E"/>
+        <rect class="arm arm2" x="7.5" y="-6" width="4.5" height="16" rx="2.2" fill="#E0A77E"/>
+        <rect x="-8" y="-8" width="16" height="21" rx="6" fill="var(--red)"/>
+        <circle cx="0" cy="-16" r="8" fill="#E0A77E"/>
+        <path d="M-8 -17a8 8 0 0 1 16 0c-3-3-10-4-16 0z" fill="#2B2B2B"/>
+        <rect x="9" y="4" width="10" height="7" rx="1.5" fill="#fff" stroke="var(--red)" stroke-width="1.5"/>
+      </g>
+    </g>`;
+}
+
+// Build the whole hallway once
+function drawHall() {
+  const first = stationX(0);
+  const last = stationX(STEPS.length - 1);
+
+  $("hall").innerHTML = `
+    <rect width="1120" height="250" fill="var(--wall)"/>
+    <rect y="236" width="1120" height="94" fill="var(--floor)"/>
+    <rect y="236" width="1120" height="4" fill="#D6CFC3"/>
+    <line x1="${first}" y1="${FLOOR_Y + 16}" x2="${last}" y2="${FLOOR_Y + 16}"
+          stroke="#D2C9BB" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+    ${STEPS.map(drawStation).join("")}
+    ${drawBubble()}
+    ${drawPerson()}`;
+}
+
+
+/* ---------- 3d. Moving the person ---------- */
+
+// Put the person at personX, facing left (-1) or right (1)
+function placePerson(direction) {
+  $("person").setAttribute("transform", `translate(${personX} ${FLOOR_Y - 22}) scale(1.5)`);
+  if (direction) {
+    $("body").setAttribute("transform", direction < 0 ? "scale(-1 1)" : "");
+  }
+}
+
+// Show or hide the speech bubble over the current station
+function showBubble(show) {
+  const bubble = $("bubble");
+  if (!show) { bubble.setAttribute("opacity", 0); return; }
+
+  const text = STEPS[step].bubble;
+  const x = stationX(step);
+  const width = Math.max(200, text.length * 8.6 + 32);
+  const left = Math.min(1110 - width, Math.max(10, x - width / 2));   // keep inside the picture
+
+  $("bubbleBox").setAttribute("x", left);
+  $("bubbleBox").setAttribute("width", width);
+  $("bubbleLabel").setAttribute("x", left + 14);
+  $("bubbleText").setAttribute("x", left + 14);
+  $("bubbleText").textContent = text;
+  $("bubbleTail").setAttribute("d", `M${x - 8} 59 L${x} 70 L${x + 8} 59`);
+  bubble.setAttribute("opacity", 1);
+}
+
+// On small screens, scroll the hallway to keep the person in view
+function keepPersonInView() {
+  const box = $("scroll");
+  if (box.scrollWidth > box.clientWidth) {
+    const scale = box.scrollWidth / 1120;
+    box.scrollLeft = personX * scale - box.clientWidth / 2;
+  }
+}
+
+// Walk to targetX, then run onArrive
+function walkTo(targetX, onArrive) {
+  cancelAnimationFrame(frame);
+  showBubble(false);
+  $("person").classList.add("walking");
+
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const speed = reduceMotion ? 9999 : WALK_SPEED;
+  let lastTime = performance.now();
+
+  function tick(now) {
+    const seconds = Math.min(50, now - lastTime) / 1000;
+    lastTime = now;
+    const distance = targetX - personX;
+    const stepSize = speed * seconds;
+
+    // Arrived
+    if (Math.abs(distance) <= stepSize) {
+      personX = targetX;
+      placePerson(Math.sign(distance));
+      $("person").classList.remove("walking");
+      keepPersonInView();
+      showBubble(true);
+      if (onArrive) onArrive();
+      return;
+    }
+
+    // Keep walking
+    personX += Math.sign(distance) * stepSize;
+    placePerson(Math.sign(distance));
+    keepPersonInView();
+    frame = requestAnimationFrame(tick);
+  }
+
+  frame = requestAnimationFrame(tick);
+}
+
+
+/* ---------- 3e. Updating the page ---------- */
+
+// Colour the stations and dots for the current step
+function updateStations() {
+  STEPS.forEach((_, i) => {
+    $("station" + i).classList.toggle("here", i === step);
+    $("station" + i).classList.toggle("done", i < step);
+    $("dot" + i).classList.toggle("on", i <= step);
+  });
+}
+
+// Fill the four info boxes
+function updateInfo() {
+  const s = STEPS[step];
+  $("stepName").textContent = choosing ? "Start here" : `Step ${step + 1} of ${STEPS.length}: ${s.name}`;
+  $("eyebrow").textContent = choosing ? "Start" : `Step ${step + 1} · ${s.name}`;
+  $("title").textContent = s.title;
+  $("what").textContent = s.what;
+  $("todo").innerHTML = s.todo.map(item => `<li>${item}</li>`).join("");
+  $("sayEn").textContent = `“${s.say}”`;
+  $("tip").textContent = s.tip;
+  $("source").textContent = "Source: " + s.src + (LIVE && s.src.startsWith("Brochure") ? " The brochure text is read from the PDF." : "");
+  updateTranslation();
+}
+
+// Show the phrase in the chosen language (hidden for English)
+function updateTranslation() {
+  const box = $("sayTr");
+  if (lang === "en") { box.hidden = true; return; }
+  box.hidden = false;
+  box.textContent = STEPS[step].tr[lang];
+  box.lang = lang;
+  box.dir = RTL_LANGUAGES.includes(lang) ? "rtl" : "ltr";
+}
+
+// Draw the language buttons
+function updateLanguageButtons() {
+  $("langButtons").innerHTML = Object.entries(LANGUAGES)
+    .map(([code, label]) =>
+      `<button lang="${code}" data-lang="${code}" aria-pressed="${code === lang}">${label}</button>`)
+    .join("");
+
+  $("langButtons").querySelectorAll("button").forEach(btn => {
+    btn.onclick = () => {
+      lang = btn.dataset.lang;
+      updateLanguageButtons();
+      updateTranslation();
+    };
+  });
+}
+
+// Enable/disable buttons and set their labels
+function updateButtons() {
+  $("backBtn").disabled = choosing || step === 0;
+  $("playBtn").disabled = choosing;
+  $("nextBtn").disabled = choosing;
+  $("againBtn").hidden = choosing;
+  $("nextBtn").textContent = step === STEPS.length - 1 ? "Start again" : "Next step";
+  $("playBtn").textContent = autoplay ? "❚❚ Pause" : "▶ Play all";
+  $("choose").hidden = !choosing;
+  $("hint").hidden = !choosing;
+  $("info").hidden = choosing;
+  $("source").hidden = choosing;
+}
+
+// Update everything, then walk to the current station
+function goToStep(newStep) {
+  step = newStep;
+  updateStations();
+  updateInfo();
+  updateButtons();
+  walkTo(stationX(step), whenArrived);
+}
+
+// During "Play all", wait a bit then move to the next step
+function whenArrived() {
+  if (!autoplay) return;
+  setTimeout(() => {
+    if (!autoplay) return;
+    if (step < STEPS.length - 1) {
+      goToStep(step + 1);
+    } else {
+      stopPlaying();
+    }
+  }, PAUSE_BETWEEN_STEPS);
+}
+
+// Put the person back at the start
+function restart() {
+  personX = stationX(0) - 60;
+  placePerson(1);
+  goToStep(0);
+}
+
+function stopPlaying() {
+  autoplay = false;
+  updateButtons();
+}
+
+
+/* ---------- 3f. Buttons and start-up ---------- */
+
+$("nextBtn").onclick = () => {
+  stopPlaying();
+  if (step < STEPS.length - 1) goToStep(step + 1);
+  else restart();
+};
+
+$("backBtn").onclick = () => {
+  stopPlaying();
+  if (step > 0) goToStep(step - 1);
+};
+
+$("playBtn").onclick = () => {
+  autoplay = !autoplay;
+  updateButtons();
+  if (!autoplay) return;
+  if (step === STEPS.length - 1) restart();
+  else goToStep(step);
+};
+
+// Choosing the type of medicine: show the pharmacy door and the two big buttons
+function showChoose() {
+  stopPlaying();
+  choosing = true;
+  STEPS = [CHOOSE];
+  stationCount = 1;
+  step = 0;
+  personX = stationX(0) - 90;
+  drawHall();
+  placePerson(1);
+  updateStations();
+  updateInfo();
+  updateButtons();
+  walkTo(stationX(0) - 70, null);
+}
+
+// Start one of the two ways
+function startPath(key) {
+  choosing = false;
+  STEPS = PATHS[key];
+  stationCount = STEPS.length;
+  personX = stationX(0) - 60;
+  drawHall();
+  placePerson(1);
+  goToStep(0);
+}
+
+$("pickOtc").onclick = () => startPath("otc");
+$("pickRx").onclick  = () => startPath("rx");
+$("againBtn").onclick = showChoose;
+
+// Start
+updateLanguageButtons();
+showChoose();
+</script>
+</body>
+</html>
