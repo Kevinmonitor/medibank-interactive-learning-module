@@ -1,4 +1,5 @@
 import html
+import numpy
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
@@ -31,27 +32,44 @@ st.html('<style>' \
 '}' \
 '</style>')
 
+# https://docs.streamlit.io/develop/api-reference/layout/st.container
+def stat(value:float,ceiling:float,text):
+    value = value / ceiling
+    print(ceiling)
+    with st.container(border=True):
+        st.subheader(f'{value*100}%')
+        st.text(text)
+
 table(data1)
 table(data2)
+with st.container(horizontal=True):
+    stat(pd.to_numeric(data1.loc[2,'VALUE']),data1['VALUE'].sum(),'VALUE1')
+    #https://stackoverflow.com/questions/40804706/sum-all-columns-in-a-pandas-dataframe-where-there-are-non-numeric-values
+    stat(pd.to_numeric(data2.iloc[2,3]),pd.to_numeric(data2.iloc[2],errors='coerce').sum(numeric_only=True),f"{data2.iloc[2,0]} is {data2.columns.to_list()[3]}")
 
-st.bar_chart(data1,x='METRIC')
-#https://docs.streamlit.io/develop/api-reference/charts/st.plotly_chart
-st.plotly_chart(px.pie(data1,names='METRIC',values='VALUE'))
-st.bar_chart(data2,x='METRIC',stack=False)
-st.area_chart(data1,x='METRIC')
-st.line_chart(data2,x='METRIC')
-columns = data2.columns.tolist()
-count = len(columns)
-dat = [
-            go.Pie(hole=(i/count), values=data2[columns[i]],labels=data2['METRIC'],domain={
-                'x':[1-((i+1)/count),((i+1)/count)], 'y':[1-((i+1)/count),((i+1)/count)]
-            }
-            )
-            for i in range(0,count)
-        ]
-print(dat)
-st.plotly_chart(
-    go.Figure(
-        data=dat
+
+with st.container(horizontal=True):
+
+    st.bar_chart(data1,x='METRIC')
+    #https://docs.streamlit.io/develop/api-reference/charts/st.plotly_chart
+    st.plotly_chart(px.pie(data1,names='METRIC',values='VALUE'))
+with st.container(horizontal=True):
+    st.bar_chart(data2,x='METRIC',stack=False)
+    st.area_chart(data1,x='METRIC')
+with st.container(horizontal=True):
+    st.line_chart(data2,x='METRIC')
+    columns = data2.columns.tolist()
+    count = len(columns)
+    #https://community.plotly.com/t/make-double-donut-plots-or-donut-plot-with-subgroups/13755/3
+    dat = [
+                go.Pie(hole=(i/count), values=data2[columns[i]],labels=data2['METRIC'],domain={
+                    'x':[1-((i+1)/count),((i+1)/count)], 'y':[1-((i+1)/count),((i+1)/count)]
+                }
+                )
+                for i in range(0,count)
+            ]
+    st.plotly_chart(
+        go.Figure(
+            data=dat
+        )
     )
-)

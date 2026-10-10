@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<!--
+  Comprehensive OSHC coverage (OSHC Compass)
+  1. "Is it covered?"  - type a service, see if it is Included, Excluded, or only in Extras.
+  2. The main benefits - hospital, doctor, medicine, ambulance, mental health, extra support.
+  3. Extras plans      - pick a plan and see what it adds.
+  4. Good to know      - who it is for, waiting periods, annual limits.
+
+  All numbers and sentences come from the OSHC brochure PDF. Python (Coverage_Guide.py) reads the PDF
+  and puts the data into the line "__PDF_DATA__" below. If the file is opened on its own, or a part is not
+  found in the PDF, the saved copy (SAVED, further down) is used.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coverage Guide</title>
+<style>
+  :root {
+    --red: #C8322E; --red-soft: #FCEDEC; --navy: #1F3A5F; --ink: #1D2A3A; --muted: #5E6B7A;
+    --line: #E3E6EA; --green: #1E8E4E; --green-soft: #E8F5EE; --blue: #2B5FA8; --blue-soft: #E9F0FA;
+    --amber: #B7791F; --amber-soft: #FDF4E3; --grey-soft: #F1F4F8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: var(--ink);
+         font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif; }
+  h2 { margin: 0 0 4px; font-size: 1.5rem; line-height: 1.2; color: var(--navy); }
+  h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--navy); }
+  section { margin: 0 0 26px; }
+  .eyebrow { margin: 0; color: var(--red); font: 700 11px ui-monospace, Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; }
+  .lead { margin: 4px 0 0; color: var(--ink); }
+  .small { margin: 6px 0 0; font-size: .78rem; color: var(--muted); }
+  .src { margin: 6px 0 0; font-size: .75rem; color: var(--muted); }
+
+  .hero { background: var(--grey-soft); border-radius: 14px; padding: 16px 18px; margin-bottom: 22px; }
+
+  /* Search */
+  .search { display: flex; gap: 8px; }
+  .search input { flex: 1; font: inherit; padding: 11px 14px; border: 2px solid var(--line); border-radius: 12px; }
+  .search input:focus { outline: none; border-color: var(--navy); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+  .chip { font: inherit; font-weight: 600; font-size: .85rem; padding: 4px 11px; border-radius: 99px; cursor: pointer;
+          border: 1.5px solid var(--line); background: #fff; color: var(--ink); }
+  .chip:hover { border-color: var(--navy); }
+  .chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .chip:focus-visible, .search input:focus-visible { outline: 3px solid #E07A1F; outline-offset: 2px; }
+
+  .result { border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-top: 10px; display: grid;
+            grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; }
+  .badge { font: 800 11px ui-monospace, Menlo, monospace; letter-spacing: .05em; text-transform: uppercase; padding: 4px 9px;
+           border-radius: 99px; white-space: nowrap; align-self: start; margin-top: 2px; }
+  .b-in    { background: var(--green-soft); color: var(--green); }
+  .b-out   { background: var(--red-soft);   color: var(--red); }
+  .b-extra { background: var(--blue-soft);  color: var(--blue); }
+  .b-spec  { background: var(--amber-soft); color: var(--amber); }
+  .result b.title { font-size: 1.02rem; color: var(--navy); }
+  .result p { margin: 2px 0 0; grid-column: 2; }
+  .result .note { color: var(--muted); font-size: .88rem; }
+  .plans { grid-column: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; margin-top: 6px; }
+  .plan { background: var(--grey-soft); border-radius: 8px; padding: 6px 9px; font-size: .85rem; }
+  .plan b { display: block; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .none { margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: var(--amber-soft); }
+
+  /* Tiles */
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .tiles { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } }
+  .tile { border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .tile .ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--red-soft); margin-bottom: 4px; }
+  .tile .ico svg { width: 22px; height: 22px; }
+  .tile .big { font-size: 1.55rem; font-weight: 800; color: var(--red); line-height: 1.15; }
+  .tile p { margin: 0; font-size: .92rem; }
+  .tile .muted { color: var(--muted); font-size: .82rem; }
+
+  /* Extras */
+  .table-wrap { overflow-x: auto; border: 1.5px solid var(--line); border-radius: 12px; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  th, td { text-align: left; padding: 7px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--grey-soft); font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td.no { color: var(--muted); }
+  td.amt { font-weight: 700; white-space: nowrap; }
+
+
+  /* Scenarios */
+  .scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 10px; }
+  .sc { font: inherit; text-align: left; cursor: pointer; border: 1.5px solid var(--line); background: #fff; border-radius: 14px;
+        padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; color: var(--ink); }
+  .sc:hover { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(31,58,95,.12); }
+  .sc[aria-pressed="true"] { border-color: var(--navy); background: var(--blue-soft); }
+  .sc .em { font-size: 1.6rem; line-height: 1.2; }
+  .sc b { color: var(--navy); font-size: .95rem; }
+  .sc span.s { color: var(--muted); font-size: .8rem; }
+  .sc:focus-visible { outline: 3px solid #E07A1F; outline-offset: 2px; }
+  .story { margin-top: 12px; border: 1.5px solid var(--navy); border-radius: 14px; padding: 14px 16px; background: #fff; }
+  .story[hidden] { display: none; }
+  .story h4 { margin: 0 0 8px; color: var(--navy); font-size: 1.05rem; }
+  .story ol { list-style: none; margin: 0; padding: 0; counter-reset: st; }
+  .story li { display: grid; grid-template-columns: 30px 1fr; gap: 4px 10px; padding: 8px 0; border-top: 1px dashed var(--line); }
+  .story li:first-child { border-top: 0; }
+  .story li::before { counter-increment: st; content: counter(st); width: 26px; height: 26px; border-radius: 50%; background: var(--navy);
+                      color: #fff; display: grid; place-items: center; font-weight: 700; font-size: .85rem; }
+  .story li .badge { display: inline-block; margin: 0 6px 0 0; }
+  .story li p { margin: 0; }
+  .story li .what { font-weight: 700; color: var(--navy); }
+
+  ul.know { margin: 0; padding-left: 20px; }
+  ul.know li { margin: 0 0 7px; }
+  a { color: var(--navy); }
+</style>
+</head>
+
+<body>
+<section>
+  <h3>What if…? Pick a situation</h3>
+  <p class="lead">Tap a situation to see what Comprehensive OSHC does (and does not) pay for.</p>
+  <div class="scen" id="scen"></div>
+  <div class="story" id="story" hidden></div>
+</section>
+
+<p class="small" id="bottom"></p>
+
+<script>
+/* ---------- 1. Data: from the PDF, or the saved copy ---------- */
+
+let PAYLOAD = {};
+try { PAYLOAD = JSON.parse(decodeURIComponent("__PDF_DATA__")); } catch (e) { PAYLOAD = {}; }
+const LIVE = !!(PAYLOAD && PAYLOAD.facts);
+
+// The saved copy (what the brochure said when this file was made). Used if the PDF cannot be read.
+const SAVED = {
+ "facts": {
+  "intro": "Comprehensive OSHC can help pay towards the cost of a range of in-hospital procedures as well as out-of-hospital medical services, such as visits to a general practitioner (GP) or specialist services like x-rays. It can also help with the cost of a range of prescription medicines and eligible emergency ambulance services Australia-wide.",
+  "who1": "Do not hold permanent resident status in Australia",
+  "who2": "Are not eligible for full Medicare benefits",
+  "who3": "Are/will be in Australia on a 500 Student visa subclass as an Overseas Student, or an eligible Dependant of an Overseas Student",
+  "hospitalIntro": "Hospital cover can help pay towards your treatment when you’re admitted to hospital as a private patient. It also helps pay towards the cost of accommodation and medical services for Included services provided in hospital.",
+  "waitNote": "It’s important to be aware that waiting periods may apply to some services, including Pre-existing Conditions and Pregnancy and birth services.",
+  "cosmetic": "Medibank does not pay towards cosmetic treatment or services without an MBS item.",
+  "pharmaLimited": "Under Comprehensive OSHC, we pay limited benefits towards pharmaceuticals. You may have large out-of-pocket expenses if you require high-cost drugs, such as those used in oncology (cancer treatment).",
+  "waitingPeriods": "A waiting period applies when you join Medibank, or change your cover to include new or upgraded services. We won’t pay benefits for any items purchased or services received while you are serving a waiting period.",
+  "extrasSeparate": "You can purchase a Medibank Extras cover separately to help towards the cost of everyday health services, like dental and optical.",
+  "mbsDef": "The Medicare Benefits Schedule (MBS) is a list of all the medical services subsidised by the government for Australian residents, including visiting a GP or seeing a specialist, as well as the recommended fees for those services, known as the MBS fee.",
+  "mustPayDiff": "You must pay any difference between the benefit we pay and the actual fee charged for the service.",
+  "eligible": "Benefits are payable only for prescription medicines prescribed by a doctor (GP or specialist) to treat an illness, injury or condition.",
+  "contribution": "$30",
+  "pct": "100% of cost",
+  "annualSingle": "$1,000",
+  "annualFamily": "$1,000 per member / $2,000 per membership",
+  "notCovered": "We don’t pay benefits towards prescription medicines for cosmetic purposes or for prescription medicines that relate to an Excluded service.",
+  "highCost": "It’s important to note that you may have large out-of-pocket expenses if you need treatment that uses high-cost prescription medicines (e.g. prescription medicines used in cancer treatment).",
+  "ambulanceHelp": "eligible emergency ambulance services Australia-wide",
+  "ambulanceNote": "For ambulance attendance or transportation to a hospital where immediate medical attention is required and your condition is such that you couldn’t be transported any other way.",
+  "mentalIntro": "Comprehensive OSHC provides benefits towards psychology, counselling and mental health social workers services received from recognised providers and billed without an MBS item number.",
+  "psychiatric": "With Medibank OSHC, you’ll have immediate access to hospital psychiatric services even if it’s treatment for a pre-existing condition.",
+  "repatriation": "$100,000",
+  "remains": "$10,000",
+  "repatNote": "The provision of any repatriation benefit is at our discretion and is payable only once per member per lifetime. Conditions apply, including waiting periods.",
+  "boarder": "$150",
+  "annualLimit": "An annual limit is the maximum amount of benefits payable per member and/or per membership, within a calendar year (1 January to 31 December).",
+  "phoneAu": "134 148",
+  "hours": "Monday to Friday 8am-8pm AEST",
+  "gpRate": "100%",
+  "specRate": "85%",
+  "psychology": "$100",
+  "social": "$70",
+  "limitSingle": "$200",
+  "limitFamily": "$400"
+ },
+ "pages": {
+  "intro": "page 2",
+  "hosp": "page 6",
+  "medical": "page 8",
+  "rx": "page 8",
+  "extras": "page 10",
+  "mental": "page 13",
+  "more": "page 13",
+  "limits": "page 13",
+  "contact": "the back cover",
+  "amb": "page 2",
+  "hosptbl": "page 7"
+ },
+ "hospital": [
+  {
+   "name": "Rehabilitation",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Hospital psychiatric services",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Palliative care",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Brain and nervous system",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Eye (not cataracts)",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Ear, nose and throat",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Tonsils, adenoids and grommets",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Bone, joint and muscle",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Joint reconstructions",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Kidney and bladder",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Male reproductive system",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Digestive system",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Hernia and appendix",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Gastrointestinal endoscopy",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Gynaecology",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Miscarriage and termination of pregnancy",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Chemotherapy, radiotherapy and immunotherapy for cancer",
+   "in": true,
+   "note": "We will only pay towards cancer-related surgery related to an Included service under your cover."
+  },
+  {
+   "name": "Pain management",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Skin",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Breast surgery (medically necessary)",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Diabetes management (excluding insulin pumps)",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Heart and vascular system",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Lung and chest",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Blood",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Back, neck and spine",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Plastic and reconstructive surgery (medically necessary)",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Dental surgery",
+   "in": true,
+   "note": "For Dental surgery performed by a dentist rather than a medical practitioner we only pay benefits towards hospital charges. If the surgery is performed by a medical practitioner and an MBS item number is billed, we will pay benefits towards the hospital and medical charges."
+  },
+  {
+   "name": "Podiatric surgery (provided by a registered podiatric surgeon)",
+   "in": true,
+   "note": "For Podiatric surgery we only pay benefits towards hospital charges. There are no MBS items for podiatric surgery. This means we also don’t pay any benefits towards the podiatric surgeon’s fees under Hospital cover and you could incur significant out-of-pocket expenses."
+  },
+  {
+   "name": "Implantation of hearing devices",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Cataracts",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Joint replacements",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Dialysis for chronic kidney failure",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Pregnancy and birth",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Assisted reproductive services",
+   "in": false,
+   "note": ""
+  },
+  {
+   "name": "Weight loss surgery",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Insulin pumps",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Pain management with device",
+   "in": true,
+   "note": ""
+  },
+  {
+   "name": "Sleep studies",
+   "in": true,
+   "note": ""
+  }
+ ],
+ "extras": {
+  "plans": [
+   {
+    "key": "healthy",
+    "name": "Healthy Start Extras",
+    "about": "Up to 60% back at Members’ Choice (for single or couples memberships only)"
+   },
+   {
+    "key": "essential",
+    "name": "Essential Extras 75",
+    "about": "Up to 75% back at Members’ Choice"
+   },
+   {
+    "key": "top60",
+    "name": "Top Extras 60",
+    "about": "Up to 60% back at Members’ Choice"
+   },
+   {
+    "key": "top75",
+    "name": "Top Extras 75",
+    "about": "Up to 75% back at Members’ Choice"
+   },
+   {
+    "key": "top90",
+    "name": "Top Extras 90",
+    "about": "Up to 90% back at Members’ Choice"
+   }
+  ],
+  "rows": [
+   {
+    "name": "Ambulance services",
+    "desc": "For eligible services where immediate professional attention is required.",
+    "wait": "1 day",
+    "vals": [
+     "No annual limit",
+     "No annual limit",
+     "No annual limit",
+     "No annual limit",
+     "No annual limit"
+    ]
+   },
+   {
+    "name": "General dental",
+    "desc": "Preventative treatment",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $500 for these and other services",
+     "$750",
+     "$800",
+     "No annual limit",
+     "No annual limit"
+    ]
+   },
+   {
+    "name": "General dental",
+    "desc": "Dental examinations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $500 for these and other services",
+     "$750",
+     "$800",
+     "No annual limit",
+     "No annual limit"
+    ]
+   },
+   {
+    "name": "General dental",
+    "desc": "Scale and clean",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $500 for these and other services",
+     "$750",
+     "$800",
+     "No annual limit",
+     "No annual limit"
+    ]
+   },
+   {
+    "name": "General dental",
+    "desc": "Surgical dental procedures (excluding hospital charges)",
+    "wait": "12 months",
+    "vals": [
+     "Combined limit of $500 for these and other services",
+     "$750",
+     "$800",
+     "No annual limit",
+     "No annual limit"
+    ]
+   },
+   {
+    "name": "Major dental",
+    "desc": "Endodontic services (eg. root canal), periodontics (eg. treatment of gum disease), crowns, dentures and bridges, major restorative fillings (eg. veneers).",
+    "wait": "12 months",
+    "vals": [
+     "Combined limit of $500 for these and other services",
+     "not covered",
+     "$500",
+     "$1,000",
+     "$1,200"
+    ]
+   },
+   {
+    "name": "Orthodontics",
+    "desc": "Braces",
+    "wait": "12 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$400 opening balance. Top up of $200 per year up to $1,200 lifetime limit.",
+     "$800 opening balance. Top up of $400 per year up to $2,400 lifetime limit.",
+     "$1,000 opening balance. Top up of $500 per year up to $3,000 lifetime limit."
+    ]
+   },
+   {
+    "name": "Optical items",
+    "desc": "100% back on eligible Extras, up to annual limit. Includes frames, prescription lenses and contact lenses",
+    "wait": "6 months",
+    "vals": [
+     "Combined limit of $150",
+     "$200",
+     "$200",
+     "$225",
+     "$250"
+    ]
+   },
+   {
+    "name": "Acupuncture",
+    "desc": "Consultations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $150",
+     "$100",
+     "$200",
+     "$300",
+     "$400"
+    ]
+   },
+   {
+    "name": "Remedial massage",
+    "desc": "Consultations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $150",
+     "$100",
+     "$200",
+     "$300",
+     "$400"
+    ]
+   },
+   {
+    "name": "Exercise physiology",
+    "desc": "Consultations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $150",
+     "$100",
+     "$200",
+     "$300",
+     "$400"
+    ]
+   },
+   {
+    "name": "Chinese medicine",
+    "desc": "Consultations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit of $150",
+     "$100",
+     "$200",
+     "$300",
+     "$400"
+    ]
+   },
+   {
+    "name": "Physiotherapy",
+    "desc": "Includes consultations, clinical pilates and hydrotherapy sessions",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit - see General dental above",
+     "Combined limit of $450",
+     "$300",
+     "$600",
+     "$700"
+    ]
+   },
+   {
+    "name": "Chiropractic",
+    "desc": "Consultations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit - see General dental above",
+     "Combined limit of $450",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Osteopathy",
+    "desc": "Consultations",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit - see General dental above",
+     "Combined limit of $450",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Podiatry",
+    "desc": "Consultations and approved orthotics",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Prescription pharmaceuticals (non-PBS)",
+    "desc": "Includes most prescription-only items not subsidised by the government (non-PBS). Benefits will be paid after a set charge has been deducted",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit - see General dental above",
+     "not covered",
+     "$200",
+     "$400",
+     "$600"
+    ]
+   },
+   {
+    "name": "Dietetics",
+    "desc": "Consultations only",
+    "wait": "2 months",
+    "vals": [
+     "Combined limit - see General dental above",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Mental health support",
+    "desc": "Consultations for psychology and counselling",
+    "wait": "None",
+    "vals": [
+     "Combined limit - see General dental above",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Speech therapy",
+    "desc": "Consultations only",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Breathing appliances",
+    "desc": "100% back, up to annual limit. Peak flow meters, nebulisers and spacing devices only",
+    "wait": "12 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "Combined limit $150",
+     "Combined limit $200",
+     "Combined limit $250"
+    ]
+   },
+   {
+    "name": "Blood glucose monitors and blood pressure monitors",
+    "desc": "100% back, up to annual limit. Purchase of devices",
+    "wait": "24 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "Combined limit $150",
+     "Combined limit $200",
+     "Combined limit $250"
+    ]
+   },
+   {
+    "name": "Health appliances and external prostheses",
+    "desc": "eg. Insulin delivery pen",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "TENS machine",
+    "desc": "Hire or purchase",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered"
+    ]
+   },
+   {
+    "name": "Pregnancy compression garments",
+    "desc": "Garments must have TGA approval. Up to 2 garments",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered"
+    ]
+   },
+   {
+    "name": "Australian Breastfeeding Association membership",
+    "desc": "Benefit towards a membership of the Australian Breastfeeding Association",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered"
+    ]
+   },
+   {
+    "name": "Antenatal and Postnatal services",
+    "desc": "Includes lactation consultations with a midwife or a lactation consultant registered with Lactation Consultants of Australia and New Zealand (LCANZ). Providers must be working in private practice.",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered",
+     "not covered"
+    ]
+   },
+   {
+    "name": "Hearing aids",
+    "desc": "100% back, up to annual limit. Purchase of devices",
+    "wait": "36 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$400",
+     "$800",
+     "$1,200"
+    ]
+   },
+   {
+    "name": "Occupational therapy",
+    "desc": "Consultations only",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   },
+   {
+    "name": "Eye therapy",
+    "desc": "Consultations only",
+    "wait": "2 months",
+    "vals": [
+     "not covered",
+     "not covered",
+     "$200",
+     "$400",
+     "$500"
+    ]
+   }
+  ]
+ }
+};
+
+const DATA = LIVE ? PAYLOAD : SAVED;
+const F = Object.assign({}, SAVED.facts, DATA.facts || {});
+const PG = Object.assign({}, SAVED.pages, DATA.pages || {});
+const HOSPITAL = (DATA.hospital && DATA.hospital.length) ? DATA.hospital : SAVED.hospital;
+const EXTRAS = (DATA.extras && DATA.extras.rows && DATA.extras.rows.length) ? DATA.extras : SAVED.extras;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const source = (...pages) => "Brochure: " + pages.join(" and ") + (LIVE ? " (read from the PDF)" : "");
+
+// Resize the frame when the content changes
+const send = (type, data) => window.parent.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+
+
+$("bottom").textContent = `General information, not medical or legal advice. Amounts can change: check your own cover summary or call ${F.phoneAu} (${F.hours}).`;
+
+
+
+/* ---------- 5b. "What if?" situations ---------- */
+
+const money = s => parseFloat(String(s).replace(/[^0-9.]/g, "")) || 0;
+const fmt = n => "$" + (Math.round(n * 100) / 100).toLocaleString("en-AU", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+const hosp = name => HOSPITAL.find(h => h.name === name);
+const xrow = (name, desc) => EXTRAS.rows.find(r => r.name === name && (!desc || r.desc.indexOf(desc) === 0));
+const planName = i => EXTRAS.plans[i].name;
+const planLine = row => row ? EXTRAS.plans.map((p, i) => `${p.name}: ${row.vals[i]}`).join("; ") : "";
+const inHosp = (name, fallback) => {
+  const h = hosp(name);
+  return h ? h.in : fallback;
+};
+
+const SCENARIOS = [
+  { em: "🦷", title: "My tooth hurts", sub: "Dentist",
+    steps: () => [
+      { st: "extra", what: "Check-up, clean or filling at the dentist",
+        text: `Not part of Comprehensive OSHC. You need a separate Extras cover. Waiting period: ${(xrow("General dental") || {}).wait || "see the Extras table"}. ${planLine(xrow("General dental", "Dental examinations"))}.`, pg: PG.extras },
+      { st: "extra", what: "Root canal, crown or dentures",
+        text: `Extras only, with a longer waiting period (${(xrow("Major dental") || {}).wait || "see the table"}). ${planLine(xrow("Major dental"))}.`, pg: PG.extras },
+      { st: inHosp("Dental surgery", true) ? "in" : "out", what: "Dental surgery in hospital",
+        text: `Included in hospital cover. ${(hosp("Dental surgery") || {}).note || ""}`.trim(), pg: PG.hosptbl }
+    ] },
+  { em: "🦴", title: "I broke my arm", sub: "Emergency, x-ray, hospital",
+    steps: () => [
+      { st: "in", what: "Ambulance (if you cannot travel any other way)", text: F.ambulanceNote, pg: PG.amb },
+      { st: "spec", what: "X-ray and the specialist",
+        text: `Medibank pays ${F.specRate} of the MBS fee for specialists, pathology and x-rays. ${F.mustPayDiff}`, pg: PG.medical },
+      { st: inHosp("Bone, joint and muscle", true) ? "in" : "out", what: "Admitted to hospital as a private patient",
+        text: `“Bone, joint and muscle” is an Included hospital service. ${F.waitNote}`, pg: PG.hosptbl }
+    ] },
+  { em: "👓", title: "My glasses broke", sub: "Optical",
+    steps: () => [
+      { st: "extra", what: "New frames or lenses",
+        text: `Not part of Comprehensive OSHC. It needs an Extras cover. Waiting period: ${(xrow("Optical items") || {}).wait || "see the table"}. ${planLine(xrow("Optical items"))}.`, pg: PG.extras },
+      { st: "in", what: "An eye problem treated in hospital",
+        text: `“Eye (not cataracts)” and “Cataracts” are Included hospital services.`, pg: PG.hosptbl }
+    ] },
+  { em: "😟", title: "I feel very stressed", sub: "Mental health",
+    steps: () => [
+      { st: "in", what: "Psychology or counselling",
+        text: `Psychology: ${F.psychology} for each consultation. Counselling and mental health social workers: ${F.social}. Annual limit: ${F.limitSingle} (single) or ${F.limitFamily} (couple or family). ${F.mentalIntro}`, pg: PG.mental },
+      { st: "in", what: "If you need a psychiatric hospital stay", text: F.psychiatric, pg: PG.mental },
+      { st: "extra", what: "More sessions than the annual limit",
+        text: `A separate Extras cover has “Mental health support” with no waiting period. ${planLine(xrow("Mental health support"))}.`, pg: PG.extras }
+    ] },
+  { em: "🤰", title: "I am pregnant", sub: "Pregnancy and birth",
+    steps: () => [
+      { st: inHosp("Pregnancy and birth", true) ? "in" : "out", what: "Pregnancy and birth in hospital",
+        text: `Included in hospital cover, but a waiting period applies. ${F.waitNote}`, pg: PG.hosptbl },
+      { st: inHosp("Assisted reproductive services", false) ? "in" : "out", what: "IVF and assisted reproductive services",
+        text: `Excluded from Comprehensive OSHC.`, pg: PG.hosptbl },
+      { st: "out", what: "Antenatal and postnatal services, compression garments",
+        text: `Not covered by any Extras plan listed in the brochure (the table shows “not covered”).`, pg: PG.extras }
+    ] },
+  { em: "💊", title: "I need a prescription", sub: "Pharmacy",
+    steps: () => [
+      { st: "in", what: "Medicine your doctor prescribes",
+        text: `${F.eligible} You pay a ${F.contribution} contribution for each item; Medibank pays ${F.pct}. Annual limit: ${F.annualSingle} (single) or ${F.annualFamily}.`, pg: PG.rx },
+      { st: "out", what: "Cosmetic medicines", text: F.notCovered, pg: PG.rx },
+      { st: "spec", what: "Very expensive medicines (e.g. cancer treatment)", text: F.highCost, pg: PG.rx }
+    ] }
+];
+
+const STATUS = { in: ["b-in", "Covered"], extra: ["b-extra", "Extras only"], out: ["b-out", "Not covered"], spec: ["b-spec", "Part covered"] };
+let openScen = -1;
+
+function drawScenarios() {
+  $("scen").innerHTML = SCENARIOS.map((s, i) =>
+    `<button class="sc" data-i="${i}" aria-pressed="${i === openScen}"><span class="em" aria-hidden="true">${s.em}</span><b>${esc(s.title)}</b><span class="s">${esc(s.sub)}</span></button>`).join("");
+  const box = $("story");
+  if (openScen < 0) { box.hidden = true; return; }
+  const s = SCENARIOS[openScen];
+  box.hidden = false;
+  box.innerHTML = `<h4>${esc(s.em + " " + s.title)}</h4><ol>` + s.steps().map(x => {
+    const [cls, label] = STATUS[x.st];
+    return `<li><div><p><span class="badge ${cls}">${label}</span><span class="what">${esc(x.what)}</span></p>` +
+      `<p>${esc(x.text)}</p><p class="src">${esc(source(x.pg))}</p></div></li>`;
+  }).join("") + "</ol>";
+}
+$("scen").addEventListener("click", e => {
+  const b = e.target.closest(".sc"); if (!b) return;
+  const i = +b.dataset.i; openScen = openScen === i ? -1 : i;
+  drawScenarios(); resize();
+});
+drawScenarios();
+
+
+/* ---------- 6. Talking to Streamlit ---------- */
+
+function resize() { send("streamlit:setFrameHeight", { height: document.body.scrollHeight + 8 }); }
+send("streamlit:componentReady", { apiVersion: 1 });
+window.addEventListener("load", resize);
+resize();
+</script>
+</body>
+</html>

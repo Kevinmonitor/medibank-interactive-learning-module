@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+  Microphone button for Streamlit (a tiny custom component).
+  The browser itself turns speech into text (Chrome or Edge), then sends the text back to Python.
+-->
+<html><head><meta charset="utf-8">
+<style>
+  body { margin:0; font-family:"Lucida Sans","Lucida Sans Unicode",Arial,sans-serif; text-align:center; color:#143a5a; }
+  #mic { width:84px; height:84px; border-radius:50%; border:0; cursor:pointer; background:#C8322E; color:#fff;
+         font-size:34px; box-shadow:0 6px 18px rgba(200,50,46,.35); transition:transform .2s; }
+  #mic:hover { transform:scale(1.06); }
+  #mic.on { animation:pulse 1.2s infinite; background:#A82824; }
+  @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(200,50,46,.5); } 100% { box-shadow:0 0 0 26px rgba(200,50,46,0); } }
+  #status { margin:10px 0 2px; font-weight:700; font-size:15px; }
+  #heard  { min-height:22px; font-size:15px; color:#273b42; font-style:italic; }
+  #note   { font-size:12px; color:#5E6B7A; margin-top:4px; }
+</style></head>
+<body>
+  <button id="mic" aria-label="Tap and speak">🎤</button>
+  <div id="status">Tap the microphone and tell me what you are worried about</div>
+  <div id="heard"></div>
+  <div id="note"></div>
+<script>
+// --- Talking to Streamlit (the component protocol) ---
+const send = (type, data) => window.parent.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+send("streamlit:componentReady", { apiVersion: 1 });
+send("streamlit:setFrameHeight", { height: 170 });
+
+let lang = "en-AU";
+window.addEventListener("message", e => {
+  if (e.data && e.data.type === "streamlit:render" && e.data.args && e.data.args.lang) lang = e.data.args.lang;
+});
+
+// --- Speech recognition (built into Chrome and Edge) ---
+const $ = id => document.getElementById(id);
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, listening = false;
+
+if (!SR) {
+  $("status").textContent = "Voice needs Chrome or Edge on this device";
+  $("note").textContent = "You can type your worry in the box below instead.";
+  $("mic").disabled = true;
+}
+
+function stop() { listening = false; $("mic").classList.remove("on"); }
+
+$("mic").onclick = () => {
+  if (listening && rec) { rec.stop(); return; }
+  rec = new SR();
+  rec.lang = lang;
+  rec.interimResults = true;
+  rec.maxAlternatives = 1;
+  let finalText = "";
+
+  rec.onstart = () => {
+    listening = true;  $("mic").classList.add("on");
+    $("status").textContent = "Listening… speak now";  $("heard").textContent = "";  $("note").textContent = "";
+  };
+  rec.onresult = ev => {
+    let text = "";
+    for (let i = 0; i < ev.results.length; i++) text += ev.results[i][0].transcript;
+    finalText = text;  $("heard").textContent = "“" + text + "”";
+  };
+  rec.onerror = ev => {
+    stop();
+    const msg = { "not-allowed": "The microphone is blocked. Allow it in the browser address bar, or type below.",
+                  "no-speech": "I didn't hear anything. Try again.",
+                  "network": "Voice needs an internet connection." }[ev.error] || ("Voice problem: " + ev.error);
+    $("status").textContent = "Tap the microphone to try again";  $("note").textContent = msg;
+  };
+  rec.onend = () => {
+    stop();
+    if (finalText.trim()) {
+      $("status").textContent = "Got it! Finding the best practice for you…";
+      send("streamlit:setComponentValue", { value: { text: finalText.trim(), id: Date.now() }, dataType: "json" });
+    } else if (!$("note").textContent) {
+      $("status").textContent = "Tap the microphone and tell me what you are worried about";
+    }
+  };
+  rec.start();
+};
+</script></body></html>
