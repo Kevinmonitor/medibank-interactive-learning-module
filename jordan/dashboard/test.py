@@ -3,6 +3,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import streamlit as st
+
+# you have to run it in the dashboard folder
+
 data1 = pd.read_csv('teststats2.csv')
 data2 = pd.read_csv('teststats2.csv')
 data2['VALUE2']=data2['VALUE']%2500
