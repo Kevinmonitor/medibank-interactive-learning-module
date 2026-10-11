@@ -1,0 +1,220 @@
+<!--
+  Glossary for the "just here to learn" page: picture cards for the words students hear in Australia.
+
+  HOW IT WORKS
+  Learn_Guide.py reads the brochure PDF and puts the facts into the line "__PDF_DATA__" below.
+  Words that have a sentence in the brochure show it (with the page). The other words are marked
+  "General knowledge": they are our own plain-English help, not from the brochure.
+  If the file is opened on its own, the brochure lines are left out.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Words you will hear</title>
+<style>
+  :root {
+    --red: #C8322E; --red-soft: #FCEDEC; --navy: #1F3A5F; --ink: #1D2A3A; --muted: #5E6B7A;
+    --line: #E3E6EA; --green: #1E8E4E; --green-soft: #E8F5EE; --blue: #2B5FA8; --blue-soft: #E9F0FA;
+    --amber: #B7791F; --amber-soft: #FDF4E3; --grey-soft: #F1F4F8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 2px 2px 16px; background: #fff; color: var(--ink);
+         font: 15px/1.5 "Source Sans Pro", "Source Sans 3", "Segoe UI", system-ui, sans-serif; }
+  h3 { margin: 0 0 4px; font-size: 1.25rem; color: var(--navy); }
+  .lead { margin: 0 0 10px; color: var(--muted); }
+  .search input { width: 100%; font: inherit; padding: 10px 14px; border: 2px solid var(--line); border-radius: 12px; }
+  .search input:focus { outline: none; border-color: var(--navy); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .chip { font: inherit; font-weight: 600; font-size: .82rem; padding: 3px 11px; border-radius: 99px; cursor: pointer;
+          border: 1.5px solid var(--line); background: #fff; color: var(--ink); }
+  .chip:hover { border-color: var(--navy); }
+  .chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .chip:focus-visible, .card:focus-visible, .search input:focus-visible { outline: 3px solid #E07A1F; outline-offset: 2px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-top: 8px; }
+  .card { font: inherit; text-align: left; color: var(--ink); background: #fff; cursor: pointer; border: 1.5px solid var(--line);
+          border-radius: 16px; padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; align-self: start; }
+  .card:hover { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(31,58,95,.12); }
+  .card[aria-expanded="true"] { border-color: var(--navy); background: var(--blue-soft); grid-column: span 2; }
+  @media (max-width: 460px) { .card[aria-expanded="true"] { grid-column: span 1; } }
+  .card svg { width: 64px; height: 64px; }
+  .card .term { font-weight: 800; font-size: 1.12rem; color: var(--navy); line-height: 1.2; }
+  .card .short { font-size: .92rem; }
+  .more { margin-top: 6px; padding-top: 8px; border-top: 1px dashed #b9c6da; font-size: .9rem; }
+  .more[hidden] { display: none; }
+  .more p { margin: 0 0 6px; }
+  .tag { display: inline-block; font: 700 10px ui-monospace, Menlo, monospace; letter-spacing: .05em; text-transform: uppercase;
+         padding: 2px 8px; border-radius: 99px; }
+  .t-pdf { background: var(--green-soft); color: var(--green); }
+  .t-gen { background: var(--amber-soft); color: var(--amber); }
+  .quote { color: var(--ink); background: #fff; border-left: 3px solid var(--green); padding: 4px 9px; border-radius: 4px; }
+  .ex { color: var(--muted); }
+  .none { margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: var(--amber-soft); }
+  .none[hidden] { display: none; }
+</style>
+</head>
+
+<body>
+<h3>Words you will hear in Australia</h3>
+<p class="lead">Tap a card to see an example. Green means the brochure says it. Yellow means it is our own plain-English help.</p>
+<div class="search"><input id="q" type="search" placeholder="Search a word, for example: GP, MBS, Rx…" autocomplete="off" aria-label="Search the words"></div>
+<div class="chips" id="chips"></div>
+<div class="grid" id="grid"></div>
+<p class="none" id="none" hidden>No word like that here yet. Ask Medibank on <b id="phone">134 148</b>.</p>
+
+<script>
+let PAYLOAD = {};
+try { PAYLOAD = JSON.parse(decodeURIComponent("__PDF_DATA__")); } catch (e) { PAYLOAD = {}; }
+const F = PAYLOAD.facts || {};
+const PG = PAYLOAD.pages || {};
+const LIVE = !!PAYLOAD.live;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const send = (type, data) => window.parent.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+
+/* ---------- Pictures (simple, same style) ---------- */
+const S = 'fill="none" stroke="#1F3A5F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"';
+const svg = body => `<svg viewBox="0 0 64 64" aria-hidden="true" ${S}>${body}</svg>`;
+const person = '<circle cx="32" cy="19" r="8" fill="#FCEDEC"/><path d="M16 54c0-11 7-19 16-19s16 8 16 19z" fill="#E9F0FA"/>';
+const ICON = {
+  gp: svg(person + '<path d="M44 38v12M38 44h12" stroke="#C8322E" stroke-width="3.5"/>'),
+  specialist: svg(person + '<circle cx="45" cy="42" r="6" fill="#fff"/><path d="M49.5 46.5L55 52"/>'),
+  medicare: svg('<rect x="7" y="14" width="50" height="36" rx="6" fill="#E8F5EE"/><rect x="7" y="22" width="50" height="7" fill="#1F3A5F"/><path d="M14 38h20M14 44h12"/>'),
+  oshc: svg('<path d="M32 8l20 7v15c0 13-9 21-20 26C21 51 12 43 12 30V15z" fill="#E9F0FA"/><path d="M32 21v18M23 30h18" stroke="#C8322E" stroke-width="3.5"/>'),
+  mbs: svg('<path d="M8 34L34 8h20v20L28 54z" fill="#FDF4E3"/><circle cx="45" cy="17" r="3" fill="#fff"/><text x="28" y="39" font-size="18" font-weight="800" fill="#1F3A5F" stroke="none" font-family="system-ui">$</text>'),
+  gap: svg('<rect x="8" y="22" width="32" height="18" rx="3" fill="#E8F5EE"/><rect x="40" y="22" width="16" height="18" rx="3" fill="#FCEDEC"/><path d="M8 48h48M8 44v8M40 44v8M56 44v8"/>'),
+  hospital: svg('<rect x="10" y="18" width="44" height="36" rx="3" fill="#E9F0FA"/><path d="M32 8v14M25 15h14" stroke="#C8322E" stroke-width="3.5"/><rect x="27" y="38" width="10" height="16" fill="#fff"/><path d="M16 28h6M42 28h6M16 38h6M42 38h6"/>'),
+  extras: svg('<circle cx="32" cy="32" r="22" fill="#E9F0FA"/><path d="M32 20v24M20 32h24" stroke="#C8322E" stroke-width="4"/>'),
+  wait: svg('<path d="M18 8h28c0 13-11 17-14 24 3 7 14 11 14 24H18c0-13 11-17 14-24C29 25 18 21 18 8z" fill="#FDF4E3"/><path d="M26 50h12" stroke="#C8322E"/>'),
+  limit: svg('<rect x="6" y="22" width="46" height="20" rx="5" fill="#fff"/><rect x="52" y="28" width="6" height="8" rx="2" fill="#1F3A5F"/><rect x="10" y="26" width="26" height="12" rx="2" fill="#1E8E4E" stroke="none"/>'),
+  rx: svg('<rect x="13" y="7" width="38" height="50" rx="5" fill="#fff"/><text x="32" y="35" font-size="20" font-weight="800" fill="#C8322E" stroke="none" text-anchor="middle" font-family="system-ui">Rx</text><path d="M20 44h24M20 50h14"/>'),
+  pbs: svg('<rect x="17" y="12" width="30" height="8" rx="2" fill="#1F3A5F"/><rect x="19" y="20" width="26" height="36" rx="4" fill="#FDF4E3"/><rect x="23" y="30" width="18" height="14" rx="2" fill="#fff"/><path d="M32 33v8M28 37h8" stroke="#1E8E4E"/>'),
+  otc: svg('<path d="M6 54h52"/><rect x="10" y="32" width="12" height="22" fill="#E9F0FA"/><rect x="26" y="22" width="12" height="32" fill="#FCEDEC"/><rect x="42" y="36" width="12" height="18" fill="#E8F5EE"/>'),
+  pharmacist: svg('<path d="M26 8h12v16h16v12H38v16H26V36H10V24h16z" fill="#1E8E4E"/>'),
+  direct: svg('<rect x="8" y="8" width="26" height="42" rx="3" fill="#fff"/><path d="M14 18h14M14 26h14M14 34h8"/><path d="M38 30h16M48 24l6 6-6 6" stroke="#C8322E"/><path d="M8 50l4 4 4-4 4 4 4-4 4 4 4-4"/>'),
+  members: svg('<rect x="8" y="22" width="40" height="32" rx="3" fill="#E9F0FA"/><path d="M28 12v12M22 18h12" stroke="#C8322E" stroke-width="3"/><rect x="24" y="40" width="8" height="14" fill="#fff"/><path d="M50 8l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="#FDF4E3" stroke="#B7791F"/>'),
+  pathology: svg('<path d="M24 8h16"/><path d="M26 8v36a6 6 0 0012 0V8" fill="#fff"/><path d="M26 32h12v12a6 6 0 01-12 0z" fill="#FCEDEC" stroke="#C8322E"/>'),
+  allied: svg('<path d="M32 54C12 40 8 28 14 20c5-6 14-4 18 3 4-7 13-9 18-3 6 8 2 20-18 34z" fill="#FCEDEC"/><path d="M32 26v14M25 33h14"/>'),
+  ambulance: svg('<rect x="4" y="22" width="38" height="26" rx="3" fill="#fff"/><path d="M42 30h10l8 9v9H42z" fill="#E9F0FA"/><circle cx="16" cy="50" r="5" fill="#1F3A5F"/><circle cx="50" cy="50" r="5" fill="#1F3A5F"/><path d="M23 28v14M16 35h14" stroke="#C8322E" stroke-width="3.5"/>'),
+  emergency: svg('<rect x="17" y="5" width="30" height="54" rx="7" fill="#fff"/><text x="32" y="38" font-size="14" font-weight="800" fill="#C8322E" stroke="none" text-anchor="middle" font-family="system-ui">000</text><path d="M28 51h8"/>'),
+  claim: svg('<rect x="8" y="14" width="44" height="34" rx="4" fill="#fff"/><path d="M8 18l22 17 22-17"/><circle cx="48" cy="46" r="10" fill="#E8F5EE" stroke="#1E8E4E"/><path d="M43 46l4 4 7-8" stroke="#1E8E4E"/>'),
+  preex: svg('<rect x="8" y="12" width="48" height="44" rx="5" fill="#fff"/><path d="M8 24h48M20 7v10M44 7v10"/><path d="M32 30v12" stroke="#C8322E" stroke-width="3.5"/><circle cx="32" cy="48" r="1.5" fill="#C8322E" stroke="#C8322E"/>'),
+  incl: svg('<circle cx="19" cy="32" r="13" fill="#E8F5EE" stroke="#1E8E4E"/><path d="M13 32l5 5 9-10" stroke="#1E8E4E"/><circle cx="45" cy="32" r="13" fill="#FCEDEC" stroke="#C8322E"/><path d="M39 26l12 12M51 26L39 38" stroke="#C8322E"/>')
+};
+
+/* ---------- The words ----------
+   short / example = our own help. fact = the brochure sentence (key in F) and page (key in PG).
+   Words with no fact are marked "General knowledge". */
+const WORDS = [
+  { term: "GP", full: "General practitioner", cat: "People", icon: "gp",
+    short: "Your family doctor. The first doctor you see for most health problems.",
+    example: "You have had a cough for a week: book a GP.", fact: () => F.gpRate ? `Medibank pays ${F.gpRate} of the MBS fee for GP consultations.` : "", page: "medical" },
+  { term: "Specialist", cat: "People", icon: "specialist",
+    short: "A doctor who studies one area, like skin, heart or bones.",
+    example: "A GP may send you to a specialist (a “referral”).", fact: () => F.specRate ? `Medibank pays ${F.specRate} of the MBS fee for specialists, pathology and x-rays.` : "", page: "medical" },
+  { term: "Pharmacist", cat: "People", icon: "pharmacist",
+    short: "The expert at the pharmacy (chemist) who gives you medicine and advice.",
+    example: "Ask the pharmacist which cold tablet is safe for you.", fact: () => "", page: "rx" },
+  { term: "Allied Health", cat: "People", icon: "allied",
+    short: "Health workers who are not doctors, like physios and dietitians.",
+    example: "A physio helps after a sports injury.", fact: () => F.specRate ? `Allied Health with an MBS item is paid at ${F.specRate} of the MBS fee.` : "", page: "medical" },
+  { term: "Medicare", cat: "Money", icon: "medicare",
+    short: "Australia’s public health scheme for residents. Most international students cannot use it.",
+    example: "That is why you need OSHC.", fact: () => F.who2 ? `OSHC is for people who: ${F.who2}.` : "", page: "intro" },
+  { term: "OSHC", full: "Overseas Student Health Cover", cat: "Money", icon: "oshc",
+    short: "The health insurance you must have on a student visa.",
+    example: "You show your membership card at the doctor.", fact: () => F.intro || "", page: "intro" },
+  { term: "MBS fee", full: "Medicare Benefits Schedule fee", cat: "Money", icon: "mbs",
+    short: "The government’s standard price for a medical service. Your cover pays a % of this price.",
+    example: "MBS fee $40 and the doctor charges $70? The % is worked out on $40.", fact: () => F.mbsDef || "", page: "medical" },
+  { term: "Gap / out-of-pocket", cat: "Money", icon: "gap",
+    short: "The part of the bill that you pay yourself.",
+    example: "The doctor charges $70, Medibank pays $40: your gap is $30.", fact: () => F.mustPayDiff || "", page: "medical" },
+  { term: "Annual limit", cat: "Money", icon: "limit",
+    short: "The most your cover pays for something in one year.",
+    example: "A $200 limit for counselling is used up after $200 of benefits.", fact: () => F.annualLimit || "", page: "limits" },
+  { term: "Waiting period", cat: "Money", icon: "wait",
+    short: "The time after you join before you can claim for some services.",
+    example: "A 2-month wait for physio: you cannot claim in month one.", fact: () => F.waitingPeriods || "", page: "hosp" },
+  { term: "Pre-existing condition", cat: "Money", icon: "preex",
+    short: "A health problem you already had before you joined.",
+    example: "Asthma diagnosed in your home country.", fact: () => F.waitNote || "", page: "hosp" },
+  { term: "Hospital cover", cat: "Cover", icon: "hospital",
+    short: "The part of OSHC that helps when you are admitted to hospital as a private patient.",
+    example: "A broken arm that needs an operation.", fact: () => F.hospitalIntro || "", page: "hosp" },
+  { term: "Extras", cat: "Cover", icon: "extras",
+    short: "A separate cover for everyday things like dental, glasses and physio.",
+    example: "You need Extras to get money back for glasses.", fact: () => F.extrasSeparate || "", page: "hosp" },
+  { term: "Included / Excluded", cat: "Cover", icon: "incl",
+    short: "Included: the cover can pay. Excluded: it cannot.",
+    example: "The brochure marks each hospital service with a tick or a cross.", fact: () => "", page: "hosptbl" },
+  { term: "Direct billing", cat: "Cover", icon: "direct",
+    short: "The clinic sends the bill straight to Medibank, so you pay little or nothing on the day.",
+    example: "Look for “Direct Billing” when you search for a GP.", fact: () => F.directBilling || "", page: "dbill" },
+  { term: "Members’ Choice hospital", cat: "Cover", icon: "members",
+    short: "A hospital that Medibank has an arrangement with. You usually pay less there.",
+    example: "Pick a Members’ Choice hospital when you can.", fact: () => F.membersChoice || "", page: "mc" },
+  { term: "Claim", cat: "Cover", icon: "claim",
+    short: "Asking Medibank to pay back (part of) a bill you already paid.",
+    example: "Pay the GP, then send the receipt in the app.", fact: () => "", page: "" },
+  { term: "Rx / prescription", cat: "Medicine", icon: "rx",
+    short: "A doctor’s written order for a medicine. “Rx” is the short sign for it.",
+    example: "Antibiotics need an Rx. You give it to the pharmacist.", fact: () => F.eligible || "", page: "rx" },
+  { term: "PBS", full: "Pharmaceutical Benefits Scheme", cat: "Medicine", icon: "pbs",
+    short: "The government scheme that makes many medicines cheaper for residents.",
+    example: "Most international students are not covered by it.", fact: () => F.pbs || "", page: "pbs" },
+  { term: "OTC", full: "Over the counter", cat: "Medicine", icon: "otc",
+    short: "Medicine you can buy without a prescription, from the shelf.",
+    example: "Paracetamol or throat lozenges.", fact: () => "", page: "" },
+  { term: "Pathology", cat: "Tests", icon: "pathology",
+    short: "Lab tests, for example blood tests.",
+    example: "Your doctor sends your blood to a lab.", fact: () => F.specRate ? `Pathology (blood tests) is paid at ${F.specRate} of the MBS fee.` : "", page: "medical" },
+  { term: "Ambulance", cat: "Emergency", icon: "ambulance",
+    short: "An emergency vehicle that takes you to hospital.",
+    example: "Used when you cannot travel any other way.", fact: () => F.ambulanceNote || "", page: "amb" },
+  { term: "000", cat: "Emergency", icon: "emergency",
+    short: "The free number to call in a real emergency in Australia.",
+    example: "Say “ambulance” and your address.", fact: () => "", page: "" }
+];
+
+const pageLabel = k => (PG[k] ? PG[k] : "");
+let open = -1, query = "", cat = "All";
+
+function matches(w) {
+  const text = (w.term + " " + (w.full || "") + " " + w.short + " " + w.cat).toLowerCase();
+  return (cat === "All" || w.cat === cat) && (!query || text.includes(query));
+}
+
+function draw() {
+  const list = WORDS.map((w, i) => ({ w, i })).filter(x => matches(x.w));
+  $("grid").innerHTML = list.map(({ w, i }) => {
+    const fact = w.fact(), isOpen = i === open;
+    const tag = fact
+      ? `<span class="tag t-pdf">In the brochure${pageLabel(w.page) ? " · " + esc(pageLabel(w.page)) : ""}</span>`
+      : `<span class="tag t-gen">General knowledge</span>`;
+    return `<button class="card" data-i="${i}" aria-expanded="${isOpen}">
+      ${ICON[w.icon]}<span class="term">${esc(w.term)}</span>${w.full ? `<span class="ex">${esc(w.full)}</span>` : ""}
+      <span class="short">${esc(w.short)}</span>
+      <span class="more" ${isOpen ? "" : "hidden"}><p><b>Example:</b> <span class="ex">${esc(w.example)}</span></p>
+        ${fact ? `<p class="quote">${esc(fact)}</p>` : ""}<p>${tag}</p></span></button>`;
+  }).join("");
+  $("none").hidden = list.length > 0;
+  $("chips").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === cat));
+  resize();
+}
+
+const CATS = ["All", ...new Set(WORDS.map(w => w.cat))];
+$("chips").innerHTML = CATS.map(c => `<button class="chip" data-c="${c}" aria-pressed="${c === "All"}">${c}</button>`).join("");
+$("chips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) { cat = b.dataset.c; open = -1; draw(); } });
+$("q").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); open = -1; draw(); });
+$("grid").addEventListener("click", e => { const c = e.target.closest(".card"); if (c) { const i = +c.dataset.i; open = open === i ? -1 : i; draw(); } });
+if (F.phoneAu) $("phone").textContent = F.phoneAu;
+
+function resize() { send("streamlit:setFrameHeight", { height: document.body.scrollHeight + 8 }); }
+send("streamlit:componentReady", { apiVersion: 1 });
+window.addEventListener("load", resize);
+draw();
+</script>
+</body>
+</html>
