@@ -1,7 +1,7 @@
 {
   "I feel homesickness": 0,
   "I need to go to hospital": 0,
-  "I get sick": 0,
+  "I get sick": 1,
   "I need medication": 1,
   "I need to find a health provider": 0,
   "Comprehensive OSHC coverage": 0,
