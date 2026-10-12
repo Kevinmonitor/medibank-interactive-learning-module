@@ -2,34 +2,36 @@ import random
 
 # File to output
 path = 'test2.csv'
-questions = [6,5,6,4,5,6,4]
+# Number of modules
+modules = 8
+# Number of questions
+questions = 10
 # Number of rows
 rows = 50
-
-
-length = len(questions)
 # header - id, modules, answers
-o = 'id,'+ ','.join([f'did m{i}' for i in range(0,length)])+','+','.join([f'ok m{i}q{j}' for i in range(0,length) for j in range(0,questions[i])]) + '\n'
+o = 'id,'
+
+# add fields as needed
+
+o += ','.join([f'module{i}' for i in range(0,modules)]) + ','
+o += ','.join([f'question{i}' for i in range(0,questions)]) + '\n'
 # for each row
 for i in range(0,rows):
     # generate id
     id = str(random.randint(11111111,20000000))
+
+    # add fields as needed
+
     # generate modules done
-    clicked = [random.choice([1,1,0]) for _ in range(0,length)]
+    clicked = [random.choice([1,1,0]) for _ in range(0,modules)]
     print(clicked)
     # generate correct answers
-    results = []
-    for i in range(0,length):
-        # if module was skipped, fill with nothing
-        if clicked[i] == 0:
-           for j in range(0,questions[i]):
-                results.append(None)
-        else:
-           for j in range(0,questions[i]):
-                results.append(random.choice([1,1,0]))
+    correct = [random.choice([1,1,0]) for _ in range(0,questions)]
+    # bring together
+    results = [j for i in [[id],clicked,correct] for j in i]
     print(results)
-    #post
-    o += id + ',' + ','.join([str(i) for i in clicked]) + ',' + ','.join(['' if i is None else str(i) for i in results]) + '\n'
+    #post!
+    o += ','.join([str(i) for i in results]) + '\n'
 
 # save!
 open(path,'w').write(o.strip())
