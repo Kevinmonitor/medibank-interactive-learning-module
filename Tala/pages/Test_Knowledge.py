@@ -1,33 +1,28 @@
 """
-"Nothing, just here to learn": learning page (OSHC Compass)
+"Test your knowledge": the Myth or fact quiz (OSHCwise).
 
-Two tabs:
-  1. A Myth or fact quiz. Each answer is counted for the admin dashboard.
-     ONLY counts are saved (right or wrong per question, see analytics.py):
-     no names, no times, no sentences.
-  2. A picture glossary of the words students hear in Australia (GP, MBS, Rx, ...).
+The cards page (pages/1_Question.py) has a "Test your knowledge" button at the bottom
+(see quiz_button.py) that opens this page.
 
-The facts in the quiz answers and the glossary are READ FROM THE PDF every time the PDF changes.
-If a part can no longer be found, the saved text (FALLBACK below) is used for it and this
-page shows a warning. A question is skipped if its fact is missing in both places.
-Words that are NOT in the brochure are marked "General knowledge" in the glossary.
+Each answer is counted for the admin dashboard. ONLY counts are saved (right or wrong per
+question, see analytics.py): no names, no times, no sentences.
+
+The facts in the answers are READ FROM THE PDF every time the PDF changes. If a part can no
+longer be found, the saved text (FALLBACK below) is used for it and this page shows a warning.
+A question is skipped if its fact is missing in both places.
 
 Folder layout:
     oshc_welcome.py
-    pages/Learn_Guide.py           <- this file
-    learn_guide.html               <- the glossary (main folder, or next to this file)
+    pages/Test_Knowledge.py        <- this file
     analytics.py                   <- counts the quiz answers
     OSHC_Brochure.pdf
 """
 
-import json
 import re
 from pathlib import Path
-from urllib.parse import quote
 
 import pdfplumber
 import streamlit as st
-import streamlit.components.v1 as components
 
 import analytics
 import auth
@@ -38,20 +33,7 @@ import auth
 HOME_PAGE = "pages/1_Question.py"
 ROOT = Path(__file__).parent.parent          # the main project folder
 PDF_FILE = ROOT / "OSHC_Brochure.pdf"
-GLOSSARY_HEIGHT = 900
 
-
-def find_html() -> Path:
-    """Find the glossary file (main folder, this folder, "assets" or "images")."""
-    here = Path(__file__).parent
-    for folder in (ROOT, here, ROOT / "assets", ROOT / "images"):
-        found = sorted(folder.glob("learn_guide*.html"))
-        if found:
-            return found[0]
-    return ROOT / "learn_guide.html"
-
-
-HTML_FILE = find_html()
 
 # What we read from the PDF.
 # (key used in the HTML, label, where it is, pattern). Group 1 of the pattern is the value
@@ -496,17 +478,9 @@ def show_quiz(questions: list) -> None:
             st.rerun()
 
 
-# ---------- Other helpers ----------
-
-@st.cache_data
-def load_html(modified_time: float) -> str:
-    """Cached, but reloads when the HTML file changes."""
-    return HTML_FILE.read_text(encoding="utf-8")
-
-
 # ---------- Page ----------
 
-st.set_page_config(page_title="Nothing, just here to learn", layout="wide")
+st.set_page_config(page_title="Test your knowledge", layout="wide")
 auth.require_login()
 
 back_col, title_col = st.columns([1, 5])
@@ -516,9 +490,8 @@ with back_col:
         st.switch_page(HOME_PAGE)
 
 with title_col:
-    st.markdown("### Just here to learn")
-    st.caption("Test what you think you know about OSHC, then look up the words you will hear in Australia. "
-               "This is general information.")
+    st.markdown("### Test your knowledge")
+    st.caption("Myth or fact? Check what you remember about OSHC. This is general information.")
 
 # Read the facts from the PDF (anything missing comes from the saved copy)
 live, missing = {}, []
@@ -540,22 +513,10 @@ facts = {**FALLBACK_FACTS, **live.get("facts", {})}
 pages = {**FALLBACK_PAGES, **live.get("pages", {})}
 hospital = {**FALLBACK_HOSPITAL, **{h["name"]: h["in"] for h in live.get("hospital", [])}}
 
-quiz_tab, words_tab = st.tabs(["🎯 Myth or fact quiz", "📖 Words you will hear"])
-
-with quiz_tab:
-    questions = build_questions(facts, pages, hospital)
-    if questions:
-        show_quiz(questions)
-        st.caption("Your answers are only counted (right or wrong, for each question) so the team can see "
-                   "which myths are most common. Your name is not saved.")
-    else:
-        st.info("The quiz has no questions right now.")
-
-with words_tab:
-    if HTML_FILE.exists():
-        data = {"facts": facts, "pages": pages, "live": bool(live.get("facts"))}
-        html = load_html(HTML_FILE.stat().st_mtime)
-        html = html.replace("__PDF_DATA__", quote(json.dumps(data, ensure_ascii=False), safe=""))
-        components.html(html, height=GLOSSARY_HEIGHT, scrolling=True)
-    else:
-        st.error(f"Can't find the glossary file (learn_guide.html). Put it here: {HTML_FILE}")
+questions = build_questions(facts, pages, hospital)
+if questions:
+    show_quiz(questions)
+    st.caption("Your answers are only counted (right or wrong, for each question) so the team can see "
+               "which myths are most common. Your name is not saved.")
+else:
+    st.info("The quiz has no questions right now.")

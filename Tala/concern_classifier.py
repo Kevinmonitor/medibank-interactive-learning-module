@@ -109,7 +109,13 @@ TRAINING_DATA = {
 # Words like "worried" and "I am" now appear in many cards, so they do not point to one card.
 EXTRA = {
     "I feel homesickness": ["I am worried that I will always feel lonely here", "I am sad that I cannot hug my family",
-                            "I feel homesickness", "homesickness", "homesick"],
+                            "I feel homesickness", "homesickness", "homesick",
+                            "I am lonely", "I'm lonely", "I feel so lonely here",
+                            # making friends: another way students say they feel lonely
+                            "I need to find friends", "I want to make friends here", "I need friends",
+                            "I have no friends in Australia", "I don't know anyone here",
+                            "I feel like I have nobody here", "how can I meet people here",
+                            "I want to meet people from my country"],
     "I need to go to hospital": [
         "I need to go to hospital", "hospital", "go to hospital",
         "I am worried about going to the emergency room", "I am scared about being admitted to hospital",
@@ -125,7 +131,8 @@ EXTRA = {
     ],
     "I get sick": ["I get sick", "sickness", "I am sick", "I am worried because I have a fever and a cough", "I am not feeling well and my throat is sore"],
     "I need medication": ["I need medication", "medication", "medicine", "I am worried about paying for my tablets", "I am looking for a pharmacy to buy medicine"],
-    "I need to find a health provider": ["I need to find a health provider", "health provider", "find a provider", "I am worried about booking a doctor appointment", "I am nervous about finding a clinic", "I do not know how to find a dentist here"],
+    "I need to find a health provider": ["I need to find a health provider", "health provider", "find a provider", "I am worried about booking a doctor appointment", "I am nervous about finding a clinic", "I do not know how to find a dentist here",
+                                        "how do I find a GP", "I need a GP", "I am looking for a GP near me"],
     "Comprehensive OSHC coverage": ["Comprehensive OSHC coverage", "OSHC coverage", "I am worried that my cover does not include dental", "I am not sure what my insurance pays for"],
     "I need to make a claim": ["I need to make a claim", "make a claim", "claim", "I am worried about how to send my receipt", "I am waiting for my claim to be paid"],
     "Nothing, just here to learn": ["Nothing, just here to learn", "just here to learn", "I am a bit worried and I want to learn how it works", "I am new here and I am looking around"],
@@ -155,7 +162,7 @@ CONCERN_TEST = [
     ("my medicine has run out", "I need medication"),
     ("I am worried about finding a doctor", "I need to find a health provider"),
     ("how can I search for a clinic near my university", "I need to find a health provider"),
-    ("which GP takes my insurance", "I need to find a health provider"),
+    ("can you help me find a doctor who accepts my insurance", "I need to find a health provider"),
     ("does my health cover include dental", "Comprehensive OSHC coverage"),
     ("what is covered when I go to hospital", "Comprehensive OSHC coverage"),
     ("what will I have to pay myself", "Comprehensive OSHC coverage"),
@@ -259,11 +266,15 @@ def evaluate(folds: int = 5) -> dict:
 
 
 def held_out_check():
-    """How many of the test sentences get the right card? Returns (right, total, mistakes)."""
+    """How many of the test sentences get the right answer? Returns (right, total, mistakes).
+    Same rule as the app: a sentence with no card word, or one the model calls 'Something else',
+    gets no card, which is right only for the 'Something else' test sentences."""
     model = get_model()
     mistakes = []
     for text, expected in CONCERN_TEST:
         guess = str(model.predict([text])[0])
+        if not understood(text):
+            guess = OTHER
         if guess != expected:
             mistakes.append((text, expected, guess))
     return len(CONCERN_TEST) - len(mistakes), len(CONCERN_TEST), mistakes
@@ -281,12 +292,34 @@ def safety_flag(text: str) -> str:
     return ""
 
 
+# Words that show up in many kinds of sentences ("I need...", "I am worried..."), so on their own
+# they do not show that a sentence is about one of the cards.
+GENERIC_WORDS = set("""need want feel worry nervous scared afraid anxious stress know help go get think look new
+because really very much thing something someone want like love hope try make take give tell say ask""".split())
+
+_DOMAIN = None
+
+
+def domain_words() -> set:
+    """Words that point to a card: they appear in sentences for the cards, never in the 'Something else'
+    sentences, and are not generic. (Built from the training data, so it grows when we add sentences.)"""
+    global _DOMAIN
+    if _DOMAIN is None:
+        def words(sentences):
+            return {w for t in sentences for w in _clean(t).split() if w not in STOPWORDS}
+        card_words = set()
+        for label, sentences in TRAINING_DATA.items():
+            if label != OTHER:
+                card_words |= words(sentences)
+        _DOMAIN = {w for w in card_words - words(TRAINING_DATA[OTHER]) - GENERIC_WORDS if len(w) >= 2}
+    return _DOMAIN
+
+
 def understood(text: str) -> bool:
-    """True if the sentence has at least one meaningful word the model has seen before.
-    (Stops nonsense like 'asdfgh' or 'what is the capital of France' from getting a match.)"""
-    vocabulary = get_model().named_steps["tfidfvectorizer"].vocabulary_
-    words = [w for w in _clean(text).split() if w not in STOPWORDS]
-    return any(w in vocabulary for w in words)
+    """True if the sentence has at least one word that points to a card (see domain_words).
+    This stops "how can I find a job" from matching "find a health provider" just because of the
+    shared word "find", and stops nonsense like 'asdfgh' from getting a match."""
+    return any(w in domain_words() for w in _clean(text).split())
 
 
 def is_other(text: str) -> bool:
