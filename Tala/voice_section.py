@@ -17,6 +17,7 @@ import streamlit.components.v1 as components
 
 import analytics
 import concern_classifier as model
+import language_support as lang_support
 
 # The microphone button is a small web page. Its code is kept right here, and the folder
 # "voice_input" is created automatically, so there is nothing to copy by hand.
@@ -156,13 +157,24 @@ def _best_guess(guesses: list) -> str:
     return best_text if best_score >= 0 else first
 
 
-def _show_result(text: str, pages: dict, where: str, alternatives=()) -> None:
-    """Show what the model understood and offer the matching practice."""
-    original = text
-    text = _best_guess([text, *alternatives])
-    st.markdown(f"**I heard:** “{text}”")
-    if text != original:
-        st.caption(f"Chrome first wrote “{original}”. This other guess fits better.")
+def _show_result(text: str, pages: dict, where: str, alternatives=(), lang_code="en-AU") -> None:
+    """Show what the model understood and offer the matching practice.
+    lang_code is the language of `text`. The model only knows English, so other languages are
+    translated into English first (see language_support.py)."""
+    shown = text                         # what the student said or typed, in their own language
+    if lang_support.is_english(lang_code):
+        original = text
+        text = _best_guess([text, *alternatives])
+        st.markdown(f"**I heard:** “{text}”")
+        if text != original:
+            st.caption(f"Chrome first wrote “{original}”. This other guess fits better.")
+    else:
+        text, problem = lang_support.to_english(shown, lang_code)
+        st.markdown(f"**I heard:** “{shown}”")
+        if problem:
+            st.warning(problem + " You can type in English or choose a card below.")
+            return
+        st.caption(f"In English: “{text}”")
     flag = model.safety_flag(text)
 
     if flag == "self_harm":              # safety first: no cards, just help
@@ -204,8 +216,9 @@ def _show_result(text: str, pages: dict, where: str, alternatives=()) -> None:
 HOW_IT_WORKS = (
     "If you speak, your browser (Chrome or Edge) turns your voice into text, usually with Google's "
     "speech service. If you type, a small model inside this app compares your words with example "
-    "sentences to suggest a practice. This app does not store your voice or your words. It only counts "
-    "how often each practice is suggested, so the team can see which topics students need most."
+    "sentences to suggest a practice. If you use another language, your words are sent to an online "
+    "translation service to turn them into English first. This app does not store your voice or your words. "
+    "It only counts how often each practice is suggested, so the team can see which topics students need most."
 )
 CHOOSE_INSTEAD = "If you are not comfortable with this, you can just choose one of the options below."
 
@@ -226,8 +239,16 @@ def render_voice_section(pages: dict) -> None:
     The result appears right under the way the student used (voice or typing)."""
     _, middle, _ = st.columns([1, 5, 1])
     with middle:
+        # Language menu. The browser must know the language BEFORE it listens, so the student picks it.
+        # (Typed text does not need this: its language is detected automatically below.)
+        _, menu, _ = st.columns([1.15, 2.4, 1.45])
+        with menu:
+            language = st.selectbox("Speaking language", list(lang_support.LANGUAGES),
+                                    key="voice_lang_label")
+        speech_code = lang_support.LANGUAGES[language]
+
         # Line 1: instruction, with the microphone right after it
-        heard = _voice(lang="en-AU", key="voice", default=None)
+        heard = _voice(lang=speech_code, key="voice", default=None)
 
         # Which one did the student use last, voice or typing?
         # (the typing box value is already known at the start of every run)
@@ -236,6 +257,7 @@ def render_voice_section(pages: dict) -> None:
             st.session_state["voice_last_id"] = heard["id"]
             st.session_state["voice_text"] = heard["text"]
             st.session_state["voice_alts"] = heard.get("alts", [])
+            st.session_state["voice_lang"] = speech_code      # language it was spoken in
             st.session_state["voice_source"] = "voice"
         if typed_now != st.session_state.get("voice_last_typed", ""):
             st.session_state["voice_last_typed"] = typed_now
@@ -246,7 +268,8 @@ def render_voice_section(pages: dict) -> None:
         # Result for voice: right under the microphone
         if source == "voice" and st.session_state.get("voice_text"):
             _show_result(st.session_state["voice_text"], pages, "voice",
-                         st.session_state.get("voice_alts", []))
+                         st.session_state.get("voice_alts", []),
+                         st.session_state.get("voice_lang", "en-AU"))
         st.markdown(DIVIDER, unsafe_allow_html=True)
 
         # Line 2: instruction, with the typing box right after it
@@ -256,12 +279,14 @@ def render_voice_section(pages: dict) -> None:
         with box:
             typed = st.text_input(
                 "Type what you are worried about", key="voice_typed",
-                placeholder="e.g. I miss my family", label_visibility="collapsed",
+                placeholder="e.g. I miss my family (any language in the menu)", label_visibility="collapsed",
             )
 
         # Result for typing: right under the typing box
         if source == "typed" and typed.strip():
-            _show_result(typed.strip(), pages, "typed")
+            # Typed text: if the model already understands it, it is English. Otherwise find the language.
+            typed_lang = "en" if model.understood(typed.strip()) else lang_support.detect_language(typed.strip())
+            _show_result(typed.strip(), pages, "typed", lang_code=typed_lang)
         st.markdown(DIVIDER, unsafe_allow_html=True)
 
         # Line 3: how the voice and typing are handled, then the way out to the cards below

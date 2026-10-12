@@ -5,7 +5,10 @@ from pathlib import Path
 
 import streamlit as st
 
-_LOGO_PATH = Path(__file__).parent / "medibank.webp"
+# The logo lives in the "images" folder (older copies may still have it next to this file)
+_LOGO_PATH = Path(__file__).parent / "images" / "medibank.webp"
+if not _LOGO_PATH.exists():
+    _LOGO_PATH = Path(__file__).parent / "medibank.webp"
 
 
 def render_header() -> None:
