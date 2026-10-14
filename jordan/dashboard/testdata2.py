@@ -2,31 +2,29 @@ import random
 
 # File to output
 path = 'test2.csv'
-# Number of modules
-modules = 8
-# Number of questions
-questions = 10
+# Modules
+# https://regexr.com/ (?<=id=")[^ ]+(?=")
+# file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/Test_Knowledge.py
+modules = ["homesick","hospital","sick","medication","find_provider","comprehensive_oshc","make_claim","just_learning"]
+# Questions
+# https://regexr.com/ (?<="key": ")[^ ]+(?=")
+# file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/1_Question.py
+questions = ["pays_all","gp_rate","glasses","claim_now","rx_free","psych_hosp","cosmetic","ivf","counselling","ambulance"]
 # Number of rows
 rows = 50
 # header - id, modules, answers
 o = 'id,'
-
-# add fields as needed
-
-o += ','.join([f'module{i}' for i in range(0,modules)]) + ','
-o += ','.join([f'question{i}' for i in range(0,questions)]) + '\n'
+o += ','.join([f'm_{i}' for i in modules]) + ','
+o += ','.join([f'q_{i}' for i in questions]) + '\n'
 # for each row
 for i in range(0,rows):
     # generate id
     id = str(random.randint(11111111,20000000))
-
-    # add fields as needed
-
     # generate modules done
-    clicked = [random.choice([1,1,0]) for _ in range(0,modules)]
+    clicked = [random.choice([1,1,0]) for _ in range(0,len(modules))]
     print(clicked)
     # generate correct answers
-    correct = [random.choice([1,1,0]) for _ in range(0,questions)]
+    correct = [random.choice([1,1,0]) for _ in range(0,len(questions))]
     # bring together
     results = [j for i in [[id],clicked,correct] for j in i]
     print(results)
