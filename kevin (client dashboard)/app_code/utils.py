@@ -30,3 +30,10 @@ def apply_plotly_theme(fig):
     """Apply the dashboard theme to any plotly figure."""
     fig.update_layout(**PLOTLY_LAYOUT)
     return fig
+
+def randomise_module_completion(data, rowCount):
+    # select x random rows from the sample data
+    random_sample = data.sample(n=rowCount, random_state=1)
+    # set all module columns to true
+    random_sample.loc[:, "module0":"module7"] = 1
+    return random_sample

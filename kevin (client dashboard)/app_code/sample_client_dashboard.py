@@ -5,7 +5,8 @@ import plotly.graph_objects as go
 import sys, os
 
 from utils import (
-    apply_plotly_theme
+    apply_plotly_theme,
+    randomise_module_completion
 )
 
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -56,6 +57,7 @@ with col1:
     with st.container(border=True):
 
         st.subheader("Overall Quiz Performances")
+        st.markdown("This data shows how students performed on each question of the Myth v.s Fact Knowledge Quiz.\n\nHaving information on questions or topics that students struggled with (or succeeded on) the most helps us rework the cards and information being communicated.", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
 
         # st.bar_chart(data=question_answer_counts_df, x='Question', y='Correct Answers', x_label='Question', y_label='Correct Answerers', color='blue', horizontal=False, sort=True, stack=None, width="stretch", height="content", use_container_width=None)
 
@@ -63,13 +65,12 @@ with col1:
         st.plotly_chart(apply_plotly_theme(fig), width="stretch")
         # fig.show()
 
-        # st.markdown("Generally, most students answered all questions equally correctly. This shows us that the module is working well in communicating basic OSHC knowledge.", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
-
 with col2:
 
     with st.container(border=True):
 
-        st.subheader("Module Usage")
+        st.subheader("Card Access")
+        st.markdown("This data shows how many students accessed each card within the learning module.\n\nNot all students actually read every card - if a card is particularly under-utilised, it may suggest a lack of interest in that topic.", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
 
         fig = px.bar(module_usage_counts_df, x='Module', y='Students Accessed', color="Module")
         st.plotly_chart(apply_plotly_theme(fig), width="stretch")
@@ -77,5 +78,60 @@ with col2:
         # st.bar_chart(data=module_usage_counts_df, x='Module', y='Students Accessed', x_label='Module', y_label='Number of Users', color='violet', horizontal=False, sort=True, stack=None, width="stretch", height="content", use_container_width=None)
 
 # module completion rate
+
+# completion here refers to: all cards have been accessed at least once
+module_completion_df = pd.DataFrame(columns=["Account ID", "Number of Cards Completed", "Module Complete"])
+
+# List of target column names
+module_cols = [f"module{i}" for i in range(8)]
+
+# RANDOMISATION
+
+# randomised sample
+
+randomised_module_completion_sample = randomise_module_completion(sample_data, 35)
+
+sample_data.update(randomised_module_completion_sample)
+
+# END OF RANDOMISATION
+
+# Sum the values along axis 1 (rows)
+sample_data["Total Cards Completed"] = sample_data[module_cols].sum(axis=1)
+
+for index, row in sample_data.iterrows():
+    # create row
+    # there are 8 modules
+    completion_check = False
+    if row['Total Cards Completed'] >= 8:
+        completion_check = True
+    new_row = pd.DataFrame({"Account ID": [row['id']], "Number of Cards Completed": [row['Total Cards Completed']], "Module Complete": [completion_check]})
+    module_completion_df = pd.concat([module_completion_df, new_row], ignore_index=True)
+
+col3, col4 = st.columns(2, gap="small")
+
+with col3:
+
+    with st.container(border=True):
+
+        st.subheader("Module Completion Rate")
+        st.markdown("This data shows how many students (out of our total userbase) finished the module.\n\nThis refers to viewing every card in the module.", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
+
+        # st.bar_chart(data=question_answer_counts_df, x='Question', y='Correct Answers', x_label='Question', y_label='Correct Answerers', color='blue', horizontal=False, sort=True, stack=None, width="stretch", height="content", use_container_width=None)
+
+        labels = {True: 'Completed', False: 'Incomplete'}
+        module_completion_df['Module Complete'] = module_completion_df['Module Complete'].map(labels)
+
+        fig = px.pie(module_completion_df, names='Module Complete', hole = 0.5,
+
+                    color_discrete_sequence=["cornflowerblue", "coral"]
+
+                    )
+        fig.update_layout(font=dict(size=25), 
+                          legend=dict
+                            (
+                            font=dict(size= 20)
+                            )
+                        )
+        st.plotly_chart(apply_plotly_theme(fig), width="stretch")
 
 # key word frequency
