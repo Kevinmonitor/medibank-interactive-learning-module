@@ -1,7 +1,7 @@
 import random
 
 # File to output
-path = 'test2.csv'
+path = '../../kevin (client dashboard)/app_code/sample_module_user_list.csv'
 # Modules
 # https://regexr.com/ (?<=id=")[^ ]+(?=")
 # file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/Test_Knowledge.py
@@ -19,7 +19,7 @@ o += ','.join([f'q_{i}' for i in questions]) + '\n'
 # for each row
 for i in range(0,rows):
     # generate id
-    id = str(random.randint(11111111,20000000))
+    id = str(random.randint(12345679,20000000))
     # generate modules done
     clicked = [random.choice([1,1,0]) for _ in range(0,len(modules))]
     print(clicked)

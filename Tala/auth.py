@@ -16,7 +16,8 @@ import hmac
 import streamlit as st
 
 LOGIN_PAGE = "oshc_welcome.py"
-DASHBOARD_PAGE = "pages/Admin_Dashboard.py"
+# DASHBOARD_PAGE = "pages/Admin_Dashboard.py"
+DASHBOARD_PAGE = "../kevin (client dashboard)/app_code/sample_client_dashboard.py"
 DEMO_ADMIN_PASSWORD = "oshcwise-demo"
 
 
@@ -26,7 +27,6 @@ USERS = {
     "student": {"username": "Student", "password": "123456"},
     "admin": {"username": "Admin", "password": "123456"},
 }
-
 
 def check_login(role: str, username: str, password: str) -> bool:
     """True when the username and password match the account of that role."""

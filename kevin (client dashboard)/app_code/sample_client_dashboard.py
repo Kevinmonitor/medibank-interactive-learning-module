@@ -134,4 +134,12 @@ with col3:
                         )
         st.plotly_chart(apply_plotly_theme(fig), width="stretch")
 
+with col4:
+
+    with st.container(border=True):
+
+        st.html("<p><span style='text-decoration: line-through double red;'>{{len(sample_data.index)}}</span></p>", width="stretch", unsafe_allow_javascript=False)
+
+        pass
+
 # key word frequency

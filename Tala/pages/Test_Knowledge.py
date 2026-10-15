@@ -5,7 +5,7 @@ The cards page (pages/1_Question.py) has a "Test your knowledge" button at the b
 (see quiz_button.py) that opens this page.
 
 Each answer is counted for the admin dashboard. ONLY counts are saved (right or wrong per
-question, see analytics.py): no names, no times, no sentences.
+question, see analytics.py).
 
 The facts in the answers are READ FROM THE PDF every time the PDF changes. If a part can no
 longer be found, the saved text (FALLBACK below) is used for it and this page shows a warning.
