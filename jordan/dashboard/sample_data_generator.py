@@ -4,14 +4,27 @@ import random
 path = '../../kevin (client dashboard)/app_code/sample_module_user_list.csv'
 # Modules
 # https://regexr.com/ (?<=id=")[^ ]+(?=")
-# file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/Test_Knowledge.py
+# file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/1_Question.py
 modules = ["homesick","hospital","sick","medication","find_provider","comprehensive_oshc","make_claim","just_learning"]
 # Questions
 # https://regexr.com/ (?<="key": ")[^ ]+(?=")
-# file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/1_Question.py
+# file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/Test_Knowledge.py
 questions = ["pays_all","gp_rate","glasses","claim_now","rx_free","psych_hosp","cosmetic","ivf","counselling","ambulance"]
 # Number of rows
 rows = 50
+
+map = {"pays_all":"comprehensive_oshc",
+       "gp_rate":"make_claim",
+       "glasses":"comprehensive_oshc",
+       "claim_now":"make_claim",
+       "rx_free":"medication",
+       "psych_hosp":"homesick",
+       "cosmetic":"medication",
+       "ivf":"coverage_guide",
+       "counselling":"homesick",
+       "ambulance":"sick",
+       }
+
 # header - id, modules, answers
 o = 'id,'
 o += ','.join([f'm_{i}' for i in modules]) + ','
