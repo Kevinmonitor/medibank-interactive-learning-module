@@ -1,7 +1,7 @@
 import random
 
 # File to output
-path = '../../kevin (client dashboard)/app_code/sample_module_user_list.csv'
+path = 'sample_module_user_list.csv'
 # Modules
 # https://regexr.com/ (?<=id=")[^ ]+(?=")
 # file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/1_Question.py
@@ -11,7 +11,7 @@ modules = ["homesick","hospital","sick","medication","find_provider","comprehens
 # file:///C:/Users/jorda/source/python/uni/medibank-interactive-learning-module/Tala/pages/Test_Knowledge.py
 questions = ["pays_all","gp_rate","glasses","claim_now","rx_free","psych_hosp","cosmetic","ivf","counselling","ambulance"]
 # Number of rows
-rows = 50
+rows = 0
 
 map = {"pays_all":"comprehensive_oshc",
        "gp_rate":"make_claim",
