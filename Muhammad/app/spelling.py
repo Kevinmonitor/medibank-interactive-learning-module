@@ -57,7 +57,8 @@ KEEP = {
 
 @lru_cache(maxsize=1)
 def _vocab():
-    path = Path("data/chunks.json")
+    from app.paths import DATA
+    path = DATA / "chunks.json"
     if not path.exists():
         return frozenset(), {}
     words = Counter()
@@ -69,6 +70,14 @@ def _vocab():
     return vocab, dict(words)
 
 
+def _squeeze(word):
+    """Collapse a run of 3+ identical letters down to 2, so elongated typing
+    like 'dentistttt' or 'coool' normalises to 'dentistt' / 'cool'. English
+    words never triple a letter, so real words are untouched, and the result
+    is close enough for the vocabulary match below to land on 'dentist'."""
+    return re.sub(r"(.)\1{2,}", r"\1\1", word)
+
+
 def correct(question, min_len=5):
     """Returns the question with unknown words replaced by their nearest
     policy word. Leaves everything else alone."""
@@ -76,20 +85,23 @@ def correct(question, min_len=5):
     if not vocab:
         return question
 
-    out, changed = [], []
+    out = []
     for token in re.findall(r"\S+", question):
-        word = re.sub(r"[^a-z]", "", token.lower())
-        if (len(word) < min_len or word in vocab or word in KEEP
-                or not word.isascii()):
+        raw = re.sub(r"[^a-z]", "", token.lower())
+        word = _squeeze(raw)
+        if not word.isascii() or word in KEEP:
             out.append(token)
             continue
-        # Cutoff of 0.75 catches a letter or two wrong, not a different word.
-        near = get_close_matches(word, vocab, n=1, cutoff=0.86)
-        if near:
-            out.append(near[0])
-            changed.append((word, near[0]))
-        else:
+        if word in vocab:
+            # squeezing an elongated typo may itself land on a real word
+            out.append(word if word != raw else token)
+            continue
+        if len(word) < min_len:
             out.append(token)
+            continue
+        # Cutoff catches a letter or two wrong, not a different word.
+        near = get_close_matches(word, vocab, n=1, cutoff=0.86)
+        out.append(near[0] if near else token)
     return " ".join(out)
 
 
@@ -98,10 +110,17 @@ def explain(question):
     vocab, _ = _vocab()
     changes = []
     for token in re.findall(r"\S+", question):
-        word = re.sub(r"[^a-z]", "", token.lower())
-        if len(word) < 5 or word in vocab or word in KEEP or not word.isascii():
+        raw = re.sub(r"[^a-z]", "", token.lower())
+        word = _squeeze(raw)
+        if not word.isascii() or word in KEEP:
+            continue
+        if word in vocab:
+            if word != raw:
+                changes.append((raw, word))
+            continue
+        if len(word) < 5:
             continue
         near = get_close_matches(word, vocab, n=1, cutoff=0.86)
         if near:
-            changes.append((word, near[0]))
+            changes.append((raw, near[0]))
     return changes

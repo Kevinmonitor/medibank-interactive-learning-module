@@ -18,6 +18,16 @@ import re
 import sqlite3
 import pandas as pd
 from datetime import datetime, timezone
+try:
+    from zoneinfo import ZoneInfo
+    _TZ = ZoneInfo("Australia/Melbourne")
+except Exception:          # tzdata missing on some systems — fall back to UTC
+    _TZ = timezone.utc
+
+
+def _now_str():
+    """Local (Melbourne) timestamp, Sheets-friendly: '2026-10-16 20:45:03'."""
+    return datetime.now(_TZ).strftime("%Y-%m-%d %H:%M:%S")
 from pathlib import Path
 
 import streamlit as st
@@ -27,12 +37,15 @@ from app.pipeline import (Retriever, safety_gate, GATE_RESPONSE, NURSE_LINE,
                           wellbeing_check, WELLBEING_RESPONSE)
 from app.generate import answer as generate_answer
 
-DB = Path("data/interactions.db")
-APPROVED = Path("data/approved_answers.json")
+from app.paths import DATA
+DB = DATA / "interactions.db"
+APPROVED = DATA / "approved_answers.json"
 
-st.set_page_config(page_title="Your OSHC", layout="centered")
 
-st.markdown("""
+# Styling for the chat bubbles and the source panel. Every rule is scoped
+# to a chat testid or to one of our own classes, so this is safe to inject
+# on a host app (Tala) without changing the host's own look.
+_CHAT_CSS = """
 <style>
 /* the student's own messages, dark and on the right */
 div[data-testid="stChatMessage"]:has(div[data-testid="stChatMessageAvatarUser"]){
@@ -51,23 +64,39 @@ div[data-testid="stChatMessageContent"]{
 
 div[data-testid="stChatInput"]{border-top:1px solid #CBD6E0}
 div[data-testid="stChatInput"] textarea{border-radius:0}
+
+/* the source panel under each answer */
+:root{
+  --ink:#0E2033; --ink-2:#4A6076; --line:#CBD6E0;
+  --paper:#FFFFFF; --green:#0F7A5A; --green-soft:#E3F2EC;
+  --amber:#9A6207; --amber-soft:#FCF2DF;
+}
+.srcbox{background:var(--paper);border:1px solid var(--line);
+  padding:.8rem .95rem;margin-bottom:.55rem}
+.srcwhere{font-size:.76rem;color:var(--ink-2);margin:0 0 .45rem;
+  display:flex;flex-wrap:wrap;gap:.25rem .7rem;align-items:baseline}
+.srcwhere b{color:var(--ink)}
+.srcwords{margin:0;font-size:.87rem;line-height:1.5;color:var(--ink-2)}
+.srcgrade{font-size:.75rem;margin:.5rem 0 0;padding-top:.45rem;
+  border-top:1px dashed var(--line);color:var(--amber);font-weight:600}
+.srcgrade.easy{color:var(--green)}
+.cmp{display:flex;border:1px solid var(--line);margin-bottom:.7rem;overflow:hidden}
+.cmp div{flex:1;padding:.6rem .8rem}
+.cmp .lab{font-size:.66rem;letter-spacing:.1em;font-weight:700;
+  margin:0 0 .15rem;color:var(--ink-2)}
+.cmp .val{font-size:1.2rem;font-weight:700;margin:0;font-variant-numeric:tabular-nums}
+.cmp .cap{font-size:.72rem;color:var(--ink-2);margin:.1rem 0 0}
+.cmp .ours{background:var(--green-soft)} .cmp .ours .val{color:var(--green)}
+.cmp .theirs{background:var(--amber-soft);border-left:1px solid var(--line)}
+.cmp .theirs .val{color:var(--amber)}
+.privnote{font-size:.74rem;color:var(--ink-2);margin:.6rem 0 0;line-height:1.5}
 </style>
-""", unsafe_allow_html=True)
+"""
 
 
-st.markdown("""
-<style>
-/* chat bubbles, to match the design */
-div[data-testid="stChatMessage"]{background:transparent;padding:.15rem 0}
-div[data-testid="stChatMessage"] div[data-testid="stChatMessageContent"]{
-  background:#EDF1F5;padding:.7rem .95rem;border-radius:0;
-  font-size:.95rem;line-height:1.55}
-div[data-testid="stChatMessage"]:has(img[alt="user avatar"])
-  div[data-testid="stChatMessageContent"]{background:#0E2033;color:#fff}
-div[data-testid="stChatInput"]{border-top:1px solid #CBD6E0}
-div[data-testid="stChatInput"] textarea{border-radius:0}
-</style>
-""", unsafe_allow_html=True)
+def inject_chat_css():
+    """Call once before rendering the chat. Safe on a host app."""
+    st.markdown(_CHAT_CSS, unsafe_allow_html=True)
 
 
 STYLE = """
@@ -137,7 +166,6 @@ summary{font-size:.86rem!important;font-weight:600;color:var(--blue)!important}
 #MainMenu,footer{visibility:hidden}
 </style>
 """
-st.markdown(STYLE, unsafe_allow_html=True)
 
 
 def md_safe(text):
@@ -242,12 +270,15 @@ def md_safe(text):
 def log(topic, confidence, page, source, routed=0):
     """Matched topic and confidence only. Never the question text, never a
     member identity. Supports Australian Privacy Principle 2."""
+    from app import store
+    ts = _now_str()
     con = init_db()
     con.execute("INSERT INTO interactions VALUES (?,?,?,?,?,?)",
-                (datetime.now(timezone.utc).isoformat(), topic,
-                 confidence, page, source, routed))
+                (ts, topic, confidence, page, source, routed))
     con.commit()
     con.close()
+    # Mirror to the Google Sheet when it is configured (no-op otherwise).
+    store.append_interaction(ts, topic, confidence, page, source, routed)
 
 
 # ------------------------------------------------------------------ helpers
@@ -259,6 +290,33 @@ def load_retriever():
 @st.cache_data
 def load_approved():
     return json.loads(APPROVED.read_text()) if APPROVED.exists() else {}
+
+
+# The readability gate (generate.py) regenerates anything above this grade.
+ANSWER_GATE_GRADE = 9
+
+
+@st.cache_data
+def document_grade():
+    """Flesch-Kincaid grade of the Medibank OSHC documents.
+
+    Prefers the measured value in data/readability.json, produced by
+    eval/readability.py running textstat over the full text of the published
+    PDFs — a figure anyone can reproduce. Falls back to averaging the indexed
+    chunks when that file is absent."""
+    from app.paths import DATA
+    rj = DATA / "readability.json"
+    if rj.exists():
+        try:
+            return float(json.loads(rj.read_text())["document_grade"])
+        except Exception:
+            pass
+    path = DATA / "chunks.json"
+    if not path.exists():
+        return None
+    grades = [g for g in (_grade(c.get("text", ""))
+                          for c in json.loads(path.read_text())) if g is not None]
+    return round(sum(grades) / len(grades), 1) if grades else None
 
 
 
@@ -273,6 +331,8 @@ def log_prompt(raw, corrected, expanded, topic, confidence, product,
     """Prototype only. In production, features would be extracted at query
     time and the text discarded. For the demo we keep the text so the NLP
     analysis page can show real patterns."""
+    from app import store
+    ts = _now_str()
     con = init_db()
     con.execute("""CREATE TABLE IF NOT EXISTS prompt_log (
         ts TEXT, raw TEXT, corrected TEXT, expanded TEXT,
@@ -281,12 +341,18 @@ def log_prompt(raw, corrected, expanded, topic, confidence, product,
         synonym_hit INTEGER, word_count INTEGER,
         routed INTEGER)""")
     con.execute("INSERT INTO prompt_log VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-                (datetime.now(timezone.utc).isoformat(),
-                 raw, corrected, expanded, topic, confidence, product,
+                (ts, raw, corrected, expanded, topic, confidence, product,
                  int(was_corrected), correction_count,
                  int(synonym_hit), len(raw.split()), int(routed)))
     con.commit()
     con.close()
+    # Mirror to the Google Sheet when it is configured (no-op otherwise).
+    store.append_prompt({
+        "ts": ts, "raw": raw, "corrected": corrected, "expanded": expanded,
+        "topic": topic, "confidence": confidence, "product": product,
+        "was_corrected": int(was_corrected), "correction_count": correction_count,
+        "synonym_hit": int(synonym_hit), "word_count": len(raw.split()),
+        "routed": int(routed)})
 
 
 
@@ -361,8 +427,12 @@ def show_prompt_analysis(original_question, product):
             st.markdown(f"**{icon} {label}**\n\n{_h.escape(detail)}")
 
 
-def ask(question, product, page_name):
-    """The runtime path. Gate first, always."""
+def ask(question, product, page_name, show_analysis=True):
+    """The runtime path. Gate first, always.
+
+    show_analysis controls the technical panels (source wording with
+    Flesch-Kincaid reading grades, and the prompt-processing breakdown).
+    Students see a clean answer; admins see the analysis."""
     # Tier 1 runs before the wellbeing and clinical checks.
     tier = crisis_check(question)
     if tier == "crisis":
@@ -420,7 +490,8 @@ def ask(question, product, page_name):
                    0.0, product, bool(_ch), len(_ch or []),
                    False, False)
         log("unmatched", 0.0, page_name, "fallback")
-        show_prompt_analysis(question, product)
+        if show_analysis:
+            show_prompt_analysis(question, product)
         return
 
     passages = [h[0] for h in hits]
@@ -451,7 +522,8 @@ def ask(question, product, page_name):
     log(topic, confidence, page_name, source)
 
     st.success(md_safe(_record("answer", text, passages)))
-    show_sources(text, passages)
+    if show_analysis:
+        show_sources(text, passages)
     try:
         from app.spelling import correct, explain
         _changes = explain(question)
@@ -465,12 +537,13 @@ def ask(question, product, page_name):
     except Exception:
         _expanded, _syn = _corrected, False
     log_prompt(question, _corrected, _expanded, passages[0]["section"],
-               0.0, product, bool(_changes), len(_changes or []),
+               confidence, product, bool(_changes), len(_changes or []),
                _syn, False)
-    show_prompt_analysis(question, product)
-    if trace:
-        with st.expander("Checks"):
-            st.json(trace)
+    if show_analysis:
+        show_prompt_analysis(question, product)
+        if trace:
+            with st.expander("Checks"):
+                st.json(trace)
 
 
 SUGGESTIONS = [
@@ -482,10 +555,17 @@ SUGGESTIONS = [
 ]
 
 
-def assistant(page_name):
+def assistant(page_name, show_analysis=True, widget=False):
     """A chat rather than a form. History stays in session state, so a
     student can see what they already asked. Answers reference each other,
-    and a single question box loses that."""
+    and a single question box loses that.
+
+    show_analysis passes through to ask(): True shows the source wording and
+    Flesch-Kincaid analysis (admin view), False gives a clean answer only.
+    widget=True keeps the input inside the current container (a form, not the
+    page-docked st.chat_input) and drops the wide suggestion grid, so the chat
+    fits inside a floating 'Message us' panel."""
+    inject_chat_css()
     key = "chat_" + page_name
 
     if key not in st.session_state:
@@ -509,19 +589,37 @@ def assistant(page_name):
 
     # suggestions only while the chat is empty
     if not st.session_state[key]:
-        st.caption(
-            "Ask what your cover includes. Every answer comes from your own "
-            "policy documents, and you can open the exact wording it came "
-            "from. If you need medical advice I will put you through to a "
-            "nurse instead.")
-        cols = st.columns(len(SUGGESTIONS))
-        for col, text in zip(cols, SUGGESTIONS):
-            if col.button(text, key=page_name + "_sug_" + text,
-                          use_container_width=True):
-                st.session_state[key + "_pending"] = text
-                st.rerun()
+        if widget:
+            st.caption("Ask what your cover includes. For medical advice I will "
+                       "put you through to a nurse instead.")
+        else:
+            st.caption(
+                "Ask what your cover includes. Every answer comes from your own "
+                "policy documents, and you can open the exact wording it came "
+                "from. If you need medical advice I will put you through to a "
+                "nurse instead.")
+            cols = st.columns(len(SUGGESTIONS))
+            for col, text in zip(cols, SUGGESTIONS):
+                if col.button(text, key=page_name + "_sug_" + text,
+                              use_container_width=True):
+                    st.session_state[key + "_pending"] = text
+                    st.rerun()
 
-    typed = st.chat_input("Ask about your cover", key=page_name + "_input")
+    if widget:
+        # A form keeps the text box inside the floating panel; st.chat_input
+        # would dock to the bottom of the whole page instead.
+        with st.form(key=page_name + "_form", clear_on_submit=True,
+                     border=False):
+            c_in, c_go = st.columns([5, 1])
+            typed = c_in.text_input("Ask about your cover",
+                                    key=page_name + "_tin",
+                                    placeholder="Type your message",
+                                    label_visibility="collapsed")
+            sent = c_go.form_submit_button("➤", use_container_width=True)
+        if not sent:
+            typed = None
+    else:
+        typed = st.chat_input("Ask about your cover", key=page_name + "_input")
     pending = st.session_state.pop(key + "_pending", None)
     question = typed or pending
 
@@ -534,7 +632,7 @@ def assistant(page_name):
                 _LAST_RENDER.clear()
                 ask(question,
                     st.session_state.get("product", "comprehensive"),
-                    page_name)
+                    page_name, show_analysis)
         st.session_state[key].append(
             ("assistant", _LAST_RENDER.get("text", ""),
              _LAST_RENDER.get("kind", "answer")))
@@ -576,260 +674,153 @@ def page_dashboard():
     assistant("dashboard")
 
 
-def page_internal():
-    st.markdown('<h1>Internal view</h1>'
-                '<p class="sub">Aggregate patterns only. No individual students.</p>',
-                unsafe_allow_html=True)
-    con = init_db()
-    rows = con.execute("""SELECT topic, COUNT(*) n, AVG(confidence) c,
-                          SUM(routed_to_nurse) routed
-                          FROM interactions GROUP BY topic ORDER BY n DESC""").fetchall()
-    total = con.execute("SELECT COUNT(*) FROM interactions").fetchone()[0]
-    con.close()
-
-    if not rows or total == 0:
-        st.info("No interactions logged yet. Ask some questions on pages 1 or 2, "
-                "then come back here.")
-        return
-
-    # ---- headline metrics ------------------------------------------------
-    topics = [r[0] for r in rows]
-    counts = [r[1] for r in rows]
-    confs = [r[2] or 0 for r in rows]
-    routed = sum(r[3] or 0 for r in rows)
-
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Total questions", total)
-    c2.metric("Unique topics", len(topics))
-    c3.metric("Routed to human", int(routed))
-    c4.metric("Avg confidence", f"{sum(c * n for c, n in zip(confs, counts)) / total:.3f}")
-
-    st.divider()
-
-    # ---- comprehension gap map -------------------------------------------
-    st.markdown("#### Which sections students ask about")
-    st.caption("High frequency means the document failed there. "
-               "These are topic counts, not question text.")
-    st.bar_chart(
-        data=dict(zip(topics, counts)),
-        use_container_width=True,
-        color="#0B5FA5")
-
-    # ---- confidence by topic ---------------------------------------------
-    st.markdown("#### How confident the system is per topic")
-    st.caption("Low confidence means the corpus is thin on this topic. "
-               "A content gap, not a retrieval gap.")
-    conf_data = {t: round(c, 4) for t, c in zip(topics, confs) if c > 0}
-    if conf_data:
-        st.bar_chart(
-            data=conf_data,
-            use_container_width=True,
-            color="#0F7A5A")
-
-    st.divider()
-
-    # ---- vocabulary distance ---------------------------------------------
-    st.markdown("#### Vocabulary distance")
-    st.caption("How far apart student language and policy language are.")
-    try:
-        con2 = init_db()
-        # Count interactions where spelling correction or synonym expansion
-        # would have fired. We check the source field for clues.
-        answered = con2.execute(
-            "SELECT COUNT(*) FROM interactions WHERE topic != 'crisis' "
-            "AND topic != 'emergency' AND topic != 'wellbeing' "
-            "AND topic != 'clinical'").fetchone()[0]
-        con2.close()
-        if answered > 0:
-            v1, v2 = st.columns(2)
-            v1.metric("Coverage questions", answered,
-                      help="Questions that reached retrieval")
-            v2.metric("Routed to human", int(routed),
-                      help="Questions stopped by safety tiers")
-    except Exception:
-        pass
-
-    st.divider()
-
-    # ---- readability contribution ----------------------------------------
-    st.markdown("#### Readability contribution")
-    st.caption("The measurable difference between the document and the answer.")
-    r1, r2, r3 = st.columns(3)
-    r1.metric("Document average", "Grade 15.3",
-              help="Flesch-Kincaid grade of Medibank OSHC documents")
-    r2.metric("Answer target", "Below 9",
-              help="The readability gate regenerates anything above grade 9")
-    r3.metric("Simplification", "~10 grades",
-              help="Document average minus answer average")
-
-    st.divider()
-
-    # ---- raw data --------------------------------------------------------
-    st.markdown("#### Raw interaction log")
-    st.caption("Topic and confidence only. Never question text.")
-    st.dataframe(
-        [{"Topic": t, "Questions": n,
-          "Avg confidence": round(c or 0, 3),
-          "Routed": int(r or 0)}
-         for t, n, c, r in rows],
-        use_container_width=True)
-
-    st.caption("Topics with low average confidence are where the answers are "
-               "weakest and should be rewritten first.")
-
-
-def page_nlp():
-    st.markdown('<h1>Student Insights</h1>'
-                '<p class="sub">What students are asking, where they struggle, '
-                'and what to fix first.</p>',
-                unsafe_allow_html=True)
-
-    con = init_db()
-    try:
-        con.execute("SELECT 1 FROM prompt_log LIMIT 1")
-    except Exception:
-        st.info("No data yet. Ask some questions on pages 1 or 2.")
-        con.close()
-        return
-
+def page_insights():
+    """One lean analytics view for the chatbot. Replaces the old internal and
+    NLP pages, which duplicated each other's topic and readability charts."""
     import pandas as pd
-    df = pd.read_sql("SELECT * FROM prompt_log", con)
-    con.close()
+    from app import store
 
-    if df.empty:
-        st.info("No data yet. Ask some questions on pages 1 or 2.")
+    st.markdown('<h1>Chatbot insights</h1>'
+                '<p class="sub">What students ask, where the documents fail them, '
+                'and what to fix first. Aggregate only, never question text tied '
+                'to a student.</p>', unsafe_allow_html=True)
+
+    con = store.connection(init_db)
+    total = con.execute("SELECT COUNT(*) FROM interactions").fetchone()[0]
+    if not total:
+        con.close()
+        st.info("No questions logged yet. Ask some on the chatbot, then come back.")
         return
 
-    st.markdown("### At a glance")
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Questions asked", len(df))
-    routed = int(df["routed"].sum()) if "routed" in df.columns else 0
-    c2.metric("Sent to a human", routed,
-              help="Questions that contained symptoms or crisis language")
-    corr_pct = df["was_corrected"].mean() * 100 if len(df) > 0 else 0
-    c3.metric("Had spelling issues", f"{corr_pct:.0f}%",
-              help="Students who misspelled a policy term")
-    syn_pct = df["synonym_hit"].mean() * 100 if len(df) > 0 else 0
-    c4.metric("Used different words", f"{syn_pct:.0f}%",
-              help="Students who used shorthand instead of policy terms")
+    routed = con.execute(
+        "SELECT COALESCE(SUM(routed_to_nurse), 0) FROM interactions").fetchone()[0]
+    unanswered = con.execute(
+        "SELECT COUNT(*) FROM interactions WHERE topic = 'unmatched'").fetchone()[0]
 
+    # Rule-based routes (crisis/clinical/balance) log confidence 1.0 by rule,
+    # not by retrieval, and 'unmatched' is a non-answer. Exclude both from the
+    # confidence average and the topic chart, so each reflects real answers.
+    META = ("crisis", "emergency", "wellbeing", "clinical", "unmatched", "balance")
+    ph = ",".join("?" for _ in META)
+    avg_conf = con.execute(
+        f"SELECT AVG(confidence) FROM interactions "
+        f"WHERE topic NOT IN ({ph}) AND confidence > 0", META).fetchone()[0] or 0
+    topic_rows = con.execute(
+        f"SELECT topic, COUNT(*) n FROM interactions "
+        f"WHERE topic NOT IN ({ph}) GROUP BY topic ORDER BY n DESC", META).fetchall()
+
+    try:
+        pdf = pd.read_sql("SELECT was_corrected, synonym_hit FROM prompt_log", con)
+    except Exception:
+        pdf = pd.DataFrame()
+    log_rows = con.execute(
+        "SELECT topic, COUNT(*) n, AVG(confidence) c, SUM(routed_to_nurse) r "
+        "FROM interactions GROUP BY topic ORDER BY n DESC").fetchall()
+    con.close()
+
+    corr_pct = pdf["was_corrected"].mean() * 100 if not pdf.empty else 0
+    syn_pct = pdf["synonym_hit"].mean() * 100 if not pdf.empty else 0
+
+    # ---- 1. headline KPIs -------------------------------------------------
+    unans_pct = unanswered / total * 100 if total else 0
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Questions asked", total)
+    k2.metric("Unanswered", f"{unans_pct:.0f}%",
+              help="No confident match; the bot sent the student to the nurse line.")
+    k3.metric("Routed to a human", int(routed),
+              help="Stopped by a safety tier (crisis, emergency, wellbeing, symptom).")
+    k4.metric("Avg retrieval score", f"{avg_conf:.3f}",
+              help="Mean fusion score of answered questions. Anything below the "
+                   "0.023 threshold is rejected as 'unanswered'.")
     st.divider()
 
-    st.markdown("### Where students get lost")
-    st.caption("The topics students ask about most. The tallest bar is "
-               "where the current documentation is failing hardest.")
-    if "topic" in df.columns:
-        topic_counts = df["topic"].value_counts().head(10)
-        if not topic_counts.empty:
-            st.bar_chart(data=topic_counts, use_container_width=True, color="#0B5FA5")
-
+    # ---- 2. one topic chart ----------------------------------------------
+    st.markdown("#### Where students ask, and the documents are tested")
+    st.caption("Coverage topics students reach most. The tallest bar is where "
+               "the documentation is working hardest.")
+    if topic_rows:
+        st.bar_chart({t: n for t, n in topic_rows},
+                     use_container_width=True, color="#0B5FA5")
+    else:
+        st.caption("No coverage questions yet.")
     st.divider()
 
-    st.markdown("### The language gap")
-    st.caption("Students and policy documents use different words for the "
-               "same thing. This is how wide the gap is.")
+    # ---- 3. the vocabulary gap (the distinctive insight) -----------------
+    st.markdown("#### The language gap")
+    st.caption("How far student wording sits from policy wording — the insight a "
+               "click-based usage dashboard cannot show.")
     g1, g2 = st.columns(2)
-    g1.metric("Spelling correction rate", f"{corr_pct:.0f}%",
-              help="How many students misspell policy terms")
-    g2.metric("Shorthand rate", f"{syn_pct:.0f}%",
-              help="How many students say dent when the policy says dental")
-    if corr_pct > 30:
-        st.warning("More than 30% of queries needed spelling correction. "
-                   "The policy vocabulary is a barrier.")
+    g1.metric("Needed spelling fixes", f"{corr_pct:.0f}%",
+              help="Questions where a policy term was misspelled.")
+    g2.metric("Used shorthand", f"{syn_pct:.0f}%",
+              help="Questions using slang like 'dent' or 'meds' for the policy word.")
     if syn_pct > 50:
-        st.warning("More than half of queries used shorthand. Students and "
-                   "the documents speak different languages.")
-
+        st.warning("Over half of questions used shorthand. Students and the "
+                   "documents speak different languages.")
     st.divider()
 
-    st.markdown("### What students actually say")
-    st.caption("The words students use. If these do not match the policy, "
-               "the documents need rewriting.")
-    stop = {"i","a","the","is","it","my","do","to","how","can","does","what",
-            "are","or","for","in","on","of","and","with","that","this","me",
-            "if","not","no","yes","be","have","has","was","were","an","at",
-            "by","from","its","but","so","up","out","about","am","will"}
-    from collections import Counter
-    all_words = []
-    for text in df["raw"].dropna():
-        for w in re.findall(r"[a-z]+", text.lower()):
-            if w not in stop and len(w) > 1:
-                all_words.append(w)
-    word_freq = Counter(all_words).most_common(12)
-    if word_freq:
-        st.bar_chart(data={w: c for w, c in word_freq},
-                     use_container_width=True, color="#0F7A5A")
-
-    st.divider()
-
-    st.markdown("### How students phrase their questions")
-    st.caption("Short questions mean searching like Google. "
-               "Long questions mean explaining context because "
-               "they do not know the right term.")
-    if len(df) > 0 and "word_count" in df.columns:
-        bins = {"Searching (1-3 words)": 0, "Direct question (4-7)": 0,
-                "Explaining (8+ words)": 0}
-        for wc in df["word_count"]:
-            if wc <= 3: bins["Searching (1-3 words)"] += 1
-            elif wc <= 7: bins["Direct question (4-7)"] += 1
-            else: bins["Explaining (8+ words)"] += 1
-        st.bar_chart(data=bins, use_container_width=True, color="#9A6207")
-
-    st.divider()
-
-    st.markdown("### How much simpler the answers are")
-    st.caption("The gap between what the documents say and what the "
-               "chatbot says, measured in reading grade levels.")
+    # ---- 4. one readability line -----------------------------------------
+    st.markdown("#### Readability")
+    doc_grade = document_grade()
     r1, r2, r3 = st.columns(3)
-    r1.metric("Policy documents", "Grade 15.3",
-              help="Flesch-Kincaid grade of OSHC documents. University level.")
-    r2.metric("Chatbot answers", "Below grade 9",
-              help="The readability gate blocks anything above grade 9.")
-    r3.metric("Simplification", "~10 grades",
-              help="Same information, easier words and shorter sentences.")
-
+    r1.metric("Policy documents",
+              f"Grade {doc_grade}" if doc_grade is not None else "n/a",
+              help="Flesch-Kincaid grade, measured from the indexed OSHC documents.")
+    r2.metric("Chatbot answers", f"Grade {ANSWER_GATE_GRADE} or lower",
+              help="The readability gate regenerates anything above this grade.")
+    r3.metric("Simplification",
+              f"~{round(doc_grade - ANSWER_GATE_GRADE)} grades"
+              if doc_grade is not None else "n/a")
     st.divider()
 
-    st.markdown("### Recommended actions")
-    if not df.empty and "topic" in df.columns:
-        top_topic = df["topic"].value_counts().index[0]
-        top_count = int(df["topic"].value_counts().iloc[0])
-        total = len(df)
+    # ---- 5. recommended actions ------------------------------------------
+    st.markdown("#### What to fix first")
+    if topic_rows:
+        top_topic, top_n = topic_rows[0]
+        st.markdown(f"**1. Rewrite the {top_topic} section first** — "
+                    f"{top_n} of {total} questions "
+                    f"({top_n * 100 // max(total, 1)}%).")
+    if unans_pct > 15:
+        st.markdown(f"**2. Close content gaps** — {unans_pct:.0f}% of questions "
+                    f"went unanswered.")
+    if syn_pct > 40:
+        st.markdown(f"**3. Match student language** — {syn_pct:.0f}% used shorthand "
+                    f"the documents don't use.")
 
-        st.markdown(f"**1. Rewrite the {top_topic} section first.** "
-                    f"It accounts for {top_count} of {total} questions "
-                    f"({top_count*100//max(total,1)}%).")
-
-        if corr_pct > 20:
-            st.markdown(f"**2. Simplify the vocabulary.** "
-                        f"{corr_pct:.0f}% of queries had spelling issues "
-                        f"with policy terms.")
-
-        if syn_pct > 40:
-            st.markdown(f"**3. Match student language.** "
-                        f"{syn_pct:.0f}% of queries used shorthand like "
-                        f"dent or meds instead of dental or pharmaceutical.")
-
-    st.divider()
-    st.caption("Prototype data. In production, question text would be "
-               "processed at query time and discarded.")
+    # ---- raw log, tucked away --------------------------------------------
+    with st.expander("Raw interaction log (topic and confidence only)"):
+        st.dataframe(
+            [{"Topic": t, "Questions": n, "Avg confidence": round(c or 0, 3),
+              "Routed": int(r or 0)} for t, n, c, r in log_rows],
+            use_container_width=True)
 
 
-with st.sidebar:
-    st.subheader("Demo settings")
-    st.session_state["product"] = st.selectbox(
-        "Cover", ["comprehensive", "essentials"])
-    st.session_state["member_id"] = st.selectbox(
-        "Demo student",
-        ["DEMO001 - Ayu Pratiwi", "DEMO002 - Wei Chen",
-         "DEMO003 - Raj Patel", "DEMO004 - Linh Nguyen",
-         "DEMO005 - Maria Santos"],
-        index=0).split(" - ")[0]
-    st.session_state["campus"] = st.text_input("Campus", "Swinburne")
-    st.session_state["weeks"] = st.number_input("Weeks in Australia", 0, 200, 3)
-    page = st.radio("Page", ["1. Module", "2. Dashboard", "3. Internal", "4. NLP Analysis"])
+def _standalone():
+    """Runs only when this file is the entry point (streamlit run app/main.py).
+    When the chatbot is embedded in Tala, that app owns the page config and
+    the navigation, and imports the functions above instead of running this."""
+    st.set_page_config(page_title="Your OSHC", layout="centered")
+    st.markdown(STYLE, unsafe_allow_html=True)
+    inject_chat_css()
 
-{"1. Module": page_module,
- "2. Dashboard": page_dashboard,
- "3. Internal": page_internal,
- "4. NLP Analysis": page_nlp}[page]()
+    with st.sidebar:
+        st.subheader("Demo settings")
+        st.session_state["product"] = st.selectbox(
+            "Cover", ["comprehensive", "essentials"])
+        st.session_state["member_id"] = st.selectbox(
+            "Demo student",
+            ["DEMO001 - Ayu Pratiwi", "DEMO002 - Wei Chen",
+             "DEMO003 - Raj Patel", "DEMO004 - Linh Nguyen",
+             "DEMO005 - Maria Santos"],
+            index=0).split(" - ")[0]
+        st.session_state["campus"] = st.text_input("Campus", "Swinburne")
+        st.session_state["weeks"] = st.number_input("Weeks in Australia", 0, 200, 3)
+        page = st.radio("Page", ["1. Module", "2. Dashboard", "3. Insights"])
+
+    {"1. Module": page_module,
+     "2. Dashboard": page_dashboard,
+     "3. Insights": page_insights}[page]()
+
+
+if __name__ == "__main__":
+    _standalone()

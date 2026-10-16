@@ -1,2 +1,19 @@
 *.pyc
 *.bat
+__pycache__/
+
+# local tooling — never commit
+.claude/
+.agents/
+
+# credentials — never commit
+key.json
+**/key.json
+.streamlit/secrets.toml
+**/.streamlit/secrets.toml
+
+# local-only reference script (not needed in repo)
+Muhammad/eval/tune.py
+
+# runtime analytics counters (written by the app at runtime)
+Tala/data/card_counts.json

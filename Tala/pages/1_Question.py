@@ -8,7 +8,15 @@ import streamlit as st
 
 import auth
 from app_header import render_header
-from jordan.dashboard.map import done_module
+try:
+    # jordan.dashboard.map isn't importable when the app is launched from the
+    # Tala/ or repo folder (its own module does a cwd-relative import), and
+    # done_module is currently only referenced in a commented-out line. Guard
+    # it so the hub doesn't crash; wire it in properly once that package is
+    # importable.
+    from jordan.dashboard.map import done_module
+except Exception:
+    done_module = None
 from voice_section import render_voice_section
 from quiz_button import show_quiz_button
 
@@ -328,3 +336,97 @@ with st.container(key="goal_grid"):
 
 # Under the cards: the quiz (Myth or fact)
 show_quiz_button()
+
+
+# ---------------------------------------------------------------------------
+# Ask-the-chatbot entry (added for the chatbot integration).
+# Role-aware, self-contained block appended at the end:
+#   - Student: a floating button opens an interactive chat IN PLACE on the hub,
+#     answers only (no technical analysis).
+#   - Admin: a floating button navigates to the chatbot page, which shows the
+#     full Flesch-Kincaid readability analysis for evaluation.
+# ---------------------------------------------------------------------------
+import sys as _sys
+from pathlib import Path as _Path
+_CHATBOT = _Path(__file__).resolve().parents[2] / "Muhammad"
+if str(_CHATBOT) not in _sys.path:
+    _sys.path.insert(0, str(_CHATBOT))
+
+st.markdown(
+    """
+    <style>
+    /* ---- collapsed button (FAB), bottom-right ---- */
+    [class*="st-key-chat_fab"] {
+        position: fixed; right: 24px; bottom: 24px; z-index: 9999; width: auto;
+    }
+    [class*="st-key-chat_fab"] a,
+    [class*="st-key-chat_fab"] button {
+        background: #d81e2c !important; border: none !important;
+        border-radius: 999px !important; padding: .7rem 1.15rem !important;
+        text-decoration: none !important; box-shadow: 0 8px 22px rgba(0,0,0,.22);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+    [class*="st-key-chat_fab"] a:hover,
+    [class*="st-key-chat_fab"] button:hover {
+        transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.28);
+    }
+    [class*="st-key-chat_fab"] a *,
+    [class*="st-key-chat_fab"] button * { color:#fff !important; font-weight:700 !important; }
+    [class*="st-key-chat_fab"] a svg { display: none; }
+
+    /* ---- open chat widget (Message us panel), bottom-right ---- */
+    [class*="st-key-chat_widget"] {
+        position: fixed; right: 24px; bottom: 24px; z-index: 9999;
+        width: min(370px, calc(100vw - 32px)); max-height: 74vh; overflow-y: auto;
+        background: #ffffff; border-radius: 14px; padding: 0 .9rem .5rem;
+        box-shadow: 0 14px 40px rgba(0,0,0,.28);
+    }
+    /* red header bar, full width of the panel */
+    [class*="st-key-chat_widget"] .cw-head {
+        position: sticky; top: 0; z-index: 2;
+        background: #d81e2c; color: #fff; font-weight: 700; font-size: 1rem;
+        margin: 0 -.9rem .4rem; padding: .8rem 1rem; border-radius: 14px 14px 0 0;
+    }
+    /* close button, over the red bar, top-right */
+    [class*="st-key-cw_close"] {
+        position: absolute; top: 8px; right: 10px; z-index: 3; width: auto;
+    }
+    [class*="st-key-cw_close"] button {
+        background: transparent !important; border: none !important; color:#fff !important;
+        font-size: 1.1rem; padding: .2rem .5rem !important; box-shadow: none !important;
+    }
+    /* send button on the input form */
+    [class*="st-key-chat_widget"] [data-testid="stFormSubmitButton"] button {
+        background: #d81e2c !important; color:#fff !important; border:none !important;
+        border-radius: 8px !important; font-weight: 700;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+if auth.is_admin():
+    # Admin: navigate to the chatbot page (full analysis view).
+    with st.container(key="chat_fab"):
+        st.page_link("pages/Ask_Chatbot.py", label="📊 Ask &amp; analyse")
+else:
+    # Student: a floating "Message us" style chat panel, opened from the FAB.
+    if "hub_chat_open" not in st.session_state:
+        st.session_state["hub_chat_open"] = False
+
+    if not st.session_state["hub_chat_open"]:
+        with st.container(key="chat_fab"):
+            if st.button("💬 Ask about your cover", key="open_hub_chat"):
+                st.session_state["hub_chat_open"] = True
+                st.rerun()
+    else:
+        with st.container(key="chat_widget"):
+            st.markdown('<div class="cw-head">💬 Ask about your cover</div>',
+                        unsafe_allow_html=True)
+            with st.container(key="cw_close"):
+                if st.button("✕", key="close_hub_chat"):
+                    st.session_state["hub_chat_open"] = False
+                    st.rerun()
+            st.session_state.setdefault("product", "comprehensive")
+            from app.main import assistant as _assistant
+            _assistant("student", show_analysis=False, widget=True)
