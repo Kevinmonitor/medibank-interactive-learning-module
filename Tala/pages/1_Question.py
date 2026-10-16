@@ -8,15 +8,10 @@ import streamlit as st
 
 import auth
 from app_header import render_header
-try:
-    # jordan.dashboard.map isn't importable when the app is launched from the
-    # Tala/ or repo folder (its own module does a cwd-relative import), and
-    # done_module is currently only referenced in a commented-out line. Guard
-    # it so the hub doesn't crash; wire it in properly once that package is
-    # importable.
-    from jordan.dashboard.map import done_module
-except Exception:
-    done_module = None
+
+from map import done_module
+DATA_FILE = Path(__file__).parent / ".." / "data" / "sample_module_user_list.csv"
+
 from voice_section import render_voice_section
 from quiz_button import show_quiz_button
 
@@ -315,10 +310,12 @@ def render_goal_card(opt):
             use_container_width=True,
         ):
             if opt["label"] in PAGES:
-                # Same session, so the student stays logged in
+                # i can't tell if the module is actually done but i don't want to duplicate my code
+                done_module(DATA_FILE,st.session_state.get("username"),opt["key"])                            
+               # Same session, so the student stays logged in
                 st.switch_page(PAGES[opt["label"]])
+            # this line seems to be dead
             st.session_state.health_concern = opt["label"]
-            # done_module(user,label)
             st.rerun()
 
 

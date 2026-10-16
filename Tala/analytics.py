@@ -11,6 +11,8 @@ If this ever changes, the privacy note in voice_section.py (HOW_IT_WORKS) must c
 import json
 import os
 from pathlib import Path
+import streamlit as st
+from map import set_question
 
 COUNTS_FILE = Path(__file__).parent / "data" / "card_counts.json"
 
@@ -66,6 +68,8 @@ def clear_counts() -> None:
 # Only counts per question: how many answers were right and how many were wrong.
 
 QUIZ_FILE = Path(__file__).parent / "data" / "quiz_counts.json"
+DATA_FILE = Path(__file__).parent / "data" / "sample_module_user_list.csv"
+data = DATA_FILE
 
 # question id -> short label shown on the dashboard
 QUIZ_QUESTIONS = {
@@ -107,7 +111,7 @@ def log_quiz(question: str, correct: bool) -> None:
         temp.write_text(json.dumps(counts, indent=2), encoding="utf-8")
         os.replace(temp, QUIZ_FILE)
 
-        # set_question(user,name,right)
+        set_question(DATA_FILE,str(st.session_state.get("username")),question,1 if correct else 0)
 
     except OSError:
         pass

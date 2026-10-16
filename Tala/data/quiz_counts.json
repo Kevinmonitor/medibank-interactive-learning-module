@@ -1,42 +1,42 @@
 {
   "pays_all": {
-    "right": 0,
+    "right": 5,
     "wrong": 0
   },
   "gp_rate": {
-    "right": 0,
-    "wrong": 0
+    "right": 3,
+    "wrong": 2
   },
   "glasses": {
-    "right": 0,
+    "right": 4,
     "wrong": 0
   },
   "claim_now": {
-    "right": 0,
-    "wrong": 0
+    "right": 2,
+    "wrong": 2
   },
   "rx_free": {
-    "right": 0,
+    "right": 4,
     "wrong": 0
   },
   "psych_hosp": {
-    "right": 0,
-    "wrong": 0
+    "right": 2,
+    "wrong": 2
   },
   "cosmetic": {
-    "right": 1,
+    "right": 5,
     "wrong": 0
   },
   "ivf": {
-    "right": 1,
-    "wrong": 0
+    "right": 4,
+    "wrong": 1
   },
   "counselling": {
-    "right": 1,
-    "wrong": 0
+    "right": 3,
+    "wrong": 2
   },
   "ambulance": {
     "right": 1,
-    "wrong": 0
+    "wrong": 4
   }
 }

@@ -13,7 +13,6 @@ name = st.query_params.get("name") or "Student"
 first_name = str(name).strip().split()[0] if str(name).strip() else "Student"
 safe_name = html.escape(first_name)
 
-
 if "screen" not in st.session_state:
     st.session_state.screen = "intro"
 render_header()
@@ -157,6 +156,7 @@ def _login_form(role: str) -> None:
         if auth.check_login(role, username, password):
             auth.login(role, first_name if role == "student" else "Admin")
             st.session_state["go_welcome"] = True
+            st.session_state["username"] = username
             st.rerun()                       # closes the pop-up, then the page moves on
         else:
             st.error("The username or password is not right.")
