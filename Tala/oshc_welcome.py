@@ -13,6 +13,7 @@ name = st.query_params.get("name") or "Student"
 first_name = str(name).strip().split()[0] if str(name).strip() else "Student"
 safe_name = html.escape(first_name)
 
+
 if "screen" not in st.session_state:
     st.session_state.screen = "intro"
 render_header()

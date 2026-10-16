@@ -8,6 +8,7 @@ import streamlit as st
 
 import auth
 from app_header import render_header
+from jordan.dashboard.map import done_module
 from voice_section import render_voice_section
 from quiz_button import show_quiz_button
 
@@ -309,6 +310,7 @@ def render_goal_card(opt):
                 # Same session, so the student stays logged in
                 st.switch_page(PAGES[opt["label"]])
             st.session_state.health_concern = opt["label"]
+            # done_module(user,label)
             st.rerun()
 
 

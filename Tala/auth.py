@@ -25,7 +25,7 @@ DEMO_ADMIN_PASSWORD = "oshcwise-demo"
 # Prototype accounts (one shared login per role). Change them here for now.
 # A real version should use single sign-on instead of passwords in the code.
 USERS = {
-    "student": {"username": "Student", "password": "123456"},
+    "student": {"username": "12345678", "password": "123456"},
     "admin": {"username": "Admin", "password": "123456"},
 }
 
