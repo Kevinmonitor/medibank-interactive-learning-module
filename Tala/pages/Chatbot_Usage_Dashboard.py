@@ -1,8 +1,8 @@
-"""Admin analytics dashboard (administrators only).
+# """Admin analytics dashboard (administrators only).
 
-Shows how many times the model suggested each practice card. Only counts are
-saved (see analytics.py): no sentences, no voice, no names, no times.
-"""
+# Shows how many times the model suggested each practice card. Only counts are
+# saved (see analytics.py): no sentences, no voice, no names, no times.
+# """
 
 import altair as alt
 import pandas as pd
@@ -29,10 +29,9 @@ DEMO_QUIZ = {
 
 top_left, top_right = st.columns([5, 1])
 with top_left:
-    st.markdown("### Admin analytics dashboard")
+    st.title('Model Suggestion Highlights')
     st.caption(
-        "How often the model suggested each practice. Only these counts are saved: "
-        "no sentences, no voice, no names and no times."
+        "How often the model suggested each practice. Only these counts are saved."
     )
 with top_right:
     if st.button("← Back to practices"):
@@ -87,55 +86,56 @@ with st.expander("Reset the real counts"):
         st.rerun()
 
 # ---------- Learning quiz ("Nothing, just here to learn") ----------
-st.divider()
-st.markdown("### Learning quiz: which myths do students believe?")
-st.caption("Only counts are saved: right and wrong answers for each question. No names and no times.")
 
-quiz_real = analytics.read_quiz()
-quiz_real_total = sum(c["right"] + c["wrong"] for c in quiz_real.values())
-quiz_demo = st.checkbox("Show demo quiz data (made-up numbers)", value=(quiz_real_total == 0), key="quiz_demo")
-quiz = ({q: {"right": DEMO_QUIZ[q][0], "wrong": DEMO_QUIZ[q][1]} for q in analytics.QUIZ_QUESTIONS}
-        if quiz_demo else quiz_real)
+# st.divider()
+# st.markdown("### Learning quiz: which myths do students believe?")
+# st.caption("Only counts are saved: right and wrong answers for each question. No names and no times.")
 
-rows = []
-for q, label in analytics.QUIZ_QUESTIONS.items():
-    right, wrong = quiz[q]["right"], quiz[q]["wrong"]
-    answers = right + wrong
-    rows.append({"Statement": label, "Answers": answers, "Right": right, "Wrong": wrong,
-                 "Correct %": round(100 * right / answers) if answers else None})
-quiz_df = pd.DataFrame(rows)
-answered = quiz_df[quiz_df["Answers"] > 0]
+# quiz_real = analytics.read_quiz()
+# quiz_real_total = sum(c["right"] + c["wrong"] for c in quiz_real.values())
+# quiz_demo = st.checkbox("Show demo quiz data (made-up numbers)", value=(quiz_real_total == 0), key="quiz_demo")
+# quiz = ({q: {"right": DEMO_QUIZ[q][0], "wrong": DEMO_QUIZ[q][1]} for q in analytics.QUIZ_QUESTIONS}
+#         if quiz_demo else quiz_real)
 
-if quiz_demo:
-    st.warning("Demo data: these numbers are made up, not real students.")
-elif answered.empty:
-    st.info("No quiz answers yet. Open the card 'Nothing, just here to learn' and answer a question.")
+# rows = []
+# for q, label in analytics.QUIZ_QUESTIONS.items():
+#     right, wrong = quiz[q]["right"], quiz[q]["wrong"]
+#     answers = right + wrong
+#     rows.append({"Statement": label, "Answers": answers, "Right": right, "Wrong": wrong,
+#                  "Correct %": round(100 * right / answers) if answers else None})
+# quiz_df = pd.DataFrame(rows)
+# answered = quiz_df[quiz_df["Answers"] > 0]
 
-if not answered.empty:
-    all_right, all_answers = int(quiz_df["Right"].sum()), int(quiz_df["Answers"].sum())
-    hardest = answered.sort_values("Correct %").iloc[0]
-    q1, q2, q3 = st.columns(3)
-    q1.metric("Quiz answers counted", all_answers)
-    q2.metric("Answers that were right", f"{round(100 * all_right / all_answers)}%")
-    q3.metric("Lowest score on one statement", f"{int(hardest['Correct %'])}% right")
-    st.caption(f"Hardest statement: “{hardest['Statement']}”")
+# if quiz_demo:
+#     st.warning("Demo data: these numbers are made up, not real students.")
+# elif answered.empty:
+#     st.info("No quiz answers yet. Open the card 'Nothing, just here to learn' and answer a question.")
 
-    quiz_chart = (
-        alt.Chart(answered)
-        .mark_bar(color="#C8322E", cornerRadiusEnd=4)
-        .encode(
-            x=alt.X("Correct %:Q", title="Answered correctly (%)", scale=alt.Scale(domain=[0, 100])),
-            y=alt.Y("Statement:N", sort="x", title=None, axis=alt.Axis(labelLimit=420)),
-            tooltip=["Statement", "Answers", "Correct %"],
-        )
-        .properties(height=34 * len(answered) + 40)
-    )
-    st.altair_chart(quiz_chart, use_container_width=True)
-    st.dataframe(answered.sort_values("Correct %").reset_index(drop=True), hide_index=True, use_container_width=True)
-    st.caption("The lower the bar, the more students get it wrong. These are the topics worth explaining better.")
+# if not answered.empty:
+#     all_right, all_answers = int(quiz_df["Right"].sum()), int(quiz_df["Answers"].sum())
+#     hardest = answered.sort_values("Correct %").iloc[0]
+#     q1, q2, q3 = st.columns(3)
+#     q1.metric("Quiz answers counted", all_answers)
+#     q2.metric("Answers that were right", f"{round(100 * all_right / all_answers)}%")
+#     q3.metric("Lowest score on one statement", f"{int(hardest['Correct %'])}% right")
+#     st.caption(f"Hardest statement: “{hardest['Statement']}”")
 
-with st.expander("Reset the real quiz counts"):
-    st.write("This deletes the saved quiz counts (it cannot be undone).")
-    if st.button("Delete real quiz counts"):
-        analytics.clear_quiz()
-        st.rerun()
+#     quiz_chart = (
+#         alt.Chart(answered)
+#         .mark_bar(color="#C8322E", cornerRadiusEnd=4)
+#         .encode(
+#             x=alt.X("Correct %:Q", title="Answered correctly (%)", scale=alt.Scale(domain=[0, 100])),
+#             y=alt.Y("Statement:N", sort="x", title=None, axis=alt.Axis(labelLimit=420)),
+#             tooltip=["Statement", "Answers", "Correct %"],
+#         )
+#         .properties(height=34 * len(answered) + 40)
+#     )
+#     st.altair_chart(quiz_chart, use_container_width=True)
+#     st.dataframe(answered.sort_values("Correct %").reset_index(drop=True), hide_index=True, use_container_width=True)
+#     st.caption("The lower the bar, the more students get it wrong. These are the topics worth explaining better.")
+
+# with st.expander("Reset the real quiz counts"):
+#     st.write("This deletes the saved quiz counts (it cannot be undone).")
+#     if st.button("Delete real quiz counts"):
+#         analytics.clear_quiz()
+#         st.rerun()
