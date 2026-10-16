@@ -2,7 +2,7 @@
 
 Two roles:
     "student"  - sees the practice pages
-    "admin"    - sees everything a student sees, plus the analytics dashboard
+    "admin"    - sees everything a student sees, plus the analytics dashboards
 
 This is a PROTOTYPE login (a shared password for the admin, no real accounts).
 A real version should use single sign-on (for example the university's or
@@ -16,16 +16,16 @@ import hmac
 import streamlit as st
 
 LOGIN_PAGE = "oshc_welcome.py"
-# The admin dashboard must live inside this app's pages/ folder, because
-# Streamlit's switch_page can only open the entrypoint or pages/ files.
-DASHBOARD_PAGE = "pages/Chatbot_Usage_Dashboard.py"
+# DASHBOARD_PAGE = "pages/Admin_Dashboard.py"
+MODULE_DASHBOARD_PAGE = "pages/Module_Usage_Dashboard.py"
+CHATBOT_DASHBOARD_PAGE = "pages/Chatbot_Usage_Dashboard.py"
 DEMO_ADMIN_PASSWORD = "oshcwise-demo"
 
 
 # Prototype accounts (one shared login per role). Change them here for now.
 # A real version should use single sign-on instead of passwords in the code.
 USERS = {
-    "student": {"username": "Student", "password": "123456"},
+    "student": {"username": "12345678", "password": "123456"},
     "admin": {"username": "Admin", "password": "123456"},
 }
 

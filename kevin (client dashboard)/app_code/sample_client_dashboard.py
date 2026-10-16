@@ -1,3 +1,5 @@
+# final version: Module_Usage_Dashboard.py
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -32,10 +34,17 @@ sample_data = pd.read_csv("../../jordan/dashboard/test2.csv")
 st.title('Module Highlights')
 
 questions = ["question0", "question1", "question2", "question3", "question4", "question5", "question6", "question7", "question8", "question9"]
-question_key = [""]
+
+questions_true = ["q_pays_all","q_gp_rate","q_glasses","q_claim_now","q_rx_free","q_psych_hosp","q_cosmetic","q_ivf","q_counselling","q_ambulance"]
+questions_true_key = ["OSHC Pays All (Myth)", "100% MBS Fee (Myth)", "New Glasses (Myth)", "Claim Instantly (Myth)", "Free Prescriptions (Myth)", "Psychiatric Services (Fact)", "Cosmetic Treatments (Myth)", "Reproductive Services (Comprehensive-only)", "Counseling (Fact)", "Comprehensive OSHC Ambulance (Fact)"]
+
 question_answer_counts_df = pd.DataFrame(columns=["Question", "Correct Answers"])
 
 modules = ["module0", "module1", "module2", "module3", "module4", "module5", "module6", "module7"]
+
+modules_true = ["m_homesick","m_hospital","m_sick","m_medication","m_find_provider","m_comprehensive_oshc","m_make_claim","m_just_learning"] # we have actual names
+modules_true_key = ["Homesickness", "Hospital Help", "Sickness Help", "Medication Help", "Provider Search", "Comprehensive OSHC", "Making Claims", "General Learning"]
+
 module_usage_counts_df = pd.DataFrame(columns=["Module", "Students Accessed"])
 
 for i in questions:
@@ -51,6 +60,11 @@ for i in modules:
 col1, col2 = st.columns(2, gap="small")
 
 st.set_page_config(page_title="Module Highlights", layout="wide")
+
+# map modules to names
+
+question_answer_counts_df['Question'] = question_answer_counts_df['Question'].map(questions_true_key)
+module_usage_counts_df['Module'] = module_usage_counts_df['Module'].map(modules_true_key)
 
 with col1:
 
@@ -89,7 +103,7 @@ module_cols = [f"module{i}" for i in range(8)]
 
 # randomised sample
 
-randomised_module_completion_sample = randomise_module_completion(sample_data, 35)
+randomised_module_completion_sample = randomise_module_completion(sample_data, 124)
 
 sample_data.update(randomised_module_completion_sample)
 

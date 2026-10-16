@@ -106,6 +106,9 @@ def log_quiz(question: str, correct: bool) -> None:
         temp = QUIZ_FILE.with_suffix(".tmp")
         temp.write_text(json.dumps(counts, indent=2), encoding="utf-8")
         os.replace(temp, QUIZ_FILE)
+
+        # set_question(user,name,right)
+
     except OSError:
         pass
 

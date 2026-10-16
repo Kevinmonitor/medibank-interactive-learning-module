@@ -1,4 +1,3 @@
-import json
 from typing import Literal
 from dataentry import add_row, get_data, get_row, save_data, set_cell
 
@@ -7,7 +6,7 @@ from dataentry import add_row, get_data, get_row, save_data, set_cell
 Done = Literal[0,1]
 data = '../../sample_module_user_list.csv'
 
-def start(user):
+def initdata(user):
     table = get_data(data)
     try:
         row = get_row(table,user)
@@ -16,7 +15,7 @@ def start(user):
     return table,row
 
 def edit(user,name,value:Done):
-    table,row = start(user)
+    table,row = initdata(user)
     set_cell(table,user,name,value)
     save_data(data,table)
 

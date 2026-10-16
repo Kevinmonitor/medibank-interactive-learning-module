@@ -8,9 +8,17 @@ import streamlit as st
 
 import auth
 from app_header import render_header
+try:
+    # jordan.dashboard.map isn't importable when the app is launched from the
+    # Tala/ or repo folder (its own module does a cwd-relative import), and
+    # done_module is currently only referenced in a commented-out line. Guard
+    # it so the hub doesn't crash; wire it in properly once that package is
+    # importable.
+    from jordan.dashboard.map import done_module
+except Exception:
+    done_module = None
 from voice_section import render_voice_section
 from quiz_button import show_quiz_button
-
 
 st.set_page_config(page_title="OSHCwise", layout="wide")
 auth.require_login()
@@ -219,8 +227,10 @@ with welcome_area:
         )
     with dash_col:
         if auth.is_admin():
-            if st.button("Admin dashboard", key="to_dashboard", use_container_width=True):
-                st.switch_page(auth.DASHBOARD_PAGE)
+            if st.button("Chatbot Insights", key="to_chatbot_dashboard", use_container_width=True):
+                st.switch_page(auth.MODULE_DASHBOARD_PAGE)
+            if st.button("Module Insights", key="to_module_dashboard", use_container_width=True):
+                st.switch_page(auth.CHATBOT_DASHBOARD_PAGE)
     with out_col:
         if st.button("Log out", key="log_out"):
             auth.logout()
@@ -308,6 +318,7 @@ def render_goal_card(opt):
                 # Same session, so the student stays logged in
                 st.switch_page(PAGES[opt["label"]])
             st.session_state.health_concern = opt["label"]
+            # done_module(user,label)
             st.rerun()
 
 
