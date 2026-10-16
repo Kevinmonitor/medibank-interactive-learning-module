@@ -2,7 +2,7 @@
 
 Two roles:
     "student"  - sees the practice pages
-    "admin"    - sees everything a student sees, plus the analytics dashboard
+    "admin"    - sees everything a student sees, plus the analytics dashboards
 
 This is a PROTOTYPE login (a shared password for the admin, no real accounts).
 A real version should use single sign-on (for example the university's or
@@ -17,7 +17,8 @@ import streamlit as st
 
 LOGIN_PAGE = "oshc_welcome.py"
 # DASHBOARD_PAGE = "pages/Admin_Dashboard.py"
-DASHBOARD_PAGE = "../kevin (client dashboard)/app_code/sample_client_dashboard.py"
+MODULE_DASHBOARD_PAGE = "pages/Module_Usage_Dashboard.py"
+CHATBOT_DASHBOARD_PAGE = "pages/Chatbot_Usage_Dashboard.py"
 DEMO_ADMIN_PASSWORD = "oshcwise-demo"
 
 

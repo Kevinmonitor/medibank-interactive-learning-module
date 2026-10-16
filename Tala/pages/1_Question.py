@@ -11,7 +11,6 @@ from app_header import render_header
 from voice_section import render_voice_section
 from quiz_button import show_quiz_button
 
-
 st.set_page_config(page_title="OSHCwise", layout="wide")
 auth.require_login()
 
@@ -219,8 +218,10 @@ with welcome_area:
         )
     with dash_col:
         if auth.is_admin():
-            if st.button("Admin dashboard", key="to_dashboard", use_container_width=True):
-                st.switch_page(auth.DASHBOARD_PAGE)
+            if st.button("Chatbot Insights", key="to_chatbot_dashboard", use_container_width=True):
+                st.switch_page(auth.MODULE_DASHBOARD_PAGE)
+            if st.button("Module Insights", key="to_module_dashboard", use_container_width=True):
+                st.switch_page(auth.CHATBOT_DASHBOARD_PAGE)
     with out_col:
         if st.button("Log out", key="log_out"):
             auth.logout()
