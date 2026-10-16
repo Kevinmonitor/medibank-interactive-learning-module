@@ -39,3 +39,12 @@ def randomise_module_completion(data, rowCount):
     # set all module columns to true
     random_sample[modules_true] = 1
     return random_sample
+
+def randomise_quiz_completion(data, rowCount):
+
+    questions_true = ["q_pays_all","q_gp_rate","q_glasses","q_claim_now","q_rx_free","q_psych_hosp","q_cosmetic","q_ivf","q_counselling","q_ambulance"]
+    # select x random rows from the sample data
+    random_sample = data.sample(n=rowCount, random_state=4)
+    # set all module columns to true
+    random_sample[questions_true] = 1
+    return random_sample

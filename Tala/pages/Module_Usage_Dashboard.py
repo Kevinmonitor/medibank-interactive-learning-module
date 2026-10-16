@@ -12,7 +12,8 @@ import sys, os
 
 from utils import (
     apply_plotly_theme,
-    randomise_module_completion
+    randomise_module_completion,
+    randomise_quiz_completion
 )
 
 # sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -72,27 +73,41 @@ for i in modules_true:
 # module completion rate
 
 # completion here refers to: all cards have been accessed at least once
-module_completion_df = pd.DataFrame(columns=["Account ID", "Number of Cards Completed", "Module Complete"])
+module_completion_df = pd.DataFrame(columns=["Account ID", "Number of Cards Completed", "Module Complete", "Number of Correct Answers", "Quiz Complete"])
 
 
 # RANDOMISATION
 
 # randomised sample
 
-randomised_module_completion_sample = randomise_module_completion(sample_data, 35)
+randomised_module_completion_sample = randomise_module_completion(sample_data, 145)
 sample_data.update(randomised_module_completion_sample)
+
+randomised_quiz_completion_sample = randomise_quiz_completion(sample_data, 110)
+sample_data.update(randomised_quiz_completion_sample)
 
 # END OF RANDOMISATION
 
 # Sum the values along axis 1 (rows)
 sample_data["Total Cards Completed"] = sample_data[modules_true].sum(axis=1)
+sample_data["Total Questions Completed"] = sample_data[questions_true].sum(axis=1)
+
 for index, row in sample_data.iterrows():
     # create row
     # there are 8 modules
     completion_check = False
+    quiz_check = False
     if row['Total Cards Completed'] >= 8:
         completion_check = True
-    new_row = pd.DataFrame({"Account ID": [row['id']], "Number of Cards Completed": [row['Total Cards Completed']], "Module Complete": [completion_check]})
+    if row['Total Questions Completed'] >= 10:
+        quiz_check = True
+    new_row = pd.DataFrame(
+        {"Account ID": [row['id']], 
+         "Number of Cards Completed": [row['Total Cards Completed']], 
+         "Module Complete": [completion_check],
+         "Number of Correct Answers": [row['Total Questions Completed']],
+         "Quiz Complete": [quiz_check]
+        })
     module_completion_df = pd.concat([module_completion_df, new_row], ignore_index=True)
 
 
@@ -109,10 +124,17 @@ for index, row in sample_data.iterrows():
 ####
 
 labels = {True: 'Completed', False: 'Incomplete'}
+labels_quiz = {True: 'Perfect', False: 'Imperfect'}
 module_completion_df['Module Complete'] = module_completion_df['Module Complete'].map(labels)
+module_completion_df['Quiz Complete'] = module_completion_df['Quiz Complete'].map(labels_quiz)
 
 total = sample_data.shape[0]
 completion_rate = module_completion_df['Module Complete'].eq('Completed').mean()
+quiz_perfect_rate = module_completion_df['Quiz Complete'].eq('Perfect').mean()
+
+# full completion: all cards accessed AND all questions completed
+
+full_completion_rate = ( module_completion_df.loc[(module_completion_df['Module Complete'] == "Completed") & (module_completion_df['Quiz Complete'] == "Perfect")].shape[0] / module_completion_df.shape[0] )
 
 # Inject CSS to flip the order of label and value in metrics
 # "div.st-emotion-cache-ocy457.eozy2n81" is hardcoded... oops. to-do: find a more elegant solution
@@ -120,26 +142,36 @@ completion_rate = module_completion_df['Module Complete'].eq('Completed').mean()
 st.markdown(
     """
     <style>
+
     [data-testid="stMetricValue"] p {
         font-size: 4rem;
         font-weight: bold;
     }
     [data-testid="stMetricLabel"] p {
         font-size: 1.5rem;
+        overflow-wrap: break-word;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;    
     }
+
     div.st-emotion-cache-ocy457.eozy2n81 {
         display: flex;
         flex-direction: column-reverse;
         font-weight: bold;
+        height: auto;
     }
+
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-m1, m2 = st.columns(2)
-m1.metric("students have accessed the module.", total, border=True)
-m2.metric("of students completed all cards.", completion_rate, format="percent", border=True)
+m1, m2, m3, m4 = st.columns(4)
+m1.metric("students have viewed the module.", total, border=True, help="This refers to logging into the module at least once.")
+m2.metric("of students have accessed all cards.", completion_rate, format="percent", border=True)
+m3.metric("of students have answered all questions correctly in the Myth v.s Fact knowledge quiz.", quiz_perfect_rate, format="percent", border=True)
+m4.metric("**of students have fully completed the module.**", full_completion_rate, format="percent", border=True, help="This refers to getting all questions correct and accessing all cards in the module.")
 
 
 ####
