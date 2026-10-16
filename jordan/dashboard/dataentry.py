@@ -15,7 +15,12 @@ def get_cell(dataFrame: pd.DataFrame,id:int,field:str):
     return dataFrame.loc[id][field]
 
 # set a cell value
-def set_cell(dataFrame: pd.DataFrame,id:int,field:str,value):
+def set_cell(dataFrame: pd.DataFrame,id:int,field:str,value,force:bool=False):
+    if not field in dataFrame.columns.tolist():
+        if not force:
+            raise KeyError(field)
+        else:
+            print(f'Created field {field}!')
     dataFrame.loc[id,field] = value
 
 # add a blank row, force to add even though it exists (will wipe row!)
