@@ -14,3 +14,6 @@ key.json
 
 # local-only reference script (not needed in repo)
 Muhammad/eval/tune.py
+
+# runtime analytics counters (written by the app at runtime)
+Tala/data/card_counts.json
