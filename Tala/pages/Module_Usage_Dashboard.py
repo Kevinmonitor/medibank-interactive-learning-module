@@ -209,7 +209,7 @@ with col1:
     with st.container(border=True):
 
         st.subheader("Overall Quiz Performances")
-        st.markdown("This data shows how students performed on each question of the Myth v.s Fact Knowledge Quiz.\n\nHaving information on questions or topics that students struggled with (or succeeded on) the most helps us rework the cards and information being communicated.", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
+        st.markdown("This data shows how students performed on each question of the Myth v.s Fact Knowledge Quiz.\n\nHaving information on questions or topics that students struggled with (or succeeded on) the most helps us *rework the cards and information being communicated.*", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
 
         # st.bar_chart(data=question_answer_counts_df, x='Question', y='Correct Answers', x_label='Question', y_label='Correct Answerers', color='blue', horizontal=False, sort=True, stack=None, width="stretch", height="content", use_container_width=None)
 
@@ -222,7 +222,7 @@ with col2:
     with st.container(border=True):
 
         st.subheader("Card Access")
-        st.markdown("This data shows how many students accessed each card within the learning module.\n\nNot all students actually read every card - if a card is particularly under-utilised, it may suggest a lack of interest in that topic.", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
+        st.markdown("This data shows how many students accessed each card within the learning module.\n\nNot all students actually read every card - if a card is particularly under-utilised, *it may suggest a lack of interest in that topic.*", unsafe_allow_html=False, help=None, width="auto", text_alignment="left")
 
         fig = px.bar(module_usage_counts_df, x='Module', y='Students Accessed', color="Module")
         st.plotly_chart(apply_plotly_theme(fig), width="stretch")
