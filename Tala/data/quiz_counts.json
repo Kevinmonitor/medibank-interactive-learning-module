@@ -1,27 +1,27 @@
 {
   "pays_all": {
-    "right": 0,
+    "right": 2,
     "wrong": 0
   },
   "gp_rate": {
-    "right": 0,
+    "right": 2,
     "wrong": 0
   },
   "glasses": {
-    "right": 0,
+    "right": 1,
     "wrong": 0
   },
   "claim_now": {
     "right": 0,
-    "wrong": 0
+    "wrong": 1
   },
   "rx_free": {
-    "right": 0,
+    "right": 1,
     "wrong": 0
   },
   "psych_hosp": {
     "right": 0,
-    "wrong": 0
+    "wrong": 1
   },
   "cosmetic": {
     "right": 1,

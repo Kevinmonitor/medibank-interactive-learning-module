@@ -16,8 +16,9 @@ import hmac
 import streamlit as st
 
 LOGIN_PAGE = "oshc_welcome.py"
-# DASHBOARD_PAGE = "pages/Admin_Dashboard.py"
-DASHBOARD_PAGE = "../kevin (client dashboard)/app_code/sample_client_dashboard.py"
+# The admin dashboard must live inside this app's pages/ folder, because
+# Streamlit's switch_page can only open the entrypoint or pages/ files.
+DASHBOARD_PAGE = "pages/Chatbot_Usage_Dashboard.py"
 DEMO_ADMIN_PASSWORD = "oshcwise-demo"
 
 

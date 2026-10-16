@@ -1,0 +1,22 @@
+{
+  "document_grade": 13.7,
+  "reading_ease": 36.7,
+  "method": "Flesch-Kincaid grade via textstat, over the full extracted text of the published Medibank OSHC PDFs",
+  "per_document": {
+    "Comprehensive_OSHC_Cover_Summary.pdf": {
+      "words": 2346,
+      "fk_grade": 14.4,
+      "reading_ease": 30.7
+    },
+    "Cover_Summary_OSHC_Essentials.pdf": {
+      "words": 1989,
+      "fk_grade": 14.2,
+      "reading_ease": 31.0
+    },
+    "Medibank_OSHC_Member_Guide.pdf": {
+      "words": 13900,
+      "fk_grade": 13.5,
+      "reading_ease": 38.6
+    }
+  }
+}

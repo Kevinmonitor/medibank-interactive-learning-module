@@ -215,7 +215,10 @@ class Retriever:
     treatment'. BM25 catches exact strings like $50 and MBS, which
     embeddings blur. Both are needed."""
 
-    def __init__(self, chunks_path="data/chunks.json", vectors_path="data/vectors.npy"):
+    def __init__(self, chunks_path=None, vectors_path=None):
+        from app.paths import DATA
+        chunks_path = chunks_path or DATA / "chunks.json"
+        vectors_path = vectors_path or DATA / "vectors.npy"
         self.chunks = json.loads(Path(chunks_path).read_text())
         self.texts = [c["embed_text"] for c in self.chunks]
         self.bm25 = BM25Okapi([self._tok(t) for t in self.texts])
