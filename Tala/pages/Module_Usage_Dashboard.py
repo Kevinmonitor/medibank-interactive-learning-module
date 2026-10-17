@@ -57,7 +57,17 @@ modules_true_key = ["Homesickness", "Hospital Help", "Sickness Help", "Medicatio
 
 module_usage_counts_df = pd.DataFrame(columns=["Module", "Students Accessed"])
 
+# RANDOMISATION
 
+# randomised sample
+
+randomised_module_completion_sample = randomise_module_completion(sample_data, 85)
+sample_data.update(randomised_module_completion_sample)
+
+randomised_quiz_completion_sample = randomise_quiz_completion(sample_data, 85)
+sample_data.update(randomised_quiz_completion_sample)
+
+# END OF RANDOMISATION
 
 for i in questions_true:
     # create row
@@ -74,19 +84,6 @@ for i in modules_true:
 
 # completion here refers to: all cards have been accessed at least once
 module_completion_df = pd.DataFrame(columns=["Account ID", "Number of Cards Completed", "Module Complete", "Number of Correct Answers", "Quiz Complete"])
-
-
-# RANDOMISATION
-
-# randomised sample
-
-randomised_module_completion_sample = randomise_module_completion(sample_data, 145)
-sample_data.update(randomised_module_completion_sample)
-
-randomised_quiz_completion_sample = randomise_quiz_completion(sample_data, 110)
-sample_data.update(randomised_quiz_completion_sample)
-
-# END OF RANDOMISATION
 
 # Sum the values along axis 1 (rows)
 sample_data["Total Cards Completed"] = sample_data[modules_true].sum(axis=1)
