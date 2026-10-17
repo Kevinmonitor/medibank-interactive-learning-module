@@ -1,0 +1,1003 @@
+{
+ "_about": "Translations for the Hospital and Homesick (mental health) cards. English -> si, fa, vi, id.",
+ "templates": {
+  "Step {n} of {t}: {x}": {
+   "si": "පියවර {n} / {t}: {x}",
+   "fa": "مرحله {n} از {t}: {x}",
+   "vi": "Bước {n}/{t}: {x}",
+   "id": "Langkah {n} dari {t}: {x}"
+  },
+  "Step {n} · {x}": {
+   "si": "පියවර {n} · {x}",
+   "fa": "مرحله {n} · {x}",
+   "vi": "Bước {n} · {x}",
+   "id": "Langkah {n} · {x}"
+  },
+  "Suggestion {n} of {t}: {x}": {
+   "si": "යෝජනාව {n} / {t}: {x}",
+   "fa": "پیشنهاد {n} از {t}: {x}",
+   "vi": "Gợi ý {n}/{t}: {x}",
+   "id": "Saran {n} dari {t}: {x}"
+  },
+  "Suggestion {n} · {x}": {
+   "si": "යෝජනාව {n} · {x}",
+   "fa": "پیشنهاد {n} · {x}",
+   "vi": "Gợi ý {n} · {x}",
+   "id": "Saran {n} · {x}"
+  }
+ },
+ "sentences": {
+  "A doctor or nurse examines you and decides on treatment.": {
+   "si": "වෛද්‍යවරයෙක් හෝ හෙදියක් ඔබව පරීක්ෂා කර ප්‍රතිකාර තීරණය කරයි.",
+   "fa": "یک پزشک یا پرستار شما را معاینه می‌کند و درباره درمان تصمیم می‌گیرد.",
+   "vi": "Bác sĩ hoặc y tá khám cho bạn và quyết định cách điều trị.",
+   "id": "Dokter atau perawat memeriksa Anda dan menentukan pengobatan."
+  },
+  "A nurse asks what happened and checks things like your temperature and blood pressure.": {
+   "si": "හෙදියක් සිදුවූ දේ ගැන අසා, ඔබේ උෂ්ණත්වය සහ රුධිර පීඩනය වැනි දේ පරීක්ෂා කරයි.",
+   "fa": "یک پرستار می‌پرسد چه اتفاقی افتاده و چیزهایی مثل دما و فشار خون شما را بررسی می‌کند.",
+   "vi": "Y tá hỏi chuyện gì đã xảy ra và kiểm tra nhiệt độ, huyết áp của bạn.",
+   "id": "Perawat bertanya apa yang terjadi dan memeriksa suhu serta tekanan darah Anda."
+  },
+  "A student walking past each stop in a hospital emergency department": {
+   "si": "රෝහලක හදිසි අනතුරු අංශයේ සෑම නැවතුමක් හරහාම ඇවිදින ශිෂ්‍යයෙක්",
+   "fa": "دانشجویی که از همه بخش‌های اورژانس بیمارستان می‌گذرد",
+   "vi": "Một sinh viên đi qua từng điểm trong khoa cấp cứu của bệnh viện",
+   "id": "Seorang mahasiswa melewati setiap tempat di IGD rumah sakit"
+  },
+  "Answer questions honestly": {
+   "si": "ප්‍රශ්නවලට අවංකව පිළිතුරු දෙන්න",
+   "fa": "صادقانه به سؤال‌ها جواب دهید",
+   "vi": "Trả lời câu hỏi một cách trung thực",
+   "id": "Jawab pertanyaan dengan jujur"
+  },
+  "Arrive at Emergency": {
+   "si": "හදිසි ප්‍රතිකාර ඒකකයට පැමිණෙන්න",
+   "fa": "رسیدن به اورژانس",
+   "vi": "Đến khoa Cấp cứu",
+   "id": "Tiba di Unit Gawat Darurat"
+  },
+  "Ask for a registered nurse or a counsellor": {
+   "si": "ලියාපදිංචි හෙදියක් හෝ උපදේශකයෙක් ඉල්ලන්න",
+   "fa": "پرستار رسمی یا مشاور بخواهید",
+   "vi": "Yêu cầu nói chuyện với y tá có đăng ký hoặc chuyên viên tư vấn",
+   "id": "Minta bicara dengan perawat terdaftar atau konselor"
+  },
+  "Ask for a telephone interpreter": {
+   "si": "දුරකථන පරිවර්තකයෙක් ඉල්ලන්න",
+   "fa": "مترجم تلفنی بخواهید",
+   "vi": "Yêu cầu phiên dịch qua điện thoại",
+   "id": "Minta juru bahasa lewat telepon"
+  },
+  "Ask for an interpreter": {
+   "si": "පරිවර්තකයෙක් ඉල්ලන්න",
+   "fa": "مترجم بخواهید",
+   "vi": "Yêu cầu phiên dịch viên",
+   "id": "Minta juru bahasa"
+  },
+  "Ask for an interpreter if you need one": {
+   "si": "අවශ්‍ය නම් පරිවර්තකයෙක් ඉල්ලන්න",
+   "fa": "اگر لازم است، مترجم بخواهید",
+   "vi": "Yêu cầu phiên dịch viên nếu cần",
+   "id": "Minta juru bahasa jika perlu"
+  },
+  "Ask questions if you don't understand": {
+   "si": "තේරෙන්නේ නැත්නම් ප්‍රශ්න අහන්න",
+   "fa": "اگر متوجه نشدید، سؤال بپرسید",
+   "vi": "Hỏi lại nếu bạn không hiểu",
+   "id": "Bertanyalah jika Anda tidak mengerti"
+  },
+  "Ask the price first.": {
+   "si": "මුලින්ම මිල අහන්න.",
+   "fa": "اول قیمت را بپرسید.",
+   "vi": "Hãy hỏi giá trước.",
+   "id": "Tanyakan harganya dulu."
+  },
+  "Ask your GP for a plan": {
+   "si": "ඔබේ GP ගෙන් සැලැස්මක් ඉල්ලන්න",
+   "fa": "از پزشک عمومی خود یک برنامه درمانی بخواهید",
+   "vi": "Xin bác sĩ GP lập kế hoạch",
+   "id": "Minta rencana ke GP Anda"
+  },
+  "Ask: “Can I have a mental health treatment plan?”": {
+   "si": "අහන්න: “මට මානසික සෞඛ්‍ය ප්‍රතිකාර සැලැස්මක් ලබා ගත හැකිද?”",
+   "fa": "بپرسید: «آیا می‌توانم یک طرح درمان سلامت روان بگیرم؟»",
+   "vi": "Hỏi: “Tôi có thể có kế hoạch điều trị sức khỏe tâm thần không?”",
+   "id": "Tanyakan: “Bisakah saya mendapat rencana perawatan kesehatan mental?”"
+  },
+  "Australian emergency departments use five urgency levels.": {
+   "si": "ඕස්ට්‍රේලියානු හදිසි ප්‍රතිකාර ඒකක හදිසි මට්ටම් පහක් භාවිතා කරයි.",
+   "fa": "بخش‌های اورژانس استرالیا پنج سطح فوریت دارند.",
+   "vi": "Khoa Cấp cứu ở Úc dùng năm mức độ khẩn cấp.",
+   "id": "Unit Gawat Darurat di Australia memakai lima tingkat kedaruratan."
+  },
+  "Back": {
+   "si": "ආපසු",
+   "fa": "قبلی",
+   "vi": "Quay lại",
+   "id": "Kembali"
+  },
+  "Book a GP, ideally a Direct Billing one (use Find a Provider)": {
+   "si": "GP කෙනෙක් වෙන් කරගන්න, හැකි නම් Direct Billing එකක් (Find a Provider භාවිතා කරන්න)",
+   "fa": "یک پزشک عمومی رزرو کنید، ترجیحاً Direct Billing (از Find a Provider استفاده کنید)",
+   "vi": "Đặt lịch GP, tốt nhất là nơi có Direct Billing (dùng Find a Provider)",
+   "id": "Buat janji dengan GP, sebaiknya yang Direct Billing (pakai Find a Provider)"
+  },
+  "Book a follow-up visit with a GP if the doctor asks": {
+   "si": "වෛද්‍යවරයා කියන්නේ නම් GP කෙනෙකු සමඟ නැවත හමුවීමක් වෙන් කරගන්න",
+   "fa": "اگر پزشک گفت، برای پیگیری با یک پزشک عمومی (GP) وقت بگیرید",
+   "vi": "Đặt lịch tái khám với GP nếu bác sĩ yêu cầu",
+   "id": "Buat janji kontrol dengan GP jika dokter meminta"
+  },
+  "Bring a friend if you can": {
+   "si": "හැකි නම් මිතුරෙකු සමඟ එන්න",
+   "fa": "اگر می‌توانید، با یک دوست بیایید",
+   "vi": "Đi cùng một người bạn nếu có thể",
+   "id": "Ajak teman jika bisa"
+  },
+  "Bring your OSHC card (or digital card) and your passport or student ID": {
+   "si": "ඔබේ OSHC කාඩ්පත (හෝ ඩිජිටල් කාඩ්පත) සහ ගමන් බලපත්‍රය හෝ ශිෂ්‍ය හැඳුනුම්පත රැගෙන එන්න",
+   "fa": "کارت OSHC (یا کارت دیجیتال) و پاسپورت یا کارت دانشجویی خود را همراه بیاورید",
+   "vi": "Mang theo thẻ OSHC (hoặc thẻ điện tử) và hộ chiếu hoặc thẻ sinh viên",
+   "id": "Bawa kartu OSHC (atau kartu digital) dan paspor atau kartu mahasiswa Anda"
+  },
+  "Bring your phone, charger and a list of any medicines you take": {
+   "si": "ඔබේ දුරකථනය, චාජරය සහ ඔබ ගන්නා බෙහෙත් ලැයිස්තුවක් රැගෙන එන්න",
+   "fa": "گوشی، شارژر و فهرست داروهایی را که مصرف می‌کنید همراه بیاورید",
+   "vi": "Mang theo điện thoại, sạc và danh sách các thuốc bạn đang dùng",
+   "id": "Bawa ponsel, pengisi daya, dan daftar obat yang Anda minum"
+  },
+  "Call 000 for an ambulance first.": {
+   "si": "පළමුව ගිලන් රථයක් සඳහා 000 අමතන්න.",
+   "fa": "اول برای آمبولانس با 000 تماس بگیرید.",
+   "vi": "Hãy gọi 000 để gọi xe cứu thương trước.",
+   "id": "Hubungi 000 untuk ambulans terlebih dahulu."
+  },
+  "Call 000 or Lifeline 13 11 14.": {
+   "si": "000 හෝ Lifeline 13 11 14 අමතන්න.",
+   "fa": "با 000 یا Lifeline به شماره 13 11 14 تماس بگیرید.",
+   "vi": "Gọi 000 hoặc Lifeline 13 11 14.",
+   "id": "Hubungi 000 atau Lifeline 13 11 14."
+  },
+  "Call 1800 887 283, day or night": {
+   "si": "දිවා රෑ 1800 887 283 අමතන්න",
+   "fa": "شب یا روز با 1800 887 283 تماس بگیرید",
+   "vi": "Gọi 1800 887 283, ngày hay đêm",
+   "id": "Hubungi 1800 887 283, siang atau malam"
+  },
+  "Charge your phone and message a friend or family member to tell them where you are.": {
+   "si": "ඔබේ දුරකථනය චාජ් කර, ඔබ සිටින තැන මිතුරෙකුට හෝ පවුලේ අයෙකුට පණිවිඩයකින් දන්වන්න.",
+   "fa": "گوشی خود را شارژ کنید و به یک دوست یا عضو خانواده پیام دهید که کجا هستید.",
+   "vi": "Sạc điện thoại và nhắn tin cho bạn bè hoặc người thân biết bạn đang ở đâu.",
+   "id": "Isi daya ponsel dan kirim pesan ke teman atau keluarga untuk memberi tahu di mana Anda berada."
+  },
+  "Check the Medibank OSHC Member Guide or call 134 148.": {
+   "si": "Medibank OSHC Member Guide එක පරීක්ෂා කරන්න, නැත්නම් 134 148 අමතන්න.",
+   "fa": "راهنمای اعضای Medibank OSHC (Member Guide) را بخوانید یا با 134 148 تماس بگیرید.",
+   "vi": "Xem Medibank OSHC Member Guide hoặc gọi 134 148.",
+   "id": "Baca Medibank OSHC Member Guide atau hubungi 134 148."
+  },
+  "Check your OSHC policy to see what your cover includes.": {
+   "si": "ඔබේ ආවරණයට ඇතුළත් දේ දැන ගැනීමට ඔබේ OSHC ප්‍රතිපත්තිය පරීක්ෂා කරන්න.",
+   "fa": "بیمه‌نامه OSHC خود را چک کنید تا ببینید پوشش شما شامل چه چیزهایی است.",
+   "vi": "Xem hợp đồng OSHC của bạn để biết bảo hiểm của bạn chi trả những gì.",
+   "id": "Cek polis OSHC Anda untuk melihat apa saja yang ditanggung."
+  },
+  "Comprehensive OSHC provides benefits towards psychology, counselling and mental health social workers services received from recognised providers and billed without an MBS item number.": {
+   "si": "පිළිගත් සේවා සපයන්නන්ගෙන් ලබාගත්, MBS අයිතම අංකයක් නොමැතිව බිල් කළ මනෝවිද්‍යා, උපදේශන සහ මානසික සෞඛ්‍ය සමාජ සේවා සඳහා Comprehensive OSHC ප්‍රතිලාභ ලබා දෙයි.",
+   "fa": "Comprehensive OSHC برای خدمات روان‌شناسی، مشاوره و مددکاران اجتماعی سلامت روان که از ارائه‌دهندگان معتبر دریافت شده و بدون شماره آیتم MBS صورت‌حساب شده‌اند، مزایا پرداخت می‌کند.",
+   "vi": "Comprehensive OSHC chi trả quyền lợi cho dịch vụ tâm lý, tư vấn và nhân viên xã hội về sức khỏe tâm thần từ các nhà cung cấp được công nhận và được tính phí không có mã MBS.",
+   "id": "Comprehensive OSHC memberikan tanggungan untuk layanan psikologi, konseling, dan pekerja sosial kesehatan mental dari penyedia yang diakui dan ditagih tanpa nomor item MBS."
+  },
+  "Connect": {
+   "si": "සම්බන්ධ වන්න",
+   "fa": "ارتباط",
+   "vi": "Kết nối",
+   "id": "Terhubung"
+  },
+  "Connect with people": {
+   "si": "අන් අය සමඟ සම්බන්ධ වන්න",
+   "fa": "با دیگران در ارتباط باشید",
+   "vi": "Kết nối với mọi người",
+   "id": "Terhubung dengan orang lain"
+  },
+  "Counselling": {
+   "si": "උපදේශනය",
+   "fa": "مشاوره",
+   "vi": "Tư vấn",
+   "id": "Konseling"
+  },
+  "Counselling or social worker: up to $70 per consultation": {
+   "si": "උපදේශනය හෝ සමාජ සේවකයා: එක් උපදේශනයකට $70 දක්වා",
+   "fa": "مشاوره یا مددکار اجتماعی: تا $70 برای هر جلسه",
+   "vi": "Tư vấn hoặc nhân viên xã hội: tối đa $70 mỗi buổi",
+   "id": "Konseling atau pekerja sosial: hingga $70 per konsultasi"
+  },
+  "Customer service speaks about a dozen languages": {
+   "si": "පාරිභෝගික සේවාව භාෂා දොළහක් පමණ කතා කරයි",
+   "fa": "خدمات مشتریان به حدود دوازده زبان صحبت می‌کند",
+   "vi": "Bộ phận chăm sóc khách hàng nói khoảng chục ngôn ngữ",
+   "id": "Layanan pelanggan melayani sekitar selusin bahasa"
+  },
+  "Doctor": {
+   "si": "වෛද්‍යවරයා",
+   "fa": "پزشک",
+   "vi": "Bác sĩ",
+   "id": "Dokter"
+  },
+  "Don't eat or drink until staff say it's OK, in case you need a test": {
+   "si": "ඔබට පරීක්ෂණයක් අවශ්‍ය විය හැකි නිසා, කාර්ය මණ්ඩලය කියන තුරු කන්න බොන්න එපා",
+   "fa": "تا وقتی کادر درمان اجازه نداده‌اند چیزی نخورید و ننوشید، چون شاید لازم باشد آزمایش بدهید",
+   "vi": "Đừng ăn uống cho đến khi nhân viên cho phép, phòng khi bạn cần làm xét nghiệm",
+   "id": "Jangan makan atau minum sampai petugas bilang boleh, karena mungkin Anda perlu tes"
+  },
+  "Emergency is for serious problems.": {
+   "si": "හදිසි ප්‍රතිකාර අංශය බරපතල ගැටලු සඳහා ය.",
+   "fa": "اورژانس برای مشکلات جدی است.",
+   "vi": "Cấp cứu dành cho các vấn đề nghiêm trọng.",
+   "id": "Unit gawat darurat untuk masalah serius."
+  },
+  "Entrance": {
+   "si": "ඇතුල් වීම",
+   "fa": "ورودی",
+   "vi": "Lối vào",
+   "id": "Pintu masuk"
+  },
+  "Explain what happened and when it started": {
+   "si": "සිදු වූ දේ සහ එය ආරම්භ වූයේ කවදාද යන්න පැහැදිලි කරන්න",
+   "fa": "توضیح دهید چه اتفاقی افتاده و از کی شروع شده",
+   "vi": "Giải thích chuyện gì đã xảy ra và bắt đầu từ khi nào",
+   "id": "Jelaskan apa yang terjadi dan kapan mulainya"
+  },
+  "Find the Emergency door": {
+   "si": "හදිසි ප්‍රතිකාර (Emergency) දොරටුව සොයන්න",
+   "fa": "در ورودی اورژانس (Emergency) را پیدا کنید",
+   "vi": "Tìm cửa Cấp cứu (Emergency)",
+   "id": "Cari pintu Darurat (Emergency)"
+  },
+  "Follow a student through an emergency department, step by step. This is general information, not medical advice.": {
+   "si": "හදිසි ප්‍රතිකාර අංශයක් හරහා සිසුවෙකු සමඟ පියවරෙන් පියවර යන්න. මෙය සාමාන්‍ය තොරතුරු මිස වෛද්‍ය උපදෙස් නොවේ.",
+   "fa": "قدم‌به‌قدم همراه یک دانشجو در بخش اورژانس باشید. این اطلاعات عمومی است، نه توصیه پزشکی.",
+   "vi": "Theo chân một sinh viên qua khoa cấp cứu, từng bước một. Đây là thông tin chung, không phải lời khuyên y tế.",
+   "id": "Ikuti seorang mahasiswa di unit gawat darurat, langkah demi langkah. Ini informasi umum, bukan saran medis."
+  },
+  "Follow staff to the test room": {
+   "si": "පරීක්ෂණ කාමරයට කාර්ය මණ්ඩලය පසුපස යන්න",
+   "fa": "همراه کادر درمان به اتاق آزمایش بروید",
+   "vi": "Đi theo nhân viên đến phòng xét nghiệm",
+   "id": "Ikuti petugas ke ruang tes"
+  },
+  "For a mild illness, a GP or an after-hours clinic is usually faster.": {
+   "si": "සුළු අසනීපයකට, GP කෙනෙක් හෝ පැය පසු (after-hours) සායනයක් සාමාන්‍යයෙන් වේගවත් ය.",
+   "fa": "برای بیماری خفیف، GP یا کلینیک بعد از ساعت کاری (after-hours) معمولاً سریع‌تر است.",
+   "vi": "Với bệnh nhẹ, GP hoặc phòng khám ngoài giờ thường nhanh hơn.",
+   "id": "Untuk sakit ringan, GP atau klinik di luar jam kerja (after-hours) biasanya lebih cepat."
+  },
+  "From the OSHC brochure": {
+   "si": "OSHC පත්‍රිකාවෙන්",
+   "fa": "از بروشور OSHC",
+   "vi": "Từ tài liệu OSHC",
+   "id": "Dari brosur OSHC"
+  },
+  "GP plan": {
+   "si": "GP සැලැස්ම",
+   "fa": "برنامه GP",
+   "vi": "Kế hoạch GP",
+   "id": "Rencana GP"
+  },
+  "General information, not medical advice or a replacement for professional help. 📄 means it comes from the OSHC brochure (page shown). ✎ means it is our own advice (the Lifeline number is not from the brochure).": {
+   "si": "සාමාන්‍ය තොරතුරු පමණි, වෛද්‍ය උපදෙස් හෝ වෘත්තීය සහාය සඳහා ආදේශකයක් නොවේ. 📄 යනු එය OSHC පත්‍රිකාවෙන් ගත් බවයි (පිටුව පෙන්වා ඇත). ✎ යනු එය අපගේම උපදෙස් බවයි (Lifeline අංකය පත්‍රිකාවෙන් නොවේ).",
+   "fa": "اطلاعات عمومی است، نه توصیه پزشکی یا جایگزین کمک تخصصی. 📄 یعنی از بروشور OSHC آمده (شماره صفحه نشان داده شده). ✎ یعنی توصیه خود ماست (شماره Lifeline از بروشور نیست).",
+   "vi": "Thông tin chung, không phải lời khuyên y tế hay thay thế cho sự trợ giúp chuyên môn. 📄 nghĩa là lấy từ tờ thông tin OSHC (có ghi số trang). ✎ nghĩa là lời khuyên của chúng tôi (số Lifeline không lấy từ tờ thông tin).",
+   "id": "Informasi umum, bukan saran medis atau pengganti bantuan profesional. 📄 artinya dari brosur OSHC (halaman ditampilkan). ✎ artinya saran kami sendiri (nomor Lifeline bukan dari brosur)."
+  },
+  "General information, not medical advice.": {
+   "si": "සාමාන්‍ය තොරතුරු, වෛද්‍ය උපදෙස් නොවේ.",
+   "fa": "اطلاعات عمومی، نه توصیه پزشکی.",
+   "vi": "Thông tin chung, không phải lời khuyên y tế.",
+   "id": "Informasi umum, bukan saran medis."
+  },
+  "Get help in your language": {
+   "si": "ඔබේ භාෂාවෙන් උදව් ලබාගන්න",
+   "fa": "به زبان خودتان کمک بگیرید",
+   "vi": "Nhận trợ giúp bằng ngôn ngữ của bạn",
+   "id": "Dapatkan bantuan dalam bahasa Anda"
+  },
+  "Get your discharge letter and any prescription": {
+   "si": "ඔබේ රෝහලෙන් පිටවීමේ ලිපිය (discharge letter) සහ ඕනෑම බෙහෙත් වට්ටෝරුවක් ලබාගන්න",
+   "fa": "نامه ترخیص (discharge letter) و هر نسخه‌ای را بگیرید",
+   "vi": "Nhận giấy ra viện và đơn thuốc (nếu có)",
+   "id": "Ambil surat keluar rumah sakit (discharge letter) dan resep jika ada"
+  },
+  "Get your letter.": {
+   "si": "ඔබේ ලිපිය ලබාගන්න.",
+   "fa": "نامه خود را بگیرید.",
+   "vi": "Nhận giấy của bạn.",
+   "id": "Ambil surat Anda."
+  },
+  "Give your name, address and phone number": {
+   "si": "ඔබේ නම, ලිපිනය සහ දුරකථන අංකය දෙන්න",
+   "fa": "نام، آدرس و شماره تلفن خود را بگویید",
+   "vi": "Cho biết tên, địa chỉ và số điện thoại của bạn",
+   "id": "Sebutkan nama, alamat, dan nomor telepon Anda"
+  },
+  "Go back to your bed or waiting area afterwards": {
+   "si": "ඉන්පසු ඔබේ ඇඳට හෝ පොරොත්තු ස්ථානයට ආපසු යන්න",
+   "fa": "بعد از آن به تخت یا محل انتظار خود برگردید",
+   "vi": "Sau đó quay lại giường hoặc khu vực chờ của bạn",
+   "id": "Setelah itu, kembali ke tempat tidur atau ruang tunggu Anda"
+  },
+  "Go home (or stay)": {
+   "si": "නිවසට යන්න (හෝ නතර වන්න)",
+   "fa": "به خانه بروید (یا بمانید)",
+   "vi": "Về nhà (hoặc ở lại)",
+   "id": "Pulang (atau tetap dirawat)"
+  },
+  "Going home": {
+   "si": "නිවසට යාම",
+   "fa": "رفتن به خانه",
+   "vi": "Về nhà",
+   "id": "Pulang ke rumah"
+  },
+  "HERE YOU NEED TO": {
+   "si": "මෙහිදී ඔබ කළ යුත්තේ",
+   "fa": "اینجا باید",
+   "vi": "TẠI ĐÂY BẠN CẦN",
+   "id": "DI SINI ANDA PERLU"
+  },
+  "Have an X-ray or blood test": {
+   "si": "X-ray එකක් හෝ රුධිර පරීක්ෂණයක් කරගන්න",
+   "fa": "عکس‌برداری با اشعه ایکس (X-ray) یا آزمایش خون بدهید",
+   "vi": "Chụp X-quang hoặc xét nghiệm máu",
+   "id": "Jalani rontgen (X-ray) atau tes darah"
+  },
+  "Have tests if needed": {
+   "si": "අවශ්‍ය නම් පරීක්ෂණ කරගන්න",
+   "fa": "در صورت نیاز آزمایش بدهید",
+   "vi": "Làm xét nghiệm nếu cần",
+   "id": "Jalani tes jika perlu"
+  },
+  "If the provider charges more than Medibank pays, you pay the difference.": {
+   "si": "සේවා සපයන්නා Medibank ගෙවන ප්‍රමාණයට වඩා වැඩියෙන් අය කරන්නේ නම්, වෙනස ඔබ ගෙවිය යුතුය.",
+   "fa": "اگر ارائه‌دهنده خدمات بیشتر از مبلغی که Medibank می‌پردازد هزینه بگیرد، تفاوت را شما می‌پردازید.",
+   "vi": "Nếu cơ sở y tế tính phí cao hơn số Medibank trả, bạn trả phần chênh lệch.",
+   "id": "Jika penyedia layanan menagih lebih dari yang dibayar Medibank, Anda membayar selisihnya."
+  },
+  "If you come by ambulance, the ambulance takes you straight in.": {
+   "si": "ඔබ ගිලන් රථයෙන් පැමිණෙන්නේ නම්, ගිලන් රථය ඔබව කෙලින්ම ඇතුළට රැගෙන යයි.",
+   "fa": "اگر با آمبولانس بیایید، آمبولانس شما را مستقیم به داخل می‌برد.",
+   "vi": "Nếu bạn đến bằng xe cứu thương, xe sẽ đưa bạn vào thẳng bên trong.",
+   "id": "Jika Anda datang dengan ambulans, ambulans akan langsung membawa Anda masuk."
+  },
+  "If you ever feel unsafe or think about harming yourself, call 000 or Lifeline on 13 11 14 right away.": {
+   "si": "ඔබට කවදා හෝ අනාරක්ෂිත බවක් දැනේ නම් හෝ ඔබටම හානි කර ගැනීමට සිතේ නම්, වහාම 000 හෝ Lifeline අංක 13 11 14 අමතන්න.",
+   "fa": "اگر هر زمان احساس ناامنی کردید یا به آسیب زدن به خودتان فکر کردید، فوراً با 000 یا Lifeline به شماره 13 11 14 تماس بگیرید.",
+   "vi": "Nếu bạn cảm thấy không an toàn hoặc có ý nghĩ làm hại bản thân, hãy gọi ngay 000 hoặc Lifeline theo số 13 11 14.",
+   "id": "Jika Anda merasa tidak aman atau berpikir untuk menyakiti diri sendiri, segera hubungi 000 atau Lifeline di 13 11 14."
+  },
+  "If you get a bill, you can use it to make a claim.": {
+   "si": "ඔබට බිල්පතක් ලැබුණොත්, ක්ලේම් එකක් කිරීමට එය භාවිත කළ හැක.",
+   "fa": "اگر صورت‌حساب گرفتید، می‌توانید با آن claim کنید.",
+   "vi": "Nếu bạn nhận hóa đơn, bạn có thể dùng nó để yêu cầu chi trả.",
+   "id": "Jika Anda menerima tagihan, Anda bisa menggunakannya untuk mengajukan klaim."
+  },
+  "In danger or thinking about harming yourself?": {
+   "si": "අනතුරක සිටිනවාද, නැතහොත් ඔබටම හානි කර ගැනීමට සිතෙනවාද?",
+   "fa": "در خطر هستید یا به آسیب زدن به خودتان فکر می‌کنید؟",
+   "vi": "Bạn đang gặp nguy hiểm hoặc có ý nghĩ làm hại bản thân?",
+   "id": "Dalam bahaya atau berpikir untuk menyakiti diri sendiri?"
+  },
+  "It is often a different door from the main hospital entrance.": {
+   "si": "එය බොහෝ විට රෝහලේ ප්‍රධාන දොරටුවට වඩා වෙනස් දොරකි.",
+   "fa": "اغلب دری جدا از ورودی اصلی بیمارستان است.",
+   "vi": "Lối vào này thường khác với cửa chính của bệnh viện.",
+   "id": "Biasanya pintunya berbeda dari pintu masuk utama rumah sakit."
+  },
+  "It's OK to ask what each test is for.": {
+   "si": "එක් එක් පරීක්ෂණය කුමක් සඳහාදැයි ඇසීම කමක් නැත.",
+   "fa": "اشکالی ندارد بپرسید هر آزمایش برای چیست.",
+   "vi": "Bạn có thể hỏi mỗi xét nghiệm để làm gì.",
+   "id": "Tidak apa-apa bertanya untuk apa setiap tes."
+  },
+  "It's normal to miss home": {
+   "si": "නිවස මතක් වීම සාමාන්‍ය දෙයක්",
+   "fa": "دلتنگی برای خانه طبیعی است",
+   "vi": "Nhớ nhà là chuyện bình thường",
+   "id": "Wajar jika Anda rindu rumah"
+  },
+  "Join a club or student group on your campus": {
+   "si": "ඔබේ කැම්පස් එකේ සමාජයකට හෝ ශිෂ්‍ය කණ්ඩායමකට එක්වන්න",
+   "fa": "به یک باشگاه یا گروه دانشجویی در دانشگاه‌تان بپیوندید",
+   "vi": "Tham gia một câu lạc bộ hoặc nhóm sinh viên ở trường",
+   "id": "Bergabunglah dengan klub atau kelompok mahasiswa di kampus Anda"
+  },
+  "Keep all invoices": {
+   "si": "සියලුම ඉන්වොයිසි තබා ගන්න",
+   "fa": "همه فاکتورها را نگه دارید",
+   "vi": "Giữ tất cả hóa đơn",
+   "id": "Simpan semua faktur"
+  },
+  "Keep every invoice and letter.": {
+   "si": "සෑම ඉන්වොයිසියක්ම සහ ලිපියක්ම තබා ගන්න.",
+   "fa": "همه فاکتورها و نامه‌ها را نگه دارید.",
+   "vi": "Giữ mọi hóa đơn và thư từ.",
+   "id": "Simpan setiap faktur dan surat."
+  },
+  "Keep your OSHC card in your phone wallet or take a photo of it, so you always have it.": {
+   "si": "ඔබේ OSHC කාඩ්පත සැමවිටම ඔබ ළඟ තිබීමට, එය ඔබේ දුරකථනයේ wallet එකේ තබා ගන්න හෝ එහි ඡායාරූපයක් ගන්න.",
+   "fa": "کارت OSHC خود را در کیف پول گوشی (wallet) نگه دارید یا از آن عکس بگیرید تا همیشه همراهتان باشد.",
+   "vi": "Lưu thẻ OSHC trong ví điện thoại hoặc chụp ảnh thẻ, để lúc nào bạn cũng có.",
+   "id": "Simpan kartu OSHC Anda di dompet digital ponsel atau foto kartunya, agar selalu Anda bawa."
+  },
+  "Language": {
+   "si": "භාෂාව",
+   "fa": "زبان",
+   "vi": "Ngôn ngữ",
+   "id": "Bahasa"
+  },
+  "Life-threatening emergency?": {
+   "si": "ජීවිතයට තර්ජනයක් වන හදිසි අවස්ථාවක්ද?",
+   "fa": "اورژانس با خطر جانی؟",
+   "vi": "Cấp cứu đe dọa tính mạng?",
+   "id": "Darurat yang mengancam jiwa?"
+  },
+  "Look for signs that say Emergency.": {
+   "si": "Emergency (හදිසි) යැයි සඳහන් සංඥා පුවරු සොයන්න.",
+   "fa": "دنبال تابلوهایی بگردید که روی آن Emergency (اورژانس) نوشته شده.",
+   "vi": "Tìm biển ghi Emergency (Cấp cứu).",
+   "id": "Cari papan bertuliskan Emergency (Gawat Darurat)."
+  },
+  "Missing home is very common for students living far away.": {
+   "si": "දුරින් ජීවත් වන සිසුන්ට නිවස මතක් වීම ඉතා සාමාන්‍ය දෙයකි.",
+   "fa": "دلتنگی برای خانه بین دانشجوهایی که دور از خانه زندگی می‌کنند خیلی رایج است.",
+   "vi": "Nhớ nhà là điều rất bình thường với sinh viên sống xa nhà.",
+   "id": "Rindu rumah sangat umum bagi mahasiswa yang tinggal jauh dari rumah."
+  },
+  "Most people go home the same day.": {
+   "si": "බොහෝ දෙනා එදිනම නිවසට යති.",
+   "fa": "بیشتر افراد همان روز به خانه می‌روند.",
+   "vi": "Hầu hết mọi người về nhà ngay trong ngày.",
+   "id": "Kebanyakan orang pulang pada hari yang sama."
+  },
+  "Next step": {
+   "si": "ඊළඟ පියවර",
+   "fa": "مرحله بعد",
+   "vi": "Bước tiếp theo",
+   "id": "Langkah berikutnya"
+  },
+  "Next suggestion": {
+   "si": "ඊළඟ යෝජනාව",
+   "fa": "پیشنهاد بعدی",
+   "vi": "Gợi ý tiếp theo",
+   "id": "Saran berikutnya"
+  },
+  "Normal": {
+   "si": "සාමාන්‍ය",
+   "fa": "عادی",
+   "vi": "Bình thường",
+   "id": "Normal"
+  },
+  "Notice how you feel and name it: “I miss home”": {
+   "si": "ඔබට දැනෙන දේ හඳුනාගෙන එයට නමක් දෙන්න: “මට ගෙදර මතක් වෙනවා”",
+   "fa": "به احساستان توجه کنید و اسمش را بگویید: «دلم برای خانه تنگ شده»",
+   "vi": "Hãy để ý cảm xúc của bạn và gọi tên nó: “Mình nhớ nhà”",
+   "id": "Perhatikan perasaan Anda dan beri nama: “Saya rindu rumah”"
+  },
+  "Open Student Rewards Plus in the Medibank OSHC app": {
+   "si": "Medibank OSHC app එකේ Student Rewards Plus විවෘත කරන්න",
+   "fa": "Student Rewards Plus را در اپ Medibank OSHC باز کنید",
+   "vi": "Mở Student Rewards Plus trong ứng dụng Medibank OSHC",
+   "id": "Buka Student Rewards Plus di aplikasi Medibank OSHC"
+  },
+  "Our multilingual customer service team is fluent in a dozen languages, along with access to telephone interpreter services in around 150 languages.": {
+   "si": "අපගේ බහුභාෂා පාරිභෝගික සේවා කණ්ඩායම භාෂා දුසිමක් පමණ චතුර ලෙස කතා කරන අතර, භාෂා 150 ක් පමණ සඳහා දුරකථන පරිවර්තක සේවා ද ඇත.",
+   "fa": "تیم چندزبانه خدمات مشتری ما به حدود دوازده زبان مسلط است و به خدمات مترجم تلفنی به حدود 150 زبان هم دسترسی دارد.",
+   "vi": "Đội ngũ chăm sóc khách hàng đa ngôn ngữ của chúng tôi nói thành thạo khoảng mười hai ngôn ngữ, kèm dịch vụ phiên dịch qua điện thoại cho khoảng 150 ngôn ngữ.",
+   "id": "Tim layanan pelanggan multibahasa kami fasih dalam sekitar dua belas bahasa, serta memiliki akses ke layanan juru bahasa telepon dalam sekitar 150 bahasa."
+  },
+  "Our own advice, not from the brochure": {
+   "si": "අපගේම උපදෙස්, පත්‍රිකාවෙන් නොවේ",
+   "fa": "توصیه خود ما، نه از بروشور",
+   "vi": "Lời khuyên của chúng tôi, không phải từ tài liệu",
+   "id": "Saran kami sendiri, bukan dari brosur"
+  },
+  "People who are sicker are seen before you, even if they arrived later.": {
+   "si": "ඔබට පසුව පැමිණියත්, වඩා අසනීප අයව ඔබට පෙර පරීක්ෂා කරනු ලැබේ.",
+   "fa": "افرادی که حالشان بدتر است زودتر از شما ویزیت می‌شوند، حتی اگر دیرتر آمده باشند.",
+   "vi": "Người bệnh nặng hơn sẽ được khám trước bạn, kể cả khi họ đến sau.",
+   "id": "Orang yang lebih parah sakitnya akan ditangani lebih dulu, meskipun mereka datang belakangan."
+  },
+  "Press Next to turn the wheel.": {
+   "si": "රෝදය කරකැවීමට ඊළඟ (Next) ඔබන්න.",
+   "fa": "برای چرخاندن چرخ، «بعدی» را بزنید.",
+   "vi": "Nhấn Tiếp (Next) để xoay bánh xe.",
+   "id": "Tekan Berikutnya (Next) untuk memutar roda."
+  },
+  "Psychology: up to $100 per consultation": {
+   "si": "මනෝවිද්‍යාව: එක් හමුවකට $100 දක්වා",
+   "fa": "روان‌شناسی: تا $100 برای هر جلسه",
+   "vi": "Tâm lý: tối đa $100 mỗi buổi tư vấn",
+   "id": "Psikologi: hingga $100 per konsultasi"
+  },
+  "Public hospitals can usually arrange an interpreter for free.": {
+   "si": "රජයේ රෝහල්වලට සාමාන්‍යයෙන් නොමිලේ පරිවර්තකයෙකු ලබා දිය හැක.",
+   "fa": "بیمارستان‌های دولتی معمولاً می‌توانند به‌طور رایگان مترجم شفاهی هماهنگ کنند.",
+   "vi": "Bệnh viện công thường có thể sắp xếp thông dịch viên miễn phí.",
+   "id": "Rumah sakit umum biasanya bisa menyediakan juru bahasa secara gratis."
+  },
+  "Put a regular call with family in your calendar, so you have something to look forward to.": {
+   "si": "පවුලේ අය සමඟ නිතිපතා ඇමතුමක් ඔබේ දින දර්ශනයට එක් කරන්න, එවිට ඔබට බලාපොරොත්තුවෙන් සිටීමට දෙයක් ඇත.",
+   "fa": "یک تماس منظم با خانواده را در تقویمتان بگذارید تا چیزی برای انتظار کشیدن داشته باشید.",
+   "vi": "Hãy lên lịch gọi điện đều đặn với gia đình để bạn có điều gì đó để mong chờ.",
+   "id": "Jadwalkan panggilan rutin dengan keluarga di kalender Anda, supaya Anda punya sesuatu yang dinantikan."
+  },
+  "Reception": {
+   "si": "පිළිගැනීමේ කවුළුව",
+   "fa": "پذیرش",
+   "vi": "Quầy lễ tân",
+   "id": "Resepsionis"
+  },
+  "Register at the desk": {
+   "si": "කවුළුවේදී ලියාපදිංචි වන්න",
+   "fa": "در پیشخوان ثبت‌نام کنید",
+   "vi": "Đăng ký tại quầy",
+   "id": "Daftar di meja pendaftaran"
+  },
+  "Remember that it often gets easier as you settle in": {
+   "si": "ඔබ හුරු වන විට එය බොහෝවිට පහසු වන බව මතක තබා ගන්න",
+   "fa": "به یاد داشته باشید که معمولاً وقتی جا می‌افتید، همه‌چیز آسان‌تر می‌شود",
+   "vi": "Hãy nhớ rằng mọi thứ thường dễ dàng hơn khi bạn đã quen dần",
+   "id": "Ingat bahwa biasanya semuanya jadi lebih mudah setelah Anda terbiasa"
+  },
+  "Say if you have allergies or take any medicine": {
+   "si": "ඔබට අසාත්මිකතා තිබේ නම් හෝ කිසියම් ඖෂධයක් ගන්නේ නම් කියන්න",
+   "fa": "بگویید اگر حساسیت دارید یا دارویی مصرف می‌کنید",
+   "vi": "Nói nếu bạn bị dị ứng hoặc đang dùng thuốc nào",
+   "id": "Beri tahu jika Anda punya alergi atau sedang minum obat"
+  },
+  "See a counsellor or psychologist": {
+   "si": "උපදේශකයෙකු හෝ මනෝවිද්‍යාඥයෙකු හමුවන්න",
+   "fa": "به مشاور یا روان‌شناس مراجعه کنید",
+   "vi": "Gặp chuyên viên tư vấn hoặc nhà tâm lý",
+   "id": "Temui konselor atau psikolog"
+  },
+  "See a doctor": {
+   "si": "වෛද්‍යවරයෙකු හමුවන්න",
+   "fa": "به پزشک مراجعه کنید",
+   "vi": "Đi khám bác sĩ",
+   "id": "Temui dokter"
+  },
+  "See the doctor.": {
+   "si": "වෛද්‍යවරයා හමුවන්න.",
+   "fa": "پزشک را ببینید.",
+   "vi": "Gặp bác sĩ.",
+   "id": "Temui dokter."
+  },
+  "See the triage nurse": {
+   "si": "ට්‍රයේජ් හෙදිය (triage nurse) හමුවන්න",
+   "fa": "به پرستار تریاژ (triage) مراجعه کنید",
+   "vi": "Gặp y tá phân loại (triage)",
+   "id": "Temui perawat triase (triage)"
+  },
+  "Show where it hurts": {
+   "si": "රිදෙන්නේ කොතැනදැයි පෙන්වන්න",
+   "fa": "نشان دهید کجایتان درد می‌کند",
+   "vi": "Chỉ chỗ bị đau",
+   "id": "Tunjukkan bagian yang sakit"
+  },
+  "Show your OSHC card and ID": {
+   "si": "ඔබේ OSHC කාඩ්පත සහ හැඳුනුම්පත පෙන්වන්න",
+   "fa": "کارت OSHC و کارت شناسایی‌تان را نشان دهید",
+   "vi": "Xuất trình thẻ OSHC và giấy tờ tùy thân",
+   "id": "Tunjukkan kartu OSHC dan identitas Anda"
+  },
+  "Show your OSHC card and your passport or student ID": {
+   "si": "ඔබේ OSHC කාඩ්පත සහ ගමන් බලපත්‍රය හෝ ශිෂ්‍ය හැඳුනුම්පත පෙන්වන්න",
+   "fa": "کارت OSHC و گذرنامه یا کارت دانشجویی‌تان را نشان دهید",
+   "vi": "Xuất trình thẻ OSHC và hộ chiếu hoặc thẻ sinh viên",
+   "id": "Tunjukkan kartu OSHC dan paspor atau kartu pelajar Anda"
+  },
+  "Six ways to find support.": {
+   "si": "සහාය සොයා ගැනීමට ක්‍රම හයක්.",
+   "fa": "شش راه برای پیدا کردن حمایت.",
+   "vi": "Sáu cách để tìm hỗ trợ.",
+   "id": "Enam cara untuk mendapatkan dukungan."
+  },
+  "Some parts of the Medibank OSHC app can be translated into simplified Chinese.": {
+   "si": "Medibank OSHC ඇප් එකේ සමහර කොටස් සරල චීන භාෂාවට පරිවර්තනය කළ හැක.",
+   "fa": "برخی بخش‌های اپ Medibank OSHC را می‌توان به چینی ساده‌شده ترجمه کرد.",
+   "vi": "Một số phần của ứng dụng Medibank OSHC có thể dịch sang tiếng Trung giản thể.",
+   "id": "Beberapa bagian aplikasi Medibank OSHC dapat diterjemahkan ke bahasa Mandarin sederhana."
+  },
+  "Some people are admitted to a ward to stay longer.": {
+   "si": "සමහර අයව වැඩි කාලයක් රැඳී සිටීමට වාට්ටුවකට ඇතුළත් කරයි.",
+   "fa": "برخی افراد برای ماندن طولانی‌تر در بخش بستری می‌شوند.",
+   "vi": "Một số người được nhập viện vào khoa để ở lại lâu hơn.",
+   "id": "Sebagian orang dirawat inap di bangsal untuk tinggal lebih lama."
+  },
+  "Some services may not be available 24/7, and a call back may be needed.": {
+   "si": "සමහර සේවා 24/7 ලබා ගත නොහැකි විය හැකි අතර, නැවත ඇමතුමක් අවශ්‍ය විය හැක.",
+   "fa": "برخی خدمات ممکن است 24/7 در دسترس نباشند، و ممکن است نیاز به تماس مجدد باشد.",
+   "vi": "Một số dịch vụ có thể không hoạt động 24/7, và có thể cần gọi lại.",
+   "id": "Beberapa layanan mungkin tidak tersedia 24/7, dan mungkin perlu dihubungi kembali."
+  },
+  "Staff expect questions.": {
+   "si": "කාර්ය මණ්ඩලය ප්‍රශ්න බලාපොරොත්තු වේ.",
+   "fa": "کارکنان انتظار دارند سؤال بپرسید.",
+   "vi": "Nhân viên luôn sẵn sàng trả lời câu hỏi.",
+   "id": "Staf sudah terbiasa menerima pertanyaan."
+  },
+  "Staff record your details so the hospital knows who you are and how your care will be paid for.": {
+   "si": "ඔබ කවුද සහ ඔබේ ප්‍රතිකාර සඳහා ගෙවන්නේ කෙසේද යන්න රෝහල දැන ගැනීමට කාර්ය මණ්ඩලය ඔබේ විස්තර සටහන් කරයි.",
+   "fa": "کارکنان اطلاعات شما را ثبت می‌کنند تا بیمارستان بداند شما چه کسی هستید و هزینهٔ درمانتان چطور پرداخت می‌شود.",
+   "vi": "Nhân viên ghi lại thông tin của bạn để bệnh viện biết bạn là ai và chi phí điều trị sẽ được thanh toán thế nào.",
+   "id": "Staf mencatat data Anda agar rumah sakit tahu siapa Anda dan bagaimana biaya perawatan Anda dibayar."
+  },
+  "Start again": {
+   "si": "නැවත ආරම්භ කරන්න",
+   "fa": "شروع دوباره",
+   "vi": "Bắt đầu lại",
+   "id": "Mulai lagi"
+  },
+  "Stay where staff can call your name": {
+   "si": "කාර්ය මණ්ඩලයට ඔබේ නම ඇමතිය හැකි තැනක රැඳී සිටින්න",
+   "fa": "جایی بمانید که کارکنان بتوانند اسمتان را صدا بزنند",
+   "vi": "Ở chỗ nhân viên có thể gọi tên bạn",
+   "id": "Tetap di tempat staf bisa memanggil nama Anda"
+  },
+  "Student support line (24/7): 1800 887 283": {
+   "si": "ශිෂ්‍ය සහාය දුරකථන සේවාව (24/7): 1800 887 283",
+   "fa": "خط حمایت دانشجویان (24/7): 1800 887 283",
+   "vi": "Đường dây hỗ trợ sinh viên (24/7): 1800 887 283",
+   "id": "Layanan dukungan mahasiswa (24/7): 1800 887 283"
+  },
+  "Talk": {
+   "si": "කතා කරන්න",
+   "fa": "صحبت کنید",
+   "vi": "Trò chuyện",
+   "id": "Bicara"
+  },
+  "Talk to someone, any time": {
+   "si": "ඕනෑම වේලාවක කෙනෙකු සමඟ කතා කරන්න",
+   "fa": "در هر زمانی با کسی صحبت کنید",
+   "vi": "Nói chuyện với ai đó, bất kỳ lúc nào",
+   "id": "Bicara dengan seseorang, kapan saja"
+  },
+  "Tell someone you trust, a friend or a family member": {
+   "si": "ඔබ විශ්වාස කරන කෙනෙකුට, මිතුරෙකුට හෝ පවුලේ කෙනෙකුට කියන්න",
+   "fa": "به کسی که به او اعتماد دارید بگویید، یک دوست یا یکی از اعضای خانواده",
+   "vi": "Hãy kể với người bạn tin tưởng, một người bạn hoặc người thân trong gia đình",
+   "id": "Ceritakan kepada orang yang Anda percaya, teman atau anggota keluarga"
+  },
+  "Tell staff if you feel worse": {
+   "si": "ඔබට වඩා අසනීප නම් කාර්ය මණ්ඩලයට කියන්න",
+   "fa": "اگر حالتان بدتر شد به کارکنان بگویید",
+   "vi": "Báo cho nhân viên nếu bạn thấy mệt hơn",
+   "id": "Beri tahu petugas jika Anda merasa lebih buruk"
+  },
+  "Tell staff straight away if you feel worse": {
+   "si": "ඔබට වඩා අසනීප නම් වහාම කාර්ය මණ්ඩලයට කියන්න",
+   "fa": "اگر حالتان بدتر شد فوراً به کارکنان بگویید",
+   "vi": "Báo ngay cho nhân viên nếu bạn thấy mệt hơn",
+   "id": "Segera beri tahu petugas jika Anda merasa lebih buruk"
+  },
+  "Tell the nurse or counsellor which language you speak": {
+   "si": "ඔබ කතා කරන භාෂාව හෙදියට හෝ උපදේශකට කියන්න",
+   "fa": "به پرستار یا مشاور بگویید به چه زبانی صحبت می‌کنید",
+   "vi": "Cho y tá hoặc chuyên viên tư vấn biết bạn nói ngôn ngữ nào",
+   "id": "Beri tahu perawat atau konselor bahasa yang Anda gunakan"
+  },
+  "Tell the nurse what happened": {
+   "si": "සිදු වූ දේ හෙදියට කියන්න",
+   "fa": "به پرستار بگویید چه اتفاقی افتاده",
+   "vi": "Kể cho y tá nghe chuyện gì đã xảy ra",
+   "id": "Ceritakan kepada perawat apa yang terjadi"
+  },
+  "Tell them how you feel and ask what help is available": {
+   "si": "ඔබට දැනෙන ආකාරය ඔවුන්ට කියා, ලබා ගත හැකි උදව් මොනවාදැයි අහන්න",
+   "fa": "به آن‌ها بگویید چه حالی دارید و بپرسید چه کمکی در دسترس است",
+   "vi": "Cho họ biết bạn cảm thấy thế nào và hỏi có những hỗ trợ nào",
+   "id": "Ceritakan perasaan Anda dan tanyakan bantuan apa yang tersedia"
+  },
+  "Tell them if you might be pregnant or have metal in your body": {
+   "si": "ඔබ ගැබ්ගෙන සිටිය හැකි නම් හෝ ඔබේ ශරීරයේ ලෝහ ඇත්නම් ඔවුන්ට කියන්න",
+   "fa": "اگر ممکن است باردار باشید یا در بدنتان فلز دارید، به آن‌ها بگویید",
+   "vi": "Cho họ biết nếu bạn có thể đang mang thai hoặc có kim loại trong cơ thể",
+   "id": "Beri tahu mereka jika Anda mungkin hamil atau ada logam di tubuh Anda"
+  },
+  "Tell them you are an international student": {
+   "si": "ඔබ ජාත්‍යන්තර ශිෂ්‍යයෙකු බව ඔවුන්ට කියන්න",
+   "fa": "به آن‌ها بگویید که دانشجوی بین‌المللی هستید",
+   "vi": "Cho họ biết bạn là sinh viên quốc tế",
+   "id": "Beri tahu mereka bahwa Anda mahasiswa internasional"
+  },
+  "Tests": {
+   "si": "පරීක්ෂණ",
+   "fa": "آزمایش‌ها",
+   "vi": "Xét nghiệm",
+   "id": "Tes"
+  },
+  "The hospital may bill your OSHC provider, or you may need to make a claim": {
+   "si": "රෝහල ඔබේ OSHC සපයන්නාට බිල්පත යැවිය හැක, නැතහොත් ඔබට ක්ලේම් එකක් කිරීමට සිදු විය හැක",
+   "fa": "بیمارستان ممکن است صورت‌حساب را برای ارائه‌دهنده OSHC شما بفرستد، یا ممکن است لازم باشد خودتان claim کنید",
+   "vi": "Bệnh viện có thể gửi hóa đơn cho nhà cung cấp OSHC của bạn, hoặc bạn có thể cần tự yêu cầu chi trả (claim)",
+   "id": "Rumah sakit bisa menagih penyedia OSHC Anda, atau Anda mungkin perlu mengajukan klaim"
+  },
+  "The most urgent patients are seen immediately.": {
+   "si": "වඩාත්ම හදිසි රෝගීන් වහාම පරීක්ෂා කරනු ලැබේ.",
+   "fa": "فوری‌ترین بیماران بلافاصله ویزیت می‌شوند.",
+   "vi": "Những bệnh nhân khẩn cấp nhất được khám ngay lập tức.",
+   "id": "Pasien yang paling darurat langsung ditangani."
+  },
+  "Then you go back and wait for the results.": {
+   "si": "ඉන්පසු ඔබ ආපසු ගොස් ප්‍රතිඵල එනතුරු රැඳී සිටින්න.",
+   "fa": "سپس برمی‌گردید و منتظر نتایج می‌مانید.",
+   "vi": "Sau đó bạn quay lại và chờ kết quả.",
+   "id": "Lalu Anda kembali dan menunggu hasilnya."
+  },
+  "They decide how urgent your problem is.": {
+   "si": "ඔබේ ගැටලුව කොතරම් හදිසිදැයි ඔවුන් තීරණය කරයි.",
+   "fa": "آن‌ها تصمیم می‌گیرند مشکل شما چقدر فوری است.",
+   "vi": "Họ quyết định vấn đề của bạn khẩn cấp đến mức nào.",
+   "id": "Mereka menentukan seberapa darurat masalah Anda."
+  },
+  "They may need tests to find out what is wrong.": {
+   "si": "ගැටලුව කුමක්දැයි සොයා ගැනීමට ඔවුන්ට පරීක්ෂණ අවශ්‍ය විය හැක.",
+   "fa": "ممکن است برای فهمیدن مشکل به آزمایش نیاز داشته باشند.",
+   "vi": "Họ có thể cần làm xét nghiệm để tìm ra vấn đề.",
+   "id": "Mereka mungkin perlu melakukan tes untuk mengetahui masalahnya."
+  },
+  "This decides who is seen first.": {
+   "si": "මුලින්ම පරීක්ෂා කරන්නේ කාවදැයි මෙය තීරණය කරයි.",
+   "fa": "این تعیین می‌کند چه کسی اول ویزیت شود.",
+   "vi": "Điều này quyết định ai được khám trước.",
+   "id": "Ini menentukan siapa yang ditangani lebih dulu."
+  },
+  "This is general information, not medical advice.": {
+   "si": "මෙය සාමාන්‍ය තොරතුරු මිස වෛද්‍ය උපදෙස් නොවේ.",
+   "fa": "این اطلاعات عمومی است، نه توصیه پزشکی.",
+   "vi": "Đây là thông tin chung, không phải lời khuyên y tế.",
+   "id": "Ini informasi umum, bukan saran medis."
+  },
+  "This is normal.": {
+   "si": "මෙය සාමාන්‍ය දෙයකි.",
+   "fa": "این طبیعی است.",
+   "vi": "Điều này là bình thường.",
+   "id": "Ini hal yang normal."
+  },
+  "Tip": {
+   "si": "ඉඟිය",
+   "fa": "نکته",
+   "vi": "Mẹo",
+   "id": "Tips"
+  },
+  "Translations are samples and will be checked by native speakers.": {
+   "si": "පරිවර්තන නියැදි වන අතර ස්වදේශීය කථිකයන් විසින් පරීක්ෂා කරනු ලැබේ.",
+   "fa": "ترجمه‌ها نمونه هستند و توسط افراد بومی‌زبان بررسی خواهند شد.",
+   "vi": "Bản dịch là bản mẫu và sẽ được người bản ngữ kiểm tra.",
+   "id": "Terjemahan ini adalah contoh dan akan diperiksa oleh penutur asli."
+  },
+  "Triage nurse": {
+   "si": "Triage හෙදිය",
+   "fa": "پرستار تریاژ",
+   "vi": "Y tá phân loại (triage)",
+   "id": "Perawat triase"
+  },
+  "Use it for discounts and help to find work": {
+   "si": "වට්ටම් සඳහා සහ රැකියා සොයා ගැනීමට උදව් සඳහා එය භාවිතා කරන්න",
+   "fa": "از آن برای تخفیف‌ها و کمک در پیدا کردن کار استفاده کنید",
+   "vi": "Dùng nó để được giảm giá và được hỗ trợ tìm việc",
+   "id": "Gunakan untuk diskon dan bantuan mencari kerja"
+  },
+  "Use the plan to see a psychologist": {
+   "si": "මනෝවිද්‍යාඥයෙකු හමුවීමට සැලැස්ම භාවිතා කරන්න",
+   "fa": "از این برنامه (plan) برای مراجعه به روان‌شناس استفاده کنید",
+   "vi": "Dùng kế hoạch (plan) này để gặp chuyên gia tâm lý",
+   "id": "Gunakan rencana (plan) ini untuk menemui psikolog"
+  },
+  "Wait to be called": {
+   "si": "ඔබව කැඳවන තුරු රැඳී සිටින්න",
+   "fa": "منتظر بمانید تا صدایتان کنند",
+   "vi": "Chờ được gọi tên",
+   "id": "Tunggu sampai dipanggil"
+  },
+  "Wait.": {
+   "si": "රැඳී සිටින්න.",
+   "fa": "منتظر بمانید.",
+   "vi": "Chờ.",
+   "id": "Tunggu."
+  },
+  "Waiting area": {
+   "si": "පොරොත්තු ප්‍රදේශය",
+   "fa": "سالن انتظار",
+   "vi": "Khu vực chờ",
+   "id": "Ruang tunggu"
+  },
+  "Waiting periods may apply to some services.": {
+   "si": "සමහර සේවා සඳහා පොරොත්තු කාල අදාළ විය හැක.",
+   "fa": "ممکن است برای برخی خدمات دوره انتظار وجود داشته باشد.",
+   "vi": "Một số dịch vụ có thể có thời gian chờ.",
+   "id": "Masa tunggu mungkin berlaku untuk beberapa layanan."
+  },
+  "What happens here": {
+   "si": "මෙහිදී සිදු වන්නේ කුමක්ද",
+   "fa": "این‌جا چه اتفاقی می‌افتد",
+   "vi": "Điều gì diễn ra ở đây",
+   "id": "Apa yang terjadi di sini"
+  },
+  "What happens when you go to hospital": {
+   "si": "රෝහලට ගිය විට සිදු වන්නේ කුමක්ද",
+   "fa": "وقتی به بیمارستان می‌روید چه اتفاقی می‌افتد",
+   "vi": "Điều gì xảy ra khi bạn đến bệnh viện",
+   "id": "Apa yang terjadi saat Anda ke rumah sakit"
+  },
+  "What to say": {
+   "si": "කිව යුතු දේ",
+   "fa": "چه بگویید",
+   "vi": "Nên nói gì",
+   "id": "Apa yang harus dikatakan"
+  },
+  "What you can do": {
+   "si": "ඔබට කළ හැකි දේ",
+   "fa": "کارهایی که می‌توانید انجام دهید",
+   "vi": "Những gì bạn có thể làm",
+   "id": "Yang bisa Anda lakukan"
+  },
+  "What you need to do": {
+   "si": "ඔබ කළ යුතු දේ",
+   "fa": "کاری که باید انجام دهید",
+   "vi": "Những việc bạn cần làm",
+   "id": "Yang perlu Anda lakukan"
+  },
+  "When you leave, you get papers that explain your care.": {
+   "si": "ඔබ පිටව යන විට, ඔබට ලැබුණු ප්‍රතිකාර ගැන පැහැදිලි කරන ලියකියවිලි ලැබේ.",
+   "fa": "وقتی مرخص می‌شوید، برگه‌هایی می‌گیرید که درمان شما را توضیح می‌دهد.",
+   "vi": "Khi ra về, bạn sẽ nhận giấy tờ giải thích việc chăm sóc bạn đã nhận.",
+   "id": "Saat pulang, Anda menerima dokumen yang menjelaskan perawatan Anda."
+  },
+  "When you miss home": {
+   "si": "ඔබට ගෙදර මතක් වන විට",
+   "fa": "وقتی دلتان برای خانه تنگ می‌شود",
+   "vi": "Khi bạn nhớ nhà",
+   "id": "Saat Anda rindu rumah"
+  },
+  "Yearly limit: $200 (single), $400 (couple or family)": {
+   "si": "වාර්ෂික සීමාව: $200 (තනි), $400 (යුවළ හෝ පවුල)",
+   "fa": "سقف سالانه: $200 (یک نفر)، $400 (زوج یا خانواده)",
+   "vi": "Hạn mức mỗi năm: $200 (một người), $400 (cặp đôi hoặc gia đình)",
+   "id": "Batas tahunan: $200 (perorangan), $400 (pasangan atau keluarga)"
+  },
+  "You are not alone, and there are people and services that can help.": {
+   "si": "ඔබ තනි නැත, ඔබට උදව් කළ හැකි පුද්ගලයින් සහ සේවා තිබේ.",
+   "fa": "شما تنها نیستید و افراد و خدماتی هستند که می‌توانند کمک کنند.",
+   "vi": "Bạn không đơn độc, và có những người cũng như dịch vụ có thể giúp bạn.",
+   "id": "Anda tidak sendirian, dan ada orang serta layanan yang bisa membantu."
+  },
+  "You can also receive benefits towards out of hospital mental health support, including consultations with a psychologist through a GP mental health treatment plan.": {
+   "si": "රෝහලෙන් පිටත මානසික සෞඛ්‍ය සහාය සඳහා ද ඔබට ප්‍රතිලාභ ලැබිය හැක, GP මානසික සෞඛ්‍ය ප්‍රතිකාර සැලැස්මක් (mental health treatment plan) හරහා මනෝවිද්‍යාඥයෙකු හමුවීම ද ඇතුළුව.",
+   "fa": "همچنین می‌توانید برای حمایت سلامت روان خارج از بیمارستان مزایا بگیرید، از جمله جلسه با روان‌شناس از طریق برنامه درمان سلامت روان GP (mental health treatment plan).",
+   "vi": "Bạn cũng có thể nhận chi trả cho hỗ trợ sức khỏe tâm thần ngoài bệnh viện, bao gồm các buổi gặp nhà tâm lý học thông qua kế hoạch điều trị sức khỏe tâm thần của GP (mental health treatment plan).",
+   "id": "Anda juga bisa menerima tanggungan untuk dukungan kesehatan mental di luar rumah sakit, termasuk konsultasi dengan psikolog melalui rencana perawatan kesehatan mental dari GP (mental health treatment plan)."
+  },
+  "You can call 1800 887 283 anytime, day or night, for health advice from a registered nurse, counselling services, emergency legal advice, travel document assistance, interpreter services, and more.": {
+   "si": "ලියාපදිංචි හෙදියකගෙන් සෞඛ්‍ය උපදෙස්, උපදේශන සේවා, හදිසි නීති උපදෙස්, ගමන් ලේඛන සහාය, භාෂා පරිවර්තක සේවා සහ තවත් බොහෝ දේ සඳහා ඔබට ඕනෑම වේලාවක, දිවා රෑ දෙකේම 1800 887 283 අංකයට ඇමතිය හැක.",
+   "fa": "می‌توانید هر زمان، شب یا روز، با 1800 887 283 تماس بگیرید برای مشاوره سلامت از یک پرستار رسمی، خدمات مشاوره، مشاوره حقوقی فوری، کمک در مدارک سفر، خدمات مترجم و موارد دیگر.",
+   "vi": "Bạn có thể gọi 1800 887 283 bất cứ lúc nào, ngày hay đêm, để được y tá có đăng ký tư vấn sức khỏe, dịch vụ tư vấn tâm lý, tư vấn pháp lý khẩn cấp, hỗ trợ giấy tờ du lịch, dịch vụ phiên dịch, và nhiều hơn nữa.",
+   "id": "Anda bisa menelepon 1800 887 283 kapan saja, siang atau malam, untuk saran kesehatan dari perawat terdaftar, layanan konseling, saran hukum darurat, bantuan dokumen perjalanan, layanan juru bahasa, dan lainnya."
+  },
+  "You don't have to rely on English.": {
+   "si": "ඔබට ඉංග්‍රීසිය මත පමණක් රඳා සිටීමට අවශ්‍ය නැත.",
+   "fa": "لازم نیست فقط به انگلیسی تکیه کنید.",
+   "vi": "Bạn không phải chỉ dựa vào tiếng Anh.",
+   "id": "Anda tidak harus bergantung pada bahasa Inggris."
+  },
+  "You may wait a while.": {
+   "si": "ඔබට ටික වේලාවක් රැඳී සිටීමට සිදු විය හැක.",
+   "fa": "ممکن است مدتی منتظر بمانید.",
+   "vi": "Bạn có thể phải đợi một lúc.",
+   "id": "Anda mungkin harus menunggu cukup lama."
+  },
+  "You might have an X-ray, a blood test or another scan.": {
+   "si": "ඔබට X-ray එකක්, රුධිර පරීක්ෂණයක් හෝ වෙනත් ස්කෑන් එකක් කිරීමට සිදු විය හැක.",
+   "fa": "ممکن است عکس‌برداری (X-ray)، آزمایش خون یا اسکن دیگری انجام دهید.",
+   "vi": "Bạn có thể được chụp X-quang, xét nghiệm máu hoặc chụp chiếu khác.",
+   "id": "Anda mungkin menjalani rontgen, tes darah, atau pemindaian lain."
+  },
+  "You’ll also gain access to support and information to help you find work and enhance your skills and knowledge while studying in Australia.": {
+   "si": "ඕස්ට්‍රේලියාවේ අධ්‍යාපනය ලබන අතරතුර රැකියාවක් සොයා ගැනීමට සහ ඔබේ කුසලතා හා දැනුම වර්ධනය කර ගැනීමට උපකාරී වන සහාය සහ තොරතුරු ද ඔබට ලැබේ.",
+   "fa": "همچنین به حمایت و اطلاعاتی دسترسی خواهید داشت که در زمان تحصیل در استرالیا به شما کمک می‌کند کار پیدا کنید و مهارت‌ها و دانش خود را افزایش دهید.",
+   "vi": "Bạn cũng được tiếp cận hỗ trợ và thông tin giúp bạn tìm việc làm và nâng cao kỹ năng, kiến thức trong khi học tập tại Úc.",
+   "id": "Anda juga mendapat akses ke dukungan dan informasi untuk membantu Anda mencari kerja serta meningkatkan keterampilan dan pengetahuan selama belajar di Australia."
+  },
+  "← Back": {
+   "si": "← ආපසු",
+   "fa": "← بازگشت",
+   "vi": "← Quay lại",
+   "id": "← Kembali"
+  },
+  "▶ Play all": {
+   "si": "▶ සියල්ල ධාවනය කරන්න",
+   "fa": "▶ پخش همه",
+   "vi": "▶ Phát tất cả",
+   "id": "▶ Putar semua"
+  },
+  "✎ our advice": {
+   "si": "✎ අපගේ උපදෙස",
+   "fa": "✎ توصیه ما",
+   "vi": "✎ lời khuyên của chúng tôi",
+   "id": "✎ saran kami"
+  },
+  "📄 p.13": {
+   "si": "📄 p.13",
+   "fa": "📄 p.13",
+   "vi": "📄 p.13",
+   "id": "📄 p.13"
+  },
+  "📄 p.14": {
+   "si": "📄 p.14",
+   "fa": "📄 p.14",
+   "vi": "📄 p.14",
+   "id": "📄 p.14"
+  },
+  "📄 p.3": {
+   "si": "📄 p.3",
+   "fa": "📄 p.3",
+   "vi": "📄 p.3",
+   "id": "📄 p.3"
+  },
+  "📄 p.5": {
+   "si": "📄 p.5",
+   "fa": "📄 p.5",
+   "vi": "📄 p.5",
+   "id": "📄 p.5"
+  },
+  "📄 p.6": {
+   "si": "📄 p.6",
+   "fa": "📄 p.6",
+   "vi": "📄 p.6",
+   "id": "📄 p.6"
+  },
+  "📄 p.7": {
+   "si": "📄 p.7",
+   "fa": "📄 p.7",
+   "vi": "📄 p.7",
+   "id": "📄 p.7"
+  },
+  "📄 p.8": {
+   "si": "📄 p.8",
+   "fa": "📄 p.8",
+   "vi": "📄 p.8",
+   "id": "📄 p.8"
+  },
+  "I get sick": {
+   "si": "මට අසනීප වුණොත්",
+   "fa": "بیمار می‌شوم",
+   "vi": "Tôi bị ốm",
+   "id": "Saya sakit"
+  },
+  "I need medication": {
+   "si": "මට ඖෂධ අවශ්‍යයි",
+   "fa": "به دارو نیاز دارم",
+   "vi": "Tôi cần thuốc",
+   "id": "Saya butuh obat"
+  },
+  "I need to make a claim": {
+   "si": "මට ක්ලේම් එකක් කරන්න අවශ්‍යයි",
+   "fa": "می‌خواهم claim ثبت کنم",
+   "vi": "Tôi cần yêu cầu chi trả",
+   "id": "Saya perlu mengajukan klaim"
+  },
+  "I feel homesickness": {
+   "si": "මට ගෙදර මතක් වෙනවා",
+   "fa": "دلتنگ خانه هستم",
+   "vi": "Tôi nhớ nhà",
+   "id": "Saya rindu rumah"
+  },
+  "I need to go to hospital": {
+   "si": "මට රෝහලට යන්න අවශ්‍යයි",
+   "fa": "باید به بیمارستان بروم",
+   "vi": "Tôi cần đến bệnh viện",
+   "id": "Saya perlu ke rumah sakit"
+  }
+ }
+}
