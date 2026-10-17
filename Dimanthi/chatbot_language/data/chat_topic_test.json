@@ -1,0 +1,82 @@
+{
+ "dental": [
+  "are my teeth cleaned for free",
+  "dath galawanna puluwanda oshc eken",
+  "දත් පිරවීම ආවරණය වෙනවද",
+  "هزینه پر کردن دندان رو بیمه میده",
+  "bọc răng sứ có được trả không",
+  "tambal gigi ditanggung tidak"
+ ],
+ "doctor": [
+  "how much will the gp cost me",
+  "mata sanipa nathi una nisa doctor kenek hoyanna",
+  "දොස්තරට සල්ලි ගෙවන්න ඕනෙද",
+  "ویزیت پزشک چقدر خرج داره",
+  "khám bác sĩ tốn bao nhiêu",
+  "berapa bayar ke dokter umum"
+ ],
+ "waiting": [
+  "can i use it from the first day",
+  "palaweni dawase indan pavichchi karanna puluwanda",
+  "කොච්චර කාලයක් බලා ඉන්න ඕනෙද",
+  "از روز اول میشه استفاده کرد",
+  "phải chờ mấy tháng",
+  "harus tunggu berapa bulan"
+ ],
+ "claim": [
+  "i paid already how do i get my money",
+  "mama gewwa salli aapahu ganna widiya",
+  "මම ගෙවපු සල්ලි ආපහු ගන්නේ කොහොමද",
+  "پولی که دادم رو چطور پس بگیرم",
+  "tôi đã trả tiền làm sao lấy lại",
+  "saya sudah bayar bagaimana minta uang kembali"
+ ],
+ "ambulance": [
+  "will i pay for the ambulance",
+  "ambulance ekak call kaloth salli yanawada",
+  "ගිලන් රථයට ගෙවන්න ඕනෙද",
+  "آمبولانس خبر کنم پول میگیرن",
+  "gọi xe cứu thương có tốn tiền không",
+  "naik ambulans bayar tidak"
+ ],
+ "mental": [
+  "can i talk to a counsellor",
+  "mata counsellor kenek ekka katha karanna puluwanda",
+  "මට උපදේශකයෙක් හමුවෙන්න පුළුවන්ද",
+  "میتونم با یه مشاور حرف بزنم",
+  "tôi có thể gặp chuyên gia tư vấn không",
+  "bisa konsultasi dengan psikolog"
+ ],
+ "activate": [
+  "how do i set up my account",
+  "account eka hadaganne kohomada",
+  "මගේ ගිණුම හදන්නේ කොහොමද",
+  "چطوری حساب کاربری درست کنم",
+  "làm sao tạo tài khoản",
+  "bagaimana cara buat akun"
+ ],
+ "medicine": [
+  "will you pay for my pills",
+  "pharmacy eken ganna beheth walata salli denawada",
+  "ෆාමසියෙන් ගන්න බෙහෙත් වලට සල්ලි දෙනවද",
+  "پول داروهامو میدید",
+  "tiền thuốc có được trả không",
+  "obat dari apotek dibayar tidak"
+ ],
+ "balance": [
+  "how much money is left on my cover",
+  "mage cover eke kiyada ithuru",
+  "මගේ ආවරණයේ කීයද ඉතුරු",
+  "چقدر از بیمه‌ام مونده",
+  "bảo hiểm của tôi còn bao nhiêu",
+  "berapa sisa saldo saya"
+ ],
+ "hello": [
+  "hello how are you",
+  "hi kohomada oyata",
+  "ආයුබෝවන් කොහොමද",
+  "سلام چطوری",
+  "chào bạn khỏe không",
+  "halo apa kabar"
+ ]
+}

@@ -1,0 +1,395 @@
+{
+ "answers": {
+  "At a Direct Billing doctor you usually pay nothing at the time. At other doctors you pay the full amount and claim part of it back. Find a Direct Billing doctor in the app before you book.": {
+   "si": "Direct Billing වෛද්‍යවරයෙකු ළඟ සාමාන්‍යයෙන් ඔබට එවෙලේ කිසිවක් ගෙවන්න අවශ්‍ය නැහැ. වෙනත් වෛද්‍යවරුන් ළඟ ඔබ මුළු මුදලම ගෙවා, එයින් කොටසක් ආපසු claim කරගන්නවා. වෙලාවක් වෙන්කරගන්න කලින් app එකෙන් Direct Billing වෛද්‍යවරයෙකු සොයාගන්න.",
+   "fa": "نزد پزشک Direct Billing معمولاً در همان لحظه چیزی پرداخت نمی‌کنید. نزد پزشکان دیگر کل مبلغ را می‌پردازید و بخشی از آن را پس می‌گیرید (claim). قبل از گرفتن وقت، یک پزشک Direct Billing را در اپ پیدا کنید.",
+   "vi": "Ở bác sĩ Direct Billing, bạn thường không phải trả gì lúc khám. Ở các bác sĩ khác, bạn trả toàn bộ rồi yêu cầu hoàn lại một phần. Hãy tìm bác sĩ Direct Billing trong ứng dụng trước khi đặt lịch.",
+   "id": "Di dokter Direct Billing, biasanya Anda tidak membayar apa pun saat itu. Di dokter lain, Anda membayar penuh lalu mengklaim sebagian kembali. Cari dokter Direct Billing di aplikasi sebelum membuat janji."
+  },
+  "Claim in the app or in Online Member Services. You need the itemised receipt from the provider.": {
+   "si": "app එකෙන් හෝ Online Member Services හරහා claim කරන්න. සේවාව දුන් තැනින් ලැබෙන විස්තර සහිත රිසිට්පත (itemised receipt) ඔබට අවශ්‍යයි.",
+   "fa": "از طریق اپ یا Online Member Services درخواست بازپرداخت (claim) بدهید. به رسید جزئیات‌دار (itemised receipt) از ارائه‌دهنده خدمات نیاز دارید.",
+   "vi": "Yêu cầu hoàn tiền trong ứng dụng hoặc trong Online Member Services. Bạn cần hóa đơn chi tiết (itemised receipt) từ nơi cung cấp dịch vụ.",
+   "id": "Ajukan klaim di aplikasi atau di Online Member Services. Anda memerlukan kuitansi rinci (itemised receipt) dari penyedia layanan."
+  },
+  "Emergency ambulance is covered anywhere in Australia. There is no limit. You do not have to wait.": {
+   "si": "හදිසි ගිලන් රථ සේවාව ඕස්ට්‍රේලියාවේ ඕනෑම තැනක ආවරණය වෙනවා. සීමාවක් නැහැ. බලා ඉන්න අවශ්‍ය නැහැ.",
+   "fa": "آمبولانس اورژانسی در هر جای استرالیا پوشش داده می‌شود. هیچ سقفی ندارد. لازم نیست منتظر بمانید.",
+   "vi": "Xe cứu thương cấp cứu được chi trả ở bất kỳ đâu tại Úc. Không có giới hạn. Bạn không phải chờ.",
+   "id": "Ambulans darurat ditanggung di mana saja di Australia. Tidak ada batas. Anda tidak perlu menunggu."
+  },
+  "Essentials cover does not include benefits towards psychology or counselling sessions. Hospital psychiatric treatment is covered. The free 24 hour line can still connect you to someone now.": {
+   "si": "Essentials ආවරණයේ මනෝවිද්‍යා හෝ උපදේශන සැසි සඳහා ප්‍රතිලාභ ඇතුළත් නැහැ. රෝහලේ මනෝ වෛද්‍ය ප්‍රතිකාර ආවරණය වෙනවා. පැය 24 පුරා විවෘත නොමිලේ දුරකථන සේවාවට ඔබව දැන්ම කෙනෙකු සමඟ සම්බන්ධ කළ හැකියි.",
+   "fa": "پوشش Essentials شامل جلسات روانشناسی یا مشاوره نمی‌شود. درمان روانپزشکی در بیمارستان پوشش داده می‌شود. خط رایگان 24 ساعته همچنان می‌تواند همین حالا شما را به کسی وصل کند.",
+   "vi": "Gói Essentials không chi trả các buổi tâm lý hoặc tư vấn. Điều trị tâm thần tại bệnh viện được chi trả. Đường dây miễn phí 24 giờ vẫn có thể kết nối bạn với ai đó ngay bây giờ.",
+   "id": "Perlindungan Essentials tidak mencakup sesi psikologi atau konseling. Perawatan psikiatri di rumah sakit ditanggung. Layanan telepon gratis 24 jam tetap bisa menghubungkan Anda dengan seseorang sekarang."
+  },
+  "Most things you can use straight away. Doctor visits, medicines, ambulance and mental health have no wait. If you already had signs of a health problem before your cover started, you may wait 12 months.": {
+   "si": "බොහෝ දේවල් ඔබට වහාම පාවිච්චි කරන්න පුළුවන්. වෛද්‍ය හමුවීම්, බෙහෙත්, ගිලන් රථ සහ මානසික සෞඛ්‍ය සඳහා පොරොත්තු කාලයක් නැහැ. ආවරණය පටන් ගන්න කලින්ම ඔබට සෞඛ්‍ය ගැටලුවක ලකුණු තිබුණා නම්, මාස 12ක් බලා ඉන්න සිදු විය හැකියි.",
+   "fa": "بیشتر خدمات را می‌توانید فوراً استفاده کنید. ویزیت پزشک، دارو، آمبولانس و سلامت روان دوره انتظار ندارند. اگر قبل از شروع بیمه نشانه‌های یک مشکل سلامتی داشتید، ممکن است 12 ماه منتظر بمانید.",
+   "vi": "Hầu hết mọi thứ bạn có thể dùng ngay. Khám bác sĩ, thuốc, xe cứu thương và sức khỏe tâm thần không phải chờ. Nếu bạn đã có dấu hiệu bệnh trước khi bảo hiểm bắt đầu, bạn có thể phải chờ 12 tháng.",
+   "id": "Sebagian besar layanan bisa langsung Anda gunakan. Kunjungan dokter, obat, ambulans dan kesehatan mental tidak ada masa tunggu. Jika Anda sudah punya tanda masalah kesehatan sebelum perlindungan dimulai, Anda mungkin menunggu 12 bulan."
+  },
+  "Regular dental check-ups, glasses and physiotherapy are not covered. You pay for those yourself. Dental surgery in hospital is different and part of that is covered.": {
+   "si": "සාමාන්‍ය දත් පරීක්ෂා, කණ්ණාඩි සහ physiotherapy ආවරණය වෙන්නේ නැහැ. ඒවාට ඔබම ගෙවන්න ඕනේ. රෝහලේ කරන දත් සැත්කම් වෙනස්, ඒකේ කොටසක් ආවරණය වෙනවා.",
+   "fa": "معاینه‌های معمول دندانپزشکی، عینک و فیزیوتراپی پوشش داده نمی‌شوند. هزینه آن‌ها را خودتان می‌پردازید. جراحی دندان در بیمارستان فرق می‌کند و بخشی از آن پوشش داده می‌شود.",
+   "vi": "Khám răng định kỳ, kính mắt và vật lý trị liệu không được chi trả. Bạn tự trả các chi phí đó. Phẫu thuật răng trong bệnh viện thì khác và được chi trả một phần.",
+   "id": "Pemeriksaan gigi rutin, kacamata dan fisioterapi tidak ditanggung. Anda membayarnya sendiri. Operasi gigi di rumah sakit berbeda dan sebagiannya ditanggung."
+  },
+  "Sign up for Online Member Services at medibankoshc.com.au. It takes about two minutes. Benefits cannot be paid until you have arrived in Australia and activated your cover.": {
+   "si": "medibankoshc.com.au හි Online Member Services සඳහා ලියාපදිංචි වෙන්න. ඒකට විනාඩි දෙකක් විතර යනවා. ඔබ ඕස්ට්‍රේලියාවට පැමිණ ආවරණය සක්‍රිය කරන තුරු ප්‍රතිලාභ ගෙවන්න බැහැ.",
+   "fa": "در medibankoshc.com.au برای Online Member Services ثبت‌نام کنید. حدود دو دقیقه طول می‌کشد. تا زمانی که به استرالیا نرسیده‌اید و بیمه را فعال نکرده‌اید، هزینه‌ای پرداخت نمی‌شود.",
+   "vi": "Đăng ký Online Member Services tại medibankoshc.com.au. Mất khoảng hai phút. Quyền lợi không được chi trả cho đến khi bạn đến Úc và kích hoạt bảo hiểm.",
+   "id": "Daftar Online Member Services di medibankoshc.com.au. Hanya sekitar dua menit. Manfaat tidak bisa dibayar sampai Anda tiba di Australia dan mengaktifkan perlindungan Anda."
+  },
+  "Yes. We pay towards each psychology and counselling session, up to an annual limit. The free 24 hour line can also connect you to someone now.": {
+   "si": "ඔව්. එක් එක් මනෝවිද්‍යා සහ උපදේශන සැසියකට අපි වාර්ෂික සීමාවක් දක්වා ගෙවනවා. පැය 24 පුරා විවෘත නොමිලේ දුරකථන සේවාවට ඔබව දැන්ම කෙනෙකු සමඟ සම්බන්ධ කළ හැකියි.",
+   "fa": "بله. ما برای هر جلسه روانشناسی و مشاوره تا یک سقف سالانه پرداخت می‌کنیم. خط رایگان 24 ساعته هم می‌تواند همین حالا شما را به کسی وصل کند.",
+   "vi": "Có. Chúng tôi chi trả cho mỗi buổi tâm lý và tư vấn, đến một hạn mức hằng năm. Đường dây miễn phí 24 giờ cũng có thể kết nối bạn với ai đó ngay bây giờ.",
+   "id": "Ya. Kami membayar sebagian untuk setiap sesi psikologi dan konseling, sampai batas tahunan. Layanan telepon gratis 24 jam juga bisa menghubungkan Anda dengan seseorang sekarang."
+  },
+  "You pay a set amount per prescription and we cover the rest, up to an annual limit. Your remaining balance is on the home screen.": {
+   "si": "එක් prescription එකකට ඔබ ස්ථිර මුදලක් ගෙවනවා, ඉතිරිය අපි වාර්ෂික සීමාවක් දක්වා ගෙවනවා. ඔබේ ඉතුරු ශේෂය home screen එකේ තියෙනවා.",
+   "fa": "شما برای هر نسخه مبلغ ثابتی می‌پردازید و ما بقیه را تا یک سقف سالانه پرداخت می‌کنیم. موجودی باقی‌مانده شما در صفحه اصلی است.",
+   "vi": "Bạn trả một khoản cố định cho mỗi đơn thuốc và chúng tôi trả phần còn lại, đến một hạn mức hằng năm. Số dư còn lại của bạn có trên màn hình chính.",
+   "id": "Anda membayar jumlah tetap per resep dan kami menanggung sisanya, sampai batas tahunan. Sisa saldo Anda ada di layar utama."
+  }
+ },
+ "page": {
+  "How healthcare works here": {
+   "si": "මෙහි සෞඛ්‍ය සේවා ක්‍රියා කරන්නේ කොහොමද",
+   "fa": "نظام درمانی اینجا چطور کار می‌کند",
+   "vi": "Hệ thống y tế ở đây hoạt động thế nào",
+   "id": "Cara layanan kesehatan bekerja di sini"
+  },
+  "Five things worth knowing before you need them.": {
+   "si": "අවශ්‍ය වෙන්න කලින් දැනගත යුතු කරුණු පහක්.",
+   "fa": "پنج نکته که بهتر است قبل از نیاز بدانید.",
+   "vi": "Năm điều nên biết trước khi bạn cần đến.",
+   "id": "Lima hal yang perlu diketahui sebelum Anda membutuhkannya."
+  },
+  "See a GP first": {
+   "si": "මුලින්ම GP කෙනෙක් හමුවෙන්න",
+   "fa": "اول به پزشک عمومی (GP) مراجعه کنید",
+   "vi": "Hãy gặp bác sĩ gia đình (GP) trước",
+   "id": "Temui GP (dokter umum) dulu"
+  },
+  "In Australia your regular doctor is called a GP, short for general practitioner. You see a GP first for anything that is not an emergency.": {
+   "si": "ඕස්ට්‍රේලියාවේ ඔබේ සාමාන්‍ය වෛද්‍යවරයාට GP (general practitioner) කියනවා. හදිසි නොවන ඕනෑම දෙයකට මුලින්ම GP කෙනෙක් හමුවෙන්න.",
+   "fa": "در استرالیا پزشک معمولی شما GP (پزشک عمومی) نام دارد. برای هر چیزی که اورژانسی نیست، اول به GP مراجعه کنید.",
+   "vi": "Ở Úc, bác sĩ thường của bạn gọi là GP (bác sĩ đa khoa). Với mọi việc không khẩn cấp, bạn gặp GP trước.",
+   "id": "Di Australia dokter biasa Anda disebut GP (dokter umum). Untuk apa pun yang bukan darurat, temui GP dulu."
+  },
+  "Specialists need a referral": {
+   "si": "විශේෂඥ වෛද්‍යවරුන්ට referral එකක් ඕනේ",
+   "fa": "برای متخصص ارجاع لازم است",
+   "vi": "Gặp bác sĩ chuyên khoa cần giấy giới thiệu",
+   "id": "Dokter spesialis perlu surat rujukan"
+  },
+  "You cannot book a specialist directly. The GP writes you a referral.": {
+   "si": "ඔබට කෙලින්ම විශේෂඥ වෛද්‍යවරයෙකු වෙන්කරගන්න බැහැ. GP ඔබට referral එකක් ලියා දෙනවා.",
+   "fa": "نمی‌توانید مستقیم از متخصص وقت بگیرید. پزشک عمومی برایتان ارجاع می‌نویسد.",
+   "vi": "Bạn không thể đặt lịch trực tiếp với bác sĩ chuyên khoa. GP sẽ viết giấy giới thiệu cho bạn.",
+   "id": "Anda tidak bisa langsung membuat janji dengan spesialis. GP akan menulis surat rujukan."
+  },
+  "Some clinics cost you nothing": {
+   "si": "සමහර සායනවලට ඔබට කිසිවක් ගෙවන්න අවශ්‍ය නැහැ",
+   "fa": "بعضی کلینیک‌ها برای شما هزینه‌ای ندارند",
+   "vi": "Một số phòng khám bạn không phải trả tiền",
+   "id": "Beberapa klinik tidak memungut biaya dari Anda"
+  },
+  "Direct Billing clinics bill us instead of you. Find one before you need it.": {
+   "si": "Direct Billing සායන ඔබෙන් නොව අපෙන් ගාස්තු අය කරනවා. අවශ්‍ය වෙන්න කලින් එකක් සොයාගන්න.",
+   "fa": "کلینیک‌های Direct Billing به جای شما از ما هزینه می‌گیرند. قبل از نیاز یکی را پیدا کنید.",
+   "vi": "Phòng khám Direct Billing tính tiền chúng tôi thay vì bạn. Hãy tìm một nơi trước khi cần.",
+   "id": "Klinik Direct Billing menagih kami, bukan Anda. Cari satu sebelum Anda membutuhkannya."
+  },
+  "Emergency departments are for emergencies": {
+   "si": "හදිසි ප්‍රතිකාර ඒකක හදිසි අවස්ථා සඳහා පමණයි",
+   "fa": "اورژانس فقط برای موارد اورژانسی است",
+   "vi": "Khoa cấp cứu chỉ dành cho trường hợp khẩn cấp",
+   "id": "Unit gawat darurat untuk keadaan darurat"
+  },
+  "For anything not urgent, a GP is faster and usually cheaper.": {
+   "si": "හදිසි නොවන දෙයකට GP කෙනෙක් වේගවත් වගේම සාමාන්‍යයෙන් ලාභයි.",
+   "fa": "برای موارد غیرفوری، پزشک عمومی سریع‌تر و معمولاً ارزان‌تر است.",
+   "vi": "Với việc không gấp, GP nhanh hơn và thường rẻ hơn.",
+   "id": "Untuk hal yang tidak mendesak, GP lebih cepat dan biasanya lebih murah."
+  },
+  "Some things are not covered": {
+   "si": "සමහර දේවල් ආවරණය වෙන්නේ නැහැ",
+   "fa": "بعضی چیزها پوشش داده نمی‌شوند",
+   "vi": "Một số thứ không được chi trả",
+   "id": "Beberapa hal tidak ditanggung"
+  },
+  "Dental check-ups, glasses and physiotherapy are not included.": {
+   "si": "දත් පරීක්ෂා, කණ්ණාඩි සහ physiotherapy ඇතුළත් නැහැ.",
+   "fa": "معاینه دندانپزشکی، عینک و فیزیوتراپی شامل نمی‌شوند.",
+   "vi": "Khám răng, kính mắt và vật lý trị liệu không được bao gồm.",
+   "id": "Pemeriksaan gigi, kacamata dan fisioterapi tidak termasuk."
+  },
+  "Your cover": {
+   "si": "ඔබේ ආවරණය",
+   "fa": "پوشش بیمه شما",
+   "vi": "Bảo hiểm của bạn",
+   "id": "Perlindungan Anda"
+  },
+  "Cover ends": {
+   "si": "ආවරණය අවසන් වන්නේ",
+   "fa": "پایان بیمه",
+   "vi": "Bảo hiểm kết thúc",
+   "id": "Perlindungan berakhir"
+  },
+  "Medicine left": {
+   "si": "බෙහෙත් සඳහා ඉතුරු",
+   "fa": "باقی‌مانده دارو",
+   "vi": "Tiền thuốc còn lại",
+   "id": "Sisa obat"
+  },
+  "Nearest no-cost doctor": {
+   "si": "ළඟම නොමිලේ වෛද්‍යවරයා",
+   "fa": "نزدیک‌ترین پزشک رایگان",
+   "vi": "Bác sĩ miễn phí gần nhất",
+   "id": "Dokter tanpa biaya terdekat"
+  },
+  "Demo settings": {
+   "si": "Demo සැකසුම්",
+   "fa": "تنظیمات نمایشی",
+   "vi": "Cài đặt demo",
+   "id": "Pengaturan demo"
+  },
+  "Cover": {
+   "si": "ආවරණය",
+   "fa": "نوع بیمه",
+   "vi": "Gói bảo hiểm",
+   "id": "Perlindungan"
+  },
+  "Demo student": {
+   "si": "Demo සිසුවා",
+   "fa": "دانشجوی نمونه",
+   "vi": "Sinh viên demo",
+   "id": "Mahasiswa demo"
+  },
+  "Campus": {
+   "si": "කැම්පස් එක",
+   "fa": "پردیس دانشگاه",
+   "vi": "Cơ sở",
+   "id": "Kampus"
+  },
+  "Weeks in Australia": {
+   "si": "ඕස්ට්‍රේලියාවේ සති ගණන",
+   "fa": "هفته‌ها در استرالیا",
+   "vi": "Số tuần ở Úc",
+   "id": "Minggu di Australia"
+  },
+  "Page": {
+   "si": "පිටුව",
+   "fa": "صفحه",
+   "vi": "Trang",
+   "id": "Halaman"
+  },
+  "Module": {
+   "si": "මාතෘකාව",
+   "fa": "آموزش",
+   "vi": "Bài học",
+   "id": "Modul"
+  },
+  "Dashboard": {
+   "si": "පුවරුව",
+   "fa": "داشبورد",
+   "vi": "Bảng điều khiển",
+   "id": "Dasbor"
+  },
+  "What this is based on": {
+   "si": "මේ පිළිතුර පදනම් වූයේ (නිල ඉංග්‍රීසි ලේඛනය)",
+   "fa": "این پاسخ بر چه اساسی است (متن رسمی انگلیسی)",
+   "vi": "Câu trả lời dựa trên (văn bản chính thức tiếng Anh)",
+   "id": "Dasar jawaban ini (teks resmi bahasa Inggris)"
+  },
+  "THIS ANSWER": {
+   "si": "මෙම පිළිතුර",
+   "fa": "این پاسخ",
+   "vi": "CÂU TRẢ LỜI NÀY",
+   "id": "JAWABAN INI"
+  },
+  "THE DOCUMENT": {
+   "si": "ලේඛනය",
+   "fa": "سند",
+   "vi": "TÀI LIỆU",
+   "id": "DOKUMEN"
+  },
+  "About a 10 year old could read it": {
+   "si": "අවුරුදු 10ක දරුවෙකුට කියවිය හැකියි",
+   "fa": "یک کودک حدوداً 10 ساله می‌تواند آن را بخواند",
+   "vi": "Trẻ khoảng 10 tuổi có thể đọc được",
+   "id": "Anak sekitar 10 tahun bisa membacanya"
+  },
+  "Senior school level": {
+   "si": "උසස් පෙළ මට්ටම",
+   "fa": "سطح دبیرستان",
+   "vi": "Trình độ cấp ba",
+   "id": "Tingkat SMA"
+  },
+  "University level": {
+   "si": "විශ්වවිද්‍යාල මට්ටම",
+   "fa": "سطح دانشگاه",
+   "vi": "Trình độ đại học",
+   "id": "Tingkat universitas"
+  },
+  "Postgraduate level": {
+   "si": "පශ්චාත් උපාධි මට්ටම",
+   "fa": "سطح تحصیلات تکمیلی",
+   "vi": "Trình độ sau đại học",
+   "id": "Tingkat pascasarjana"
+  },
+  "readable": {
+   "si": "පහසුවෙන් කියවිය හැකියි",
+   "fa": "خوانا",
+   "vi": "dễ đọc",
+   "id": "mudah dibaca"
+  },
+  "harder than most people can read comfortably": {
+   "si": "බොහෝ දෙනාට පහසුවෙන් කියවන්න අමාරුයි",
+   "fa": "سخت‌تر از آنچه بیشتر مردم راحت بخوانند",
+   "vi": "khó hơn mức đa số người đọc thoải mái",
+   "id": "lebih sulit dari yang nyaman dibaca kebanyakan orang"
+  },
+  "We saved the topic of this question. We did not save what you typed, and it is not linked to you.": {
+   "si": "අපි මේ ප්‍රශ්නයේ මාතෘකාව පමණක් සුරැකුවා. ඔබ ටයිප් කළ දේ සුරැකුවේ නැහැ, එය ඔබට සම්බන්ධ කරලත් නැහැ.",
+   "fa": "ما فقط موضوع این سؤال را ذخیره کردیم. آنچه تایپ کردید ذخیره نشد و به شما مرتبط نیست.",
+   "vi": "Chúng tôi chỉ lưu chủ đề của câu hỏi. Chúng tôi không lưu những gì bạn gõ và không liên kết với bạn.",
+   "id": "Kami hanya menyimpan topik pertanyaan ini. Kami tidak menyimpan yang Anda ketik, dan tidak dikaitkan dengan Anda."
+  },
+  "How your question was processed": {
+   "si": "ඔබේ ප්‍රශ්නය සැකසුණේ කොහොමද",
+   "fa": "سؤال شما چطور پردازش شد",
+   "vi": "Câu hỏi của bạn được xử lý thế nào",
+   "id": "Bagaimana pertanyaan Anda diproses"
+  },
+  "Checks": {
+   "si": "පරීක්ෂා",
+   "fa": "بررسی‌ها",
+   "vi": "Kiểm tra",
+   "id": "Pemeriksaan"
+  },
+  "Safety check": {
+   "si": "ආරක්ෂක පරීක්ෂාව",
+   "fa": "بررسی ایمنی",
+   "vi": "Kiểm tra an toàn",
+   "id": "Pemeriksaan keamanan"
+  },
+  "No crisis, emergency, wellbeing or symptom words. Passed.": {
+   "si": "අර්බුද, හදිසි, මානසික හෝ රෝග ලක්ෂණ වචන නැහැ. සමත්.",
+   "fa": "هیچ کلمه بحران، اورژانس، حال روحی یا علامت بیماری نبود. قبول شد.",
+   "vi": "Không có từ khủng hoảng, khẩn cấp, tâm lý hay triệu chứng. Đạt.",
+   "id": "Tidak ada kata krisis, darurat, kesejahteraan atau gejala. Lolos."
+  },
+  "Spelling correction": {
+   "si": "අක්ෂර වින්‍යාස නිවැරදි කිරීම",
+   "fa": "اصلاح املا",
+   "vi": "Sửa chính tả",
+   "id": "Koreksi ejaan"
+  },
+  "No corrections needed.": {
+   "si": "නිවැරදි කිරීම් අවශ්‍ය නැහැ.",
+   "fa": "نیازی به اصلاح نبود.",
+   "vi": "Không cần sửa.",
+   "id": "Tidak perlu koreksi."
+  },
+  "Synonym expansion": {
+   "si": "සමාන වචන එකතු කිරීම",
+   "fa": "افزودن مترادف‌ها",
+   "vi": "Mở rộng từ đồng nghĩa",
+   "id": "Perluasan sinonim"
+  },
+  "No shorthand found.": {
+   "si": "කෙටි වචන හමු වුණේ නැහැ.",
+   "fa": "مخففی پیدا نشد.",
+   "vi": "Không thấy từ viết tắt.",
+   "id": "Tidak ada singkatan."
+  },
+  "Product filter": {
+   "si": "ආවරණ වර්ගය අනුව පෙරීම",
+   "fa": "فیلتر نوع بیمه",
+   "vi": "Lọc theo gói",
+   "id": "Filter produk"
+  },
+  "Query sent to retrieval": {
+   "si": "සෙවීමට යැවූ ප්‍රශ්නය",
+   "fa": "سؤالی که برای جستجو فرستاده شد",
+   "vi": "Câu truy vấn gửi đi tìm kiếm",
+   "id": "Kueri yang dikirim ke pencarian"
+  },
+  "Not available.": {
+   "si": "ලබා ගත නොහැක.",
+   "fa": "در دسترس نیست.",
+   "vi": "Không có sẵn.",
+   "id": "Tidak tersedia."
+  }
+ },
+ "patterns": [
+  [
+   "^Grade ([\\d.]+)$",
+   {
+    "si": "ශ්‍රේණිය $1",
+    "fa": "پایه $1",
+    "vi": "Lớp $1",
+    "id": "Kelas $1"
+   }
+  ],
+  [
+   "^page (\\d+)$",
+   {
+    "si": "පිටුව $1",
+    "fa": "صفحه $1",
+    "vi": "trang $1",
+    "id": "halaman $1"
+   }
+  ],
+  [
+   "^effective (.+)$",
+   {
+    "si": "බලපැවැත්වෙන්නේ $1",
+    "fa": "معتبر از $1",
+    "vi": "hiệu lực $1",
+    "id": "berlaku $1"
+   }
+  ],
+  [
+   "^Reading grade ([\\d.]+) · readable$",
+   {
+    "si": "කියවීමේ ශ්‍රේණිය $1 · පහසුවෙන් කියවිය හැකියි",
+    "fa": "سطح خواندن $1 · خوانا",
+    "vi": "Mức đọc lớp $1 · dễ đọc",
+    "id": "Tingkat baca $1 · mudah dibaca"
+   }
+  ],
+  [
+   "^Reading grade ([\\d.]+) · harder than most people can read comfortably$",
+   {
+    "si": "කියවීමේ ශ්‍රේණිය $1 · බොහෝ දෙනාට කියවන්න අමාරුයි",
+    "fa": "سطح خواندن $1 · برای بیشتر مردم سخت",
+    "vi": "Mức đọc lớp $1 · khó với đa số người",
+    "id": "Tingkat baca $1 · sulit bagi kebanyakan orang"
+   }
+  ],
+  [
+   "^Restricted to (\\w+) chunks only\\.$",
+   {
+    "si": "$1 ආවරණයේ ලේඛන පමණක් සෙව්වා.",
+    "fa": "فقط در اسناد بیمه $1 جستجو شد.",
+    "vi": "Chỉ tìm trong tài liệu gói $1.",
+    "id": "Hanya mencari di dokumen $1."
+   }
+  ],
+  [
+   "^Added policy terms: (.+)$",
+   {
+    "si": "එකතු කළ පොලිසි වචන: $1",
+    "fa": "واژه‌های بیمه اضافه شد: $1",
+    "vi": "Đã thêm thuật ngữ: $1",
+    "id": "Istilah polis ditambahkan: $1"
+   }
+  ]
+ ]
+}
