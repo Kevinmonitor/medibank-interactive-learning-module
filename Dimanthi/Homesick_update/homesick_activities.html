@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<!--
+  Feel-better activities (OSHCwise) - Dimi's part
+  Shown under the Homesick card. Five small activities, in the student's language:
+    1. Calm breathing   2. Mood check-in   3. Small wins today   4. 5-4-3-2-1 grounding   5. Bring home closer
+  Homesick_Guide.py fills in __LANG__ and __TEXT__ (the words from homesick_activities.json).
+  Nothing the student taps is saved.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --red:#C8322E; --red-soft:#FCEDEC; --navy:#1F3A5F; --ink:#1D2A3A; --muted:#5E6B7A; --line:#E3E6EA;
+          --green:#1E8E4E; --green-soft:#E8F5EE; --blue:#2B5FA8; --blue-soft:#E9F0FA; --amber:#B7791F; --amber-soft:#FDF4E3;
+          --lilac:#6B5BA8; --lilac-soft:#F0EDFA; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:4px 2px 12px; background:#fff; color:var(--ink);
+         font:15px/1.5 "Source Sans Pro","Source Sans 3","Segoe UI",system-ui,sans-serif; }
+  h2 { margin:0; font-size:1.35rem; color:var(--navy); }
+  .lead { margin:2px 0 14px; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; }
+  @media (max-width:760px) { .grid { grid-template-columns:1fr; } }
+  .card { border:1.5px solid var(--line); border-radius:18px; padding:16px 18px; background:#fff; position:relative;
+          overflow:hidden; overflow:clip; transition:box-shadow .2s, transform .2s; }
+  .card:hover { box-shadow:0 6px 18px rgba(31,58,95,.10); transform:translateY(-2px); }
+  .card.wide { grid-column:1 / -1; }
+  .head { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .ico { width:46px; height:46px; border-radius:14px; display:grid; place-items:center; font-size:1.45rem; flex:none; }
+  .card h3 { margin:0; font-size:1.08rem; color:var(--navy); }
+  .card p.sub { margin:0 0 10px; color:var(--muted); font-size:.9rem; }
+  button { font:inherit; font-weight:700; cursor:pointer; border-radius:99px; padding:7px 16px; border:1.5px solid var(--line);
+           background:#fff; color:var(--navy); }
+  button.primary { background:var(--red); border-color:var(--red); color:#fff; }
+  button:focus-visible { outline:3px solid #E07A1F; outline-offset:2px; }
+  .blob { position:absolute; width:160px; height:160px; border-radius:50%; right:-50px; top:-60px; opacity:.55; pointer-events:none; }
+
+  /* 1. Breathing */
+  .breath { display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+  .orb-wrap { width:170px; height:170px; display:grid; place-items:center; position:relative; flex:none; }
+  .orb { width:70px; height:70px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #9fd4c9, #2A8C82);
+         box-shadow:0 0 0 7px rgba(42,140,130,.12), 0 0 0 14px rgba(42,140,130,.06); transition:transform 4s ease-in-out; }
+  .orb-label { position:absolute; font-weight:800; color:var(--navy); text-align:center; width:100%; top:calc(50% - .7em); pointer-events:none; }
+  .ring { position:absolute; inset:0; }
+  .ring circle { fill:none; stroke-width:6; }
+  .ring .bg { stroke:#EEF1F4; } .ring .fg { stroke:#2A8C82; stroke-linecap:round; transition:stroke-dashoffset 1s linear; }
+  .breath .msg { color:var(--green); font-weight:700; min-height:1.4em; }
+
+  /* 2. Mood */
+  .moods { display:flex; gap:10px; flex-wrap:wrap; margin:6px 0 10px; }
+  .mood { display:flex; flex-direction:column; align-items:center; gap:2px; border-radius:16px; padding:8px 12px; min-width:84px;
+          font-weight:600; font-size:.85rem; }
+  .mood span { font-size:2rem; line-height:1.1; transition:transform .2s; }
+  .mood:hover span { transform:scale(1.15); }
+  .mood[aria-pressed="true"] { border-color:var(--navy); background:var(--blue-soft); }
+  .tip { border-radius:12px; padding:10px 12px; font-weight:600; display:none; }
+  .tip.show { display:block; animation:fade .35s ease; }
+  .tip.good { background:var(--green-soft); color:#17663a; }
+  .tip.mid { background:var(--blue-soft); color:var(--navy); }
+  .tip.low { background:var(--amber-soft); color:#7a5212; }
+  .tip.bad { background:var(--red-soft); color:#A82824; border:1.5px solid var(--red); }
+  @keyframes fade { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+
+  /* 3. Small wins */
+  .wins { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; flex:1; min-width:240px; }
+  .win { font-weight:600; font-size:.88rem; padding:7px 13px; }
+  .win::before { content:"○ "; color:var(--muted); }
+  .win[aria-pressed="true"] { background:var(--green-soft); border-color:var(--green); color:#17663a; }
+  .win[aria-pressed="true"]::before { content:"✓ "; color:var(--green); }
+  .prog { width:96px; height:96px; position:relative; flex:none; }
+  .prog .num { position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:var(--navy); font-size:.85rem;
+               text-align:center; padding:14px; }
+  .wins-msg { color:var(--green); font-weight:700; min-height:1.4em; margin-top:8px; }
+  .confetti { position:absolute; width:8px; height:12px; border-radius:2px; top:-10px; animation:drop 1.4s ease-in forwards; }
+  @keyframes drop { to { transform:translateY(260px) rotate(540deg); opacity:0; } }
+
+  /* 4. Grounding */
+  .ground { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .big { width:92px; height:92px; border-radius:24px; display:grid; place-items:center; font-size:2.6rem; font-weight:800; color:#fff;
+         background:linear-gradient(135deg, var(--lilac), #9a8cd6); box-shadow:0 6px 16px rgba(107,91,168,.3); flex:none; }
+  .gtext { font-size:1.05rem; font-weight:700; color:var(--navy); }
+  .gicons { font-size:1.4rem; letter-spacing:.2em; margin:4px 0 8px; }
+  .dots { display:flex; gap:6px; margin-top:6px; }
+  .dots i { width:9px; height:9px; border-radius:50%; background:#D5DBE1; }
+  .dots i.on { background:var(--lilac); }
+
+  /* 5. Home closer */
+  .idea { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .scene { width:150px; height:110px; flex:none; }
+  .idea-text { flex:1; min-width:200px; font-size:1.05rem; font-weight:700; color:var(--navy); animation:fade .35s ease; }
+  .note { color:var(--muted); font-size:.78rem; margin-top:12px; }
+  [dir="rtl"] .blob { right:auto; left:-50px; }
+</style>
+</head>
+<body>
+<h2 id="t_title"></h2>
+<p class="lead" id="t_lead"></p>
+
+<div class="grid">
+  <!-- 1. Calm breathing -->
+  <div class="card">
+    <div class="blob" style="background:radial-gradient(#d6efe9, transparent 70%)"></div>
+    <div class="head"><div class="ico" style="background:#E3F3F0">🌬️</div><h3 id="t_breathe_title"></h3></div>
+    <p class="sub" id="t_breathe_lead"></p>
+    <div class="breath">
+      <div class="orb-wrap">
+        <svg class="ring" viewBox="0 0 170 170"><circle class="bg" cx="85" cy="85" r="78"/>
+          <circle class="fg" id="ringFg" cx="85" cy="85" r="78" stroke-dasharray="490" stroke-dashoffset="490" transform="rotate(-90 85 85)"/></svg>
+        <div class="orb" id="orb"></div>
+        <div class="orb-label" id="orbLabel"></div>
+      </div>
+      <div>
+        <button class="primary" id="breathBtn"></button>
+        <div class="msg" id="breathMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Mood check-in -->
+  <div class="card">
+    <div class="blob" style="background:radial-gradient(#fde9c7, transparent 70%)"></div>
+    <div class="head"><div class="ico" style="background:var(--amber-soft)">🌤️</div><h3 id="t_mood_title"></h3></div>
+    <p class="sub" id="t_mood_lead"></p>
+    <div class="moods" id="moods"></div>
+    <div class="tip" id="moodTip"></div>
+  </div>
+
+  <!-- 3. Small wins -->
+  <div class="card wide" id="winsCard">
+    <div class="blob" style="background:radial-gradient(#d4eedd, transparent 70%)"></div>
+    <div class="head"><div class="ico" style="background:var(--green-soft)">🌱</div><h3 id="t_wins_title"></h3></div>
+    <p class="sub" id="t_wins_lead"></p>
+    <div class="wins">
+      <div class="chips" id="wins"></div>
+      <div class="prog">
+        <svg viewBox="0 0 96 96" width="96" height="96"><circle cx="48" cy="48" r="40" fill="none" stroke="#EEF1F4" stroke-width="9"/>
+          <circle id="progFg" cx="48" cy="48" r="40" fill="none" stroke="#1E8E4E" stroke-width="9" stroke-linecap="round"
+                  stroke-dasharray="251" stroke-dashoffset="251" transform="rotate(-90 48 48)" style="transition:stroke-dashoffset .5s"/></svg>
+        <div class="num" id="progNum"></div>
+      </div>
+    </div>
+    <div class="wins-msg" id="winsMsg"></div>
+  </div>
+
+  <!-- 4. Grounding -->
+  <div class="card">
+    <div class="blob" style="background:radial-gradient(#e4dff6, transparent 70%)"></div>
+    <div class="head"><div class="ico" style="background:var(--lilac-soft)">🧘</div><h3 id="t_ground_title"></h3></div>
+    <p class="sub" id="t_ground_lead"></p>
+    <div class="ground">
+      <div class="big" id="gNum">5</div>
+      <div>
+        <div class="gtext" id="gText"></div>
+        <div class="gicons" id="gIcons"></div>
+        <button class="primary" id="gBtn"></button>
+        <div class="dots" id="gDots"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Bring home closer -->
+  <div class="card">
+    <div class="blob" style="background:radial-gradient(#f8d9d7, transparent 70%)"></div>
+    <div class="head"><div class="ico" style="background:var(--red-soft)">🏡</div><h3 id="t_home_title"></h3></div>
+    <p class="sub" id="t_home_lead"></p>
+    <div class="idea">
+      <svg class="scene" id="scene" viewBox="0 0 150 110" aria-hidden="true"></svg>
+      <div class="idea-text" id="ideaText"></div>
+    </div>
+    <button id="ideaBtn" style="margin-top:10px"></button>
+  </div>
+</div>
+<p class="note" id="t_note"></p>
+
+<script>
+const LANG = "__LANG__";
+let T = {};
+try { T = JSON.parse(decodeURIComponent("__TEXT__")); } catch (e) { T = {}; }
+const $ = id => document.getElementById(id);
+// Farsi reads right to left: numbers, phone numbers and English names stay left to right
+const isolate = s => LANG !== "fa" ? s : s.replace(/([$+]?[0-9A-Za-z][0-9A-Za-z'’&./:%,\- ]*[0-9A-Za-z.%]|[$+]?[0-9A-Za-z]%?)/g,
+  m => "\u2066" + (/^[$+]?\d[\d ]*\d$/.test(m) ? m.replace(/ /g, "\u00a0") : m) + "\u2069");
+const t = (k, v) => isolate((T[k] || k).replace("{n}", v));
+if (LANG === "fa") { document.body.dir = "rtl"; }
+document.documentElement.lang = LANG.startsWith("__") ? "en" : LANG;
+
+["title","lead","breathe_title","breathe_lead","mood_title","mood_lead","wins_title","wins_lead",
+ "ground_title","ground_lead","home_title","home_lead","note"].forEach(k => { $("t_" + k).textContent = t(k); });
+
+const send = (type, data) => window.parent.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+const resize = () => send("streamlit:setFrameHeight", { height: document.body.scrollHeight + 8 });
+send("streamlit:componentReady", { apiVersion: 1 });
+new ResizeObserver(resize).observe(document.body);
+
+/* ---------- 1. Calm breathing: in 4 s, hold 4 s, out 6 s, for one minute ---------- */
+const PHASES = [["breathe_in", 4, 1.75], ["breathe_hold", 4, 1.75], ["breathe_out", 6, 1]];
+let breathing = false, timers = [], elapsed = 0, tick = null;
+function setBreathBtn() { $("breathBtn").textContent = t(breathing ? "breathe_stop" : "breathe_start"); }
+function stopBreath(done) {
+  breathing = false; timers.forEach(clearTimeout); timers = []; clearInterval(tick);
+  $("orb").style.transform = "scale(1)"; $("orbLabel").textContent = "";
+  $("ringFg").style.strokeDashoffset = 490; elapsed = 0;
+  $("breathMsg").textContent = done ? t("breathe_done") : ""; setBreathBtn();
+}
+function cycle() {
+  let delay = 0;
+  PHASES.forEach(([key, secs, scale]) => {
+    timers.push(setTimeout(() => {
+      if (!breathing) return;
+      $("orb").style.transition = `transform ${secs}s ease-in-out`;
+      $("orb").style.transform = `scale(${scale})`;
+      $("orbLabel").textContent = t(key);
+    }, delay * 1000));
+    delay += secs;
+  });
+  timers.push(setTimeout(() => { if (breathing) cycle(); }, delay * 1000));
+}
+$("breathBtn").onclick = () => {
+  if (breathing) { stopBreath(false); return; }
+  breathing = true; setBreathBtn(); $("breathMsg").textContent = ""; cycle();
+  tick = setInterval(() => {
+    elapsed += 1; $("ringFg").style.strokeDashoffset = 490 - 490 * Math.min(elapsed, 60) / 60;
+    if (elapsed >= 60) stopBreath(true);
+  }, 1000);
+};
+setBreathBtn();
+
+/* ---------- 2. Mood check-in ---------- */
+const MOODS = [["great", "😄", "good"], ["ok", "🙂", "mid"], ["low", "😔", "low"], ["bad", "😢", "bad"]];
+$("moods").innerHTML = MOODS.map(([k, e]) =>
+  `<button class="mood" data-k="${k}" aria-pressed="false"><span>${e}</span>${t("mood_" + k)}</button>`).join("");
+$("moods").addEventListener("click", ev => {
+  const b = ev.target.closest(".mood"); if (!b) return;
+  document.querySelectorAll(".mood").forEach(x => x.setAttribute("aria-pressed", x === b));
+  const [k, , cls] = MOODS.find(m => m[0] === b.dataset.k);
+  const tip = $("moodTip"); tip.className = "tip show " + cls; tip.textContent = t("mood_" + k + "_tip");
+});
+
+/* ---------- 3. Small wins ---------- */
+const WINS = [1, 2, 3, 4, 5, 6];
+$("wins").innerHTML = WINS.map(n => `<button class="win" data-n="${n}" aria-pressed="false">${t("win_" + n)}</button>`).join("");
+function updateWins(celebrate) {
+  const done = document.querySelectorAll('.win[aria-pressed="true"]').length;
+  $("progFg").style.strokeDashoffset = 251 - 251 * done / 6;
+  $("progNum").textContent = t("wins_count", done);
+  $("winsMsg").textContent = done === 6 ? t("wins_all") : "";
+  if (done === 6 && celebrate) confetti();
+}
+function confetti() {
+  const card = $("winsCard"), colours = ["#C8322E", "#1E8E4E", "#2B5FA8", "#B7791F", "#6B5BA8"];
+  for (let i = 0; i < 36; i++) {
+    const c = document.createElement("i"); c.className = "confetti";
+    c.style.left = Math.random() * 100 + "%"; c.style.background = colours[i % colours.length];
+    c.style.animationDelay = Math.random() * .4 + "s"; card.appendChild(c);
+    setTimeout(() => c.remove(), 2000);
+  }
+}
+$("wins").addEventListener("click", ev => {
+  const b = ev.target.closest(".win"); if (!b) return;
+  b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true"); updateWins(true);
+});
+updateWins(false);
+
+/* ---------- 4. 5-4-3-2-1 grounding ---------- */
+const GROUND = [[5, "👀"], [4, "✋"], [3, "👂"], [2, "👃"], [1, "👅"]];
+let g = 0;
+function drawGround() {
+  const finished = g >= GROUND.length;
+  $("gNum").textContent = finished ? "✓" : GROUND[g][0];
+  $("gText").textContent = finished ? t("ground_done") : t("ground_" + GROUND[g][0]);
+  $("gIcons").textContent = finished ? "🌿" : GROUND[g][1].repeat(GROUND[g][0]);
+  $("gBtn").textContent = t(finished ? "ground_again" : "ground_next");
+  $("gDots").innerHTML = GROUND.map((_, i) => `<i class="${i <= g ? "on" : ""}"></i>`).join("");
+}
+$("gBtn").onclick = () => { g = g >= GROUND.length ? 0 : g + 1; drawGround(); };
+drawGround();
+
+/* ---------- 5. Bring home closer (a small picture for each idea) ---------- */
+const SCENES = [
+  // cooking: a pot with steam
+  '<rect x="40" y="58" width="70" height="34" rx="8" fill="#C8322E"/><rect x="32" y="54" width="86" height="8" rx="4" fill="#A82824"/>' +
+  '<path d="M60 44c-6-8 6-12 0-20M75 44c-6-8 6-12 0-20M90 44c-6-8 6-12 0-20" stroke="#B7C3CC" stroke-width="3" fill="none" stroke-linecap="round"/>',
+  // video call: a laptop with two faces
+  '<rect x="30" y="24" width="90" height="56" rx="6" fill="#20303F"/><rect x="35" y="29" width="80" height="46" rx="3" fill="#EAF4F8"/>' +
+  '<circle cx="58" cy="48" r="8" fill="#E0A77E"/><rect x="48" y="58" width="20" height="12" rx="5" fill="#2B5FA8"/>' +
+  '<circle cx="92" cy="48" r="8" fill="#C98E68"/><rect x="82" y="58" width="20" height="12" rx="5" fill="#C8322E"/>' +
+  '<rect x="22" y="80" width="106" height="6" rx="3" fill="#B9C4CE"/>',
+  // student club: three people
+  '<circle cx="45" cy="44" r="10" fill="#E0A77E"/><rect x="32" y="56" width="26" height="30" rx="10" fill="#2A8C82"/>' +
+  '<circle cx="75" cy="38" r="11" fill="#C98E68"/><rect x="61" y="51" width="28" height="35" rx="11" fill="#C8322E"/>' +
+  '<circle cx="105" cy="44" r="10" fill="#E0A77E"/><rect x="92" y="56" width="26" height="30" rx="10" fill="#6B5BA8"/>',
+  // photos on a wall
+  '<rect x="25" y="20" width="44" height="34" rx="3" fill="#fff" stroke="#B7C3CC" stroke-width="2" transform="rotate(-6 47 37)"/>' +
+  '<path d="M30 48l12-12 10 9 8-6 6 8z" fill="#2A8C82" transform="rotate(-6 47 37)"/>' +
+  '<rect x="80" y="30" width="44" height="34" rx="3" fill="#fff" stroke="#B7C3CC" stroke-width="2" transform="rotate(5 102 47)"/>' +
+  '<circle cx="102" cy="44" r="7" fill="#E0A77E" transform="rotate(5 102 47)"/>' +
+  '<rect x="50" y="66" width="44" height="30" rx="3" fill="#fff" stroke="#B7C3CC" stroke-width="2"/><path d="M56 90l10-10 8 6 10-8 6 12z" fill="#C8322E"/>',
+  // campus event: a flag and balloons
+  '<rect x="36" y="20" width="4" height="72" fill="#8C9AA5"/><path d="M40 22h40l-8 10 8 10H40z" fill="#C8322E"/>' +
+  '<circle cx="100" cy="40" r="13" fill="#B7791F"/><circle cx="118" cy="50" r="11" fill="#2B5FA8"/>' +
+  '<path d="M100 53v35M118 61v27" stroke="#8C9AA5" stroke-width="1.5"/>',
+  // explore the city: a camera
+  '<rect x="35" y="40" width="80" height="50" rx="8" fill="#40576F"/><rect x="55" y="32" width="26" height="12" rx="3" fill="#40576F"/>' +
+  '<circle cx="75" cy="65" r="16" fill="#EAF4F8"/><circle cx="75" cy="65" r="9" fill="#2B5FA8"/><circle cx="102" cy="50" r="4" fill="#F2C94C"/>'
+];
+let idea = Math.floor(Math.random() * 6);
+function drawIdea() {
+  $("scene").innerHTML = SCENES[idea];
+  const el = $("ideaText"); el.style.animation = "none"; void el.offsetWidth; el.style.animation = "";
+  el.textContent = t("home_" + (idea + 1));
+}
+$("ideaBtn").textContent = t("home_shuffle");
+$("ideaBtn").onclick = () => { idea = (idea + 1) % SCENES.length; drawIdea(); };
+drawIdea();
+
+window.addEventListener("load", resize);
+resize();
+</script>
+</body>
+</html>
