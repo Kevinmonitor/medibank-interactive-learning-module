@@ -1,5 +1,5 @@
 """
-Meaning model (OSHCwise) - Dimi's part
+Meaning model (OSHCwise) 
 
 The student types what they need, in their own language, on the Hospital card or the
 Homesick (mental health) card. This model understands WHAT they mean and tells the card
@@ -31,8 +31,7 @@ Data Science steps, all in this file:
 
 Privacy: nothing the student types is saved.
 
-Run the tests:   python intent_model.py
-Needs:           pip install scikit-learn
+
 """
 
 import hashlib
